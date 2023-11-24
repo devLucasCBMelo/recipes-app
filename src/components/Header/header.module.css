@@ -1,0 +1,16 @@
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.container_header {
+  background-color: #fcdc36;
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+}

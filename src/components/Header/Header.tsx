@@ -1,6 +1,55 @@
-function Header() {
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import styles from './header.module.css';
+import profile from '../../images/profileIcon.svg';
+import search from '../../images/searchIcon.svg';
+import appName from '../../images/title.png';
+import logo from '../../images/logo.png';
+
+ type HeaderProps = {
+   namePage: string
+
+ };
+
+function Header({ namePage }: HeaderProps) {
+  const [showSearch, setShowSearch] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    setShowSearch(!showSearch);
+  };
+
   return (
-    <p>Coloque seu header aqui</p>
+
+    <header className={ styles.header }>
+      <div className={ styles.container_header }>
+        <div>
+          <img src={ logo } alt="logo" />
+          <img src={ appName } alt="title" />
+        </div>
+        <div>
+          {(namePage === 'Meals' || namePage === 'Drinks')
+&& (
+  <button
+    onClick={ handleSearch }
+  >
+    <img src={ search } alt="search" data-testid="search-top-btn" />
+  </button>
+)}
+          <button onClick={ () => navigate('/profile') }>
+            <img src={ profile } alt="profile" data-testid="profile-top-btn" />
+          </button>
+        </div>
+      </div>
+      <div>
+        <h1 data-testid="page-title">{namePage}</h1>
+      </div>
+      { showSearch
+      && (
+        <label>
+          <input data-testid="search-input" type="text" />
+        </label>)}
+    </header>
   );
 }
 

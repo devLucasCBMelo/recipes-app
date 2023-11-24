@@ -1,6 +1,8 @@
+import Header from '../components/Header/Header';
+
 function Profile() {
   return (
-    <h1>Você está na tela de profile</h1>
+    <Header namePage="Profile" />
   );
 }
 
