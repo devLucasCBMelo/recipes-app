@@ -38,6 +38,12 @@ it('Renderiza page Login', async () => {
   await userEvent.type(inputEmail, 'grupo6@trybe.com');
   await userEvent.type(inputPassword, '1234567');
   expect(buttonEnter.disabled).toBe(false);
+
+  await userEvent.click(buttonEnter);
+
+  const storedUserInfo = localStorage.getItem('user');
+  const parsedUserInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
+  expect(parsedUserInfo).toEqual({ email: 'grupo6@trybe.com' });
 });
 
 it('Renderiza page DoneRecipes', () => {
