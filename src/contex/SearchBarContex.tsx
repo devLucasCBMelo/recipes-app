@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 type SearchBarContextType = {
-  setBusca: ({})=> void,
+  setBusca: (inputBusca:object)=> void,
   filter: ()=>void,
 
 };
