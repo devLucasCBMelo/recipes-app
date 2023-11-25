@@ -1,6 +1,8 @@
+import Header from '../components/Header/Header';
+
 function FavoriteRecipes() {
   return (
-    <h1>Você está na tela de receitas favoritas</h1>
+    <Header namePage="Favorite Recipes" />
   );
 }
 
