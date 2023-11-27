@@ -21,3 +21,11 @@ export const fetchDrinksFirstLetter = async (firstLetter: string) => {
   const data = response.json();
   return data;
 };
+
+export const fetchdDrinksDetails = async (id: string) => {
+  const response = await fetch(
+    `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
+  );
+  const data = response.json();
+  return data;
+};
