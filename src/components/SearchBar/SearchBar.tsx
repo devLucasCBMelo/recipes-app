@@ -1,14 +1,14 @@
 import { useContext, useState } from 'react';
 import searchBarContext from '../../contex/SearchBarContex';
+import styles from './SearchBar.module.css';
 
 const INICIAL_VALUE = {
   infoInput: '',
   radio: 'ingredient',
-
 };
 
 function SearchBar() {
-  const { setBusca, filter } = useContext(searchBarContext);
+  const { filterApi } = useContext(searchBarContext);
 
   const [searchInput, setSearchInput] = useState(INICIAL_VALUE);
 
@@ -17,19 +17,19 @@ function SearchBar() {
     setSearchInput({ ...searchInput, [name]: value });
   };
 
-  const inputSearch = { ...searchInput };
   const handleClick = () => {
-    console.log('cliquei');
-    setBusca(inputSearch);
-    filter();
+    // setBusca(inputSearch);
+    filterApi(searchInput);
+    setSearchInput(INICIAL_VALUE);
   };
 
   return (
 
-    <div>
+    <div className={ styles.container }>
       <div>
         <label>
           <input
+            className={ styles.input_search }
             onChange={ handleChange }
             name="infoInput"
             value={ searchInput.infoInput }
@@ -38,7 +38,7 @@ function SearchBar() {
           />
         </label>
       </div>
-      <div>
+      <div className={ styles.container_radio }>
         <div>
           <input
             onChange={ handleChange }
@@ -66,6 +66,7 @@ function SearchBar() {
           First Letter
         </div>
         <button
+          className={ styles.button_search }
           data-testid="exec-search-btn"
           onClick={ handleClick }
         >

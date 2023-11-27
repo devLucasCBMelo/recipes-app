@@ -1,0 +1,43 @@
+.input_search {
+  border-radius: 5px;
+  height: 40px;
+  width: 338px;
+
+}
+
+h1 {
+  color: #41197f;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.container_radio {
+  align-items: center;
+  background-color: #41197f;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 88px;
+  justify-content: center;
+  margin-top: -5px;
+  width: 338px;
+  z-index: 1;
+}
+
+.button_search {
+  background-color: #fcc436;
+  border-radius: 5px;
+  color: white;
+  height: 25px;
+  width: 209px;
+}
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  /* text-align: center;  */
+
+}

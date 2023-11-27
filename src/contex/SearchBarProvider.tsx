@@ -1,7 +1,11 @@
 import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import searchBarContext from './SearchBarContex';
 import { fetchMealsIngredient, fetchMealsfirstLetter,
   fetchMealsname } from '../utils/fetchMealsApi';
+import { fetchDrinksIngredient,
+  fetchdDrinksName, fetchDrinksFirstLetter } from '../utils/fetchDrinksApi';
 import { ValueBuscaType } from '../type';
 
 type SearchProviderProps = {
@@ -9,44 +13,65 @@ type SearchProviderProps = {
 };
 
 function SearchBarProvider({ children }:SearchProviderProps) {
-  const [valueBusca, setBusca] = useState<ValueBuscaType>();
-  console.log(valueBusca);
+  const [dataList, setDataList] = useState([]);
+  // const navigate = useNavigate();
+  const location = useLocation();
 
-  const fetchIngredientFunction = async () => {
-    const data = await fetchMealsIngredient(valueBusca?.infoInput as string);
+  const alert = "Sorry, we haven't found any recipes for these filters";
+
+  const fetchData = async (funcFetch, value: string) => {
+    const data = await funcFetch(value);
+    if (location.pathname.includes('/meals')) return !data.meals && window.alert(alert);
+
+    if (location.pathname.includes('/drinks')) return !data.drinks && window.alert(alert);
+
+    setDataList(data);
+    console.log(dataList);
     console.log(data);
     return data;
   };
 
-  const fetchNameFunction = async () => {
-    const data = await fetchMealsname(valueBusca?.infoInput as string);
-    console.log(data);
-    return data;
-  };
+  const filterApi = (value: ValueBuscaType) => {
+    if (location.pathname.includes('/meals')) {
+      switch (value.radio) {
+        case 'ingredient':
+          return fetchData(fetchMealsIngredient, value.infoInput);
 
-  const fetchfirstLetterFunction = async () => {
-    const data = await fetchMealsfirstLetter(valueBusca?.infoInput as string);
-    console.log(data);
-    return data;
-  };
+        case 'name':
+          return fetchData(fetchMealsname, value.infoInput);
 
-  const filter = () => {
-    switch (valueBusca?.radio) {
-      case 'ingredient':
-        return fetchIngredientFunction();
+        case 'first-letter':
+          if (value.infoInput.length > 1) {
+            return window.alert('Your search must have only 1 (one) character');
+          }
+          return fetchData(fetchMealsfirstLetter, value.infoInput);
+        default:
+          return window.alert(alert);
+      }
+    }
+    if (location.pathname.includes('/drinks')) {
+      switch (value.radio) {
+        case 'ingredient':
+          return fetchData(fetchDrinksIngredient, value.infoInput);
 
-      case 'name':
-        return fetchNameFunction();
+        case 'name':
+          return fetchData(fetchdDrinksName, value.infoInput);
 
-      case 'first-letter':
-        return fetchfirstLetterFunction();
-      default: return 'alert';
+        case 'first-letter':
+          if (value.infoInput.length > 1) {
+            return window.alert('Your search must have only 1 (one) character');
+          }
+          return fetchData(fetchDrinksFirstLetter, value.infoInput);
+        default:
+          return window.alert(alert);
+      }
     }
   };
 
   const contex = {
-    setBusca,
-    filter,
+
+    filterApi,
+
   };
 
   return (

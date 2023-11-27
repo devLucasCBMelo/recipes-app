@@ -7,10 +7,9 @@ import appName from '../../images/title.png';
 import logo from '../../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 
- type HeaderProps = {
-   namePage: string
-
- };
+export type HeaderProps = {
+  namePage: string
+};
 
 function Header({ namePage }: HeaderProps) {
   const [showSearch, setShowSearch] = useState(false);
