@@ -5,11 +5,11 @@ import profile from '../../images/profileIcon.svg';
 import search from '../../images/searchIcon.svg';
 import appName from '../../images/title.png';
 import logo from '../../images/logo.png';
+import SearchBar from '../SearchBar/SearchBar';
 
- type HeaderProps = {
-   namePage: string
-
- };
+export type HeaderProps = {
+  namePage: string
+};
 
 function Header({ namePage }: HeaderProps) {
   const [showSearch, setShowSearch] = useState(false);
@@ -45,10 +45,7 @@ function Header({ namePage }: HeaderProps) {
         <h1 data-testid="page-title">{namePage}</h1>
       </div>
       { showSearch
-      && (
-        <label>
-          <input data-testid="search-input" type="text" />
-        </label>)}
+      && <SearchBar />}
     </header>
   );
 }
