@@ -5,30 +5,57 @@ import { fetchMealsDetails } from '../utils/fetchMealsApi';
 
 function RecipeInProgress() {
   const [data, setData] = useState<any>({});
+  const [ingredients, setIngredients] = useState<any>([]);
+  //   const [measure, setMeasure] = useState<any>([]);
 
   const param = useParams();
   const location = useLocation();
 
   const idFinal = param.id;
-  console.log(idFinal);
+  //   console.log(idFinal);
 
   const typeRecipe = location.pathname;
-  const tipoo = typeRecipe.split('/');
-  const tipoFinal = tipoo[1];
-  console.log(tipoFinal);
+  const tipoLocation = typeRecipe.split('/');
+  const tipoFinal = tipoLocation[1];
+  //   console.log(tipoFinal);
 
   const chamarDadosApi = async (idd: any, type: string) => {
     if (type === 'drinks') {
-      const dataa = await fetchdDrinksDetails(idd);
-      setData(dataa);
+      const retorno = await fetchdDrinksDetails(idd);
+      setData(retorno);
+      //   console.log(retorno.drinks[0]);
+      const ingredientes = [];
+      for (let i = 1; i <= 20; i++) {
+        const ingrediente = retorno.drinks[0][`strIngredient${i}`];
+        const medida = retorno.drinks[0][`strMeasure${i}`];
+        if (ingrediente && ingrediente.trim() !== '') {
+          ingredientes.push(`${ingrediente} ${medida}`);
+        }
+      }
+      setIngredients(ingredientes);
+    //   console.log(ingredientes);
     } else if (type === 'meals') {
-      const dataa = await fetchMealsDetails(idd);
-      setData(dataa);
+      const retorno = await fetchMealsDetails(idd);
+      setData(retorno);
+      const ingredientes = [];
+      for (let i = 1; i <= 20; i++) {
+        const ingrediente = retorno.meals[0][`strIngredient${i}`];
+        const medida = retorno.meals[0][`strMeasure${i}`];
+        if (ingrediente && ingrediente.trim() !== '') {
+          ingredientes.push(`${ingrediente} ${medida}`);
+        }
+      }
+      setIngredients(ingredientes);
+    } else {
+      return (
+        <h1>Receipt not found</h1>
+      );
     }
   };
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
+    // organizarIngredientes();
   }, []);
 
   if (data.drinks) {
@@ -66,6 +93,21 @@ function RecipeInProgress() {
           {' '}
           {data.drinks[0].strInstructions}
         </h4>
+
+        {ingredients.map((ingrediente: string, index: number) => (
+          <div key={ index }>
+
+            <label
+              data-testid={ `${index}-ingredient-step` }
+              htmlFor={ `ingredient-${index}` }
+            >
+              <input type="checkbox" id={ `ingredient-${index}` } />
+              {ingrediente}
+
+            </label>
+          </div>
+        ))}
+
         <button
           data-testid="finish-recipe-btn"
         >
@@ -110,6 +152,19 @@ function RecipeInProgress() {
           {' '}
           {data.meals[0].strInstructions}
         </h4>
+        {ingredients.map((ingrediente: string, index: number) => (
+          <div key={ index }>
+
+            <label
+              data-testid={ `${index}-ingredient-step` }
+              htmlFor={ `ingredient-${index}` }
+            >
+              <input type="checkbox" id={ `ingredient-${index}` } />
+              {ingrediente}
+
+            </label>
+          </div>
+        ))}
         <button
           data-testid="finish-recipe-btn"
         >
@@ -120,7 +175,7 @@ function RecipeInProgress() {
     );
   }
   return (
-    <h1>Carregando...</h1>
+    <h1>Loading...</h1>
   );
 }
 
