@@ -8,7 +8,7 @@ function RecipeInProgress() {
   const [ingredients, setIngredients] = useState<any>([]);
   const [checked, setChecked] = useState<boolean[]>([]);
   const [finished, setFinished] = useState(false);
-  // const [qty]
+  const [qtyIngredients, setQtyIngredients] = useState(0);
 
   const param = useParams();
   const location = useLocation();
@@ -19,10 +19,17 @@ function RecipeInProgress() {
   const tipoLocation = typeRecipe.split('/');
   const tipoFinal = tipoLocation[1];
 
+  // const calcularQuantidade = () => {
+
+  // };
+
   const chamarDadosApi = async (idd: any, type: string) => {
     if (type === 'drinks') {
       const retorno = await fetchdDrinksDetails(idd);
       setData(retorno);
+      // const termoIngrediente = 'strIngredient';
+      // console.log(retorno.includes(termoIngrediente));
+      // console.log('aaaaa');
 
       const ingredientes = [];
       for (let i = 1; i <= 20; i++) {
@@ -37,6 +44,9 @@ function RecipeInProgress() {
     } else if (type === 'meals') {
       const retorno = await fetchMealsDetails(idd);
       setData(retorno);
+      // const termoIngrediente = 'strIngredient';
+      // console.log(retorno.includes(termoIngrediente));
+
       const ingredientes = [];
       // const contadorIngredientes = 0;
       // await console.log(data.meals.includes('strIngredient').length);
