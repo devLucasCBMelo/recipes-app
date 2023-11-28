@@ -29,7 +29,7 @@ function RecipeInProgress() {
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
-  }, []);
+  }, [idFinal, tipoFinal]);
 
   if (data.drinks) {
     return (
