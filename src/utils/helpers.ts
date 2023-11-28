@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import { KeyLocalStorageType, RecipeType } from '../type';
 
 export const renderWithRouter = (ui: JSX.Element, { route = '/' } = {}) => {
   window.history.pushState({}, '', route);
@@ -34,19 +35,6 @@ export const renderWithRouter = (ui: JSX.Element, { route = '/' } = {}) => {
 // image: imagem da receita
 // doneDate: data de conclusão
 // tags: array tags da receita, caso não tenha, array vazio
-
-export type RecipeType = {
-  id: string;
-  type: string;
-  nationality: string;
-  category: string;
-  alcoholicOrNot: string;
-  name: string;
-  image: string;
-  doneDate?: string;
-  tags?: string[];
-};
-type KeyLocalStorageType = 'favoriteRecipes' | 'doneRecipes';
 
 // OBS: deve-se transformar o objeto no tipo RecipeType antes de chamar a função putLocalStorage.
 

@@ -3,9 +3,10 @@ import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
 import share from '../images/shareIcon.svg';
 import heartBlack from '../images/blackHeartIcon.svg';
-import { RecipeType, getLocalStorage, putLocalStorage } from '../utils/helpers';
+import { getLocalStorage, putLocalStorage } from '../utils/helpers';
 import { favoriteRecipes } from '../mocks/mockLocalStorage';
 import InteractiveBtn from '../components/ InteractiveBtn';
+import { RecipeType } from '../type';
 
 function FavoriteRecipes() {
   const [favorite, setFavorite] = useState<RecipeType[]>([]);
