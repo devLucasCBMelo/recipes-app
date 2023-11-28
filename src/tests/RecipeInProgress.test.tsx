@@ -1,7 +1,7 @@
 import { screen, waitFor, render } from '@testing-library/react';
-import { MemoryRouter, Route } from 'react-router-dom';
+// import { MemoryRouter, Route } from 'react-router-dom';
 import RecipeInProgress from '../pages/RecipeInProgress';
-import { renderWithRouter } from '../utils/helpers';
+import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
 
 describe('Testes RecipeInProgress', () => {

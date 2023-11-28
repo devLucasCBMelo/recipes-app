@@ -4,7 +4,6 @@ import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
 import mockDrinksData from '../helpers/mockDrinksData';
 
-
 beforeEach(() => {
   global.fetch = vi.fn().mockResolvedValue({
     json: () => mockDrinksData,
