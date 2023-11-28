@@ -55,8 +55,7 @@ function RecipeInProgress() {
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
-    // organizarIngredientes();
-  }, []);
+  }, [idFinal, tipoFinal]);
 
   if (data.drinks) {
     return (
