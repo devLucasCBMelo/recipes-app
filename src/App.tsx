@@ -25,6 +25,8 @@ function App() {
       <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
       <Route path="/drinks/:id/in-progress" element={ <RecipeInProgress /> } />
       <Route path="/meals/:id/in-progress" element={ <RecipeInProgress /> } />
+      <Route path="/meals/:id/details" element={ <MealRecipe /> } />
+      <Route path="/drinks/:id/details" element={ <DrinkRecipe /> } />
     </Routes>
   );
 }
