@@ -74,7 +74,7 @@ function RecipeInProgress() {
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
-  }, []);
+  }, [idFinal, tipoFinal]);
 
   useEffect(() => {
     setFinished(handleFinished());

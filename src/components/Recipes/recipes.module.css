@@ -1,0 +1,11 @@
+.recipeImg {
+  height: 200px;
+  width: 200px;
+}
+
+.recipeCard {
+  font-size: 20px;
+  justify-content: center;
+  text-align: center;
+  width: 200px;
+}
