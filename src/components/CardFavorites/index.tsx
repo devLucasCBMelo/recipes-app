@@ -23,7 +23,7 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
             <h3 data-testid={ `${index}-horizontal-name` }>{ recipe.name }</h3>
           </div>
           <div className="category-recipe">
-            <p data-testid={ `${index}-horizontal-name` }>
+            <p data-testid={ `${index}-horizontal-top-text` }>
               {recipe.category}
             </p>
 
