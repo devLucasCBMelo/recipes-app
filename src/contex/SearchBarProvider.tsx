@@ -1,11 +1,10 @@
 import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import searchBarContext from './SearchBarContex';
 import { fetchMealsIngredient, fetchMealsfirstLetter,
   fetchMealsname } from '../utils/fetchMealsApi';
 import { fetchDrinksIngredient,
-  fetchdDrinksName, fetchDrinksFirstLetter } from '../utils/fetchDrinksApi';
+  fetchDrinksName, fetchDrinksFirstLetter } from '../utils/fetchDrinksApi';
 import { ValueBuscaType } from '../type';
 
 type SearchProviderProps = {
@@ -14,30 +13,38 @@ type SearchProviderProps = {
 
 function SearchBarProvider({ children }:SearchProviderProps) {
   const [dataList, setDataList] = useState([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
+  console.log(dataList);
+
+  const path = location.pathname.includes('/meals') ? '/meals' : '/drinks';
 
   const alert = "Sorry, we haven't found any recipes for these filters";
 
   const fetchData = async (funcFetch, value: string) => {
     const data = await funcFetch(value);
-    if (location.pathname.includes('/meals')) return !data.meals && window.alert(alert);
 
-    if (location.pathname.includes('/drinks')) return !data.drinks && window.alert(alert);
+    if (path === '/meals' && !data.meals) {
+      window.alert(alert);
+    }
+
+    if (path === '/drinks' && !data.drinks) {
+      window.alert(alert);
+    }
+
+    if (data.meals?.length === 1 || data.drinks?.length === 1) {
+      navigate(`${path}/${data.meals[0]?.idMeal || data.drinks[0]?.idDrink}`);
+    }
 
     setDataList(data);
-    console.log(dataList);
-    console.log(data);
-    return data;
   };
 
-  const filterApi = (value: ValueBuscaType) => {
+  // console.log(filterDetalhes());
+  const filterApi = async (value: ValueBuscaType) => {
     if (location.pathname.includes('/meals')) {
       switch (value.radio) {
-        case 'ingredient':
-          return fetchData(fetchMealsIngredient, value.infoInput);
-
         case 'name':
+          console.log(fetchData(fetchMealsname, value.infoInput));
           return fetchData(fetchMealsname, value.infoInput);
 
         case 'first-letter':
@@ -46,16 +53,13 @@ function SearchBarProvider({ children }:SearchProviderProps) {
           }
           return fetchData(fetchMealsfirstLetter, value.infoInput);
         default:
-          return window.alert(alert);
+          return fetchData(fetchMealsIngredient, value.infoInput);
       }
     }
     if (location.pathname.includes('/drinks')) {
       switch (value.radio) {
-        case 'ingredient':
-          return fetchData(fetchDrinksIngredient, value.infoInput);
-
         case 'name':
-          return fetchData(fetchdDrinksName, value.infoInput);
+          return fetchData(fetchDrinksName, value.infoInput);
 
         case 'first-letter':
           if (value.infoInput.length > 1) {
@@ -63,7 +67,7 @@ function SearchBarProvider({ children }:SearchProviderProps) {
           }
           return fetchData(fetchDrinksFirstLetter, value.infoInput);
         default:
-          return window.alert(alert);
+          return fetchData(fetchDrinksIngredient, value.infoInput);
       }
     }
   };
@@ -71,6 +75,7 @@ function SearchBarProvider({ children }:SearchProviderProps) {
   const contex = {
 
     filterApi,
+    dataList,
 
   };
 
