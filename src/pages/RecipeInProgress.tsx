@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { fetchdDrinksDetails } from '../utils/fetchDrinksApi';
 import { fetchMealsDetails } from '../utils/fetchMealsApi';
-import './RecipeInProgress.css';
 
 function RecipeInProgress() {
   const [data, setData] = useState<any>({});
   const [ingredients, setIngredients] = useState<any>([]);
   const [checked, setChecked] = useState<boolean[]>([]);
+  const [finished, setFinished] = useState(false);
+  // const [qty]
 
   const param = useParams();
   const location = useLocation();
@@ -37,6 +38,14 @@ function RecipeInProgress() {
       const retorno = await fetchMealsDetails(idd);
       setData(retorno);
       const ingredientes = [];
+      // const contadorIngredientes = 0;
+      // await console.log(data.meals.includes('strIngredient').length);
+
+      // for (const chave in retorno.meals[0]) {
+      //   if (chave.includes('strIngredient')) {
+      //     contadorIngredientes++;
+      //   }
+      // }
       for (let i = 1; i <= 20; i++) {
         const ingrediente = retorno.meals[0][`strIngredient${i}`];
         const medida = retorno.meals[0][`strMeasure${i}`];
@@ -57,12 +66,20 @@ function RecipeInProgress() {
     chamarDadosApi(idFinal, tipoFinal);
   }, []);
 
+  useEffect(() => {
+    setFinished(handleFinished());
+  }, [checked]);
+
   const handleCheckBox = (index: number) => {
     setChecked((previous) => {
       const updatedChecked = [...previous];
       updatedChecked[index] = !updatedChecked[index];
       return updatedChecked;
     });
+  };
+
+  const handleFinished = () => {
+    return checked.every((checkbox) => checkbox === true);
   };
 
   if (data.drinks) {
@@ -126,6 +143,7 @@ function RecipeInProgress() {
 
         <button
           data-testid="finish-recipe-btn"
+          disabled={ !finished }
         >
           Finish
 
@@ -190,6 +208,7 @@ function RecipeInProgress() {
         ))}
         <button
           data-testid="finish-recipe-btn"
+          disabled={ !finished }
         >
           Finish
 
