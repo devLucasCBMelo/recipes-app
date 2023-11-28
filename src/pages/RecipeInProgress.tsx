@@ -7,34 +7,32 @@ import './RecipeInProgress.css';
 function RecipeInProgress() {
   const [data, setData] = useState<any>({});
   const [ingredients, setIngredients] = useState<any>([]);
-  //   const [measure, setMeasure] = useState<any>([]);
+  const [checked, setChecked] = useState<boolean[]>([]);
 
   const param = useParams();
   const location = useLocation();
 
   const idFinal = param.id;
-  //   console.log(idFinal);
 
   const typeRecipe = location.pathname;
   const tipoLocation = typeRecipe.split('/');
   const tipoFinal = tipoLocation[1];
-  //   console.log(tipoFinal);
 
   const chamarDadosApi = async (idd: any, type: string) => {
     if (type === 'drinks') {
       const retorno = await fetchdDrinksDetails(idd);
       setData(retorno);
-      //   console.log(retorno.drinks[0]);
+
       const ingredientes = [];
       for (let i = 1; i <= 20; i++) {
         const ingrediente = retorno.drinks[0][`strIngredient${i}`];
         const medida = retorno.drinks[0][`strMeasure${i}`];
         if (ingrediente && ingrediente.trim() !== '') {
           ingredientes.push(`${ingrediente} ${medida}`);
+          setChecked((previous) => [...previous, false]);
         }
       }
       setIngredients(ingredientes);
-    //   console.log(ingredientes);
     } else if (type === 'meals') {
       const retorno = await fetchMealsDetails(idd);
       setData(retorno);
@@ -44,6 +42,7 @@ function RecipeInProgress() {
         const medida = retorno.meals[0][`strMeasure${i}`];
         if (ingrediente && ingrediente.trim() !== '') {
           ingredientes.push(`${ingrediente} ${medida}`);
+          setChecked((previous) => [...previous, false]);
         }
       }
       setIngredients(ingredientes);
@@ -56,8 +55,15 @@ function RecipeInProgress() {
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
-    // organizarIngredientes();
   }, []);
+
+  const handleCheckBox = (index: number) => {
+    setChecked((previous) => {
+      const updatedChecked = [...previous];
+      updatedChecked[index] = !updatedChecked[index];
+      return updatedChecked;
+    });
+  };
 
   if (data.drinks) {
     return (
@@ -101,14 +107,16 @@ function RecipeInProgress() {
           >
 
             <label
-              // className="linha"
-              // style={ { textDecoration: 'line-through solid rgb(0, 0, 0)' } }
+              style={ { textDecoration:
+                checked[index] ? 'line-through solid rgb(0, 0, 0)' : '' } }
               data-testid={ `${index}-ingredient-step` }
               htmlFor={ `ingredient-${index}` }
             >
               <input
                 type="checkbox"
                 id={ `ingredient-${index}` }
+                onChange={ () => handleCheckBox(index) }
+                checked={ checked[index] }
               />
               {ingrediente}
 
@@ -164,10 +172,17 @@ function RecipeInProgress() {
           <div key={ index }>
 
             <label
+              style={ { textDecoration:
+              checked[index] ? 'line-through solid rgb(0, 0, 0)' : '' } }
               data-testid={ `${index}-ingredient-step` }
               htmlFor={ `ingredient-${index}` }
             >
-              <input type="checkbox" id={ `ingredient-${index}` } />
+              <input
+                type="checkbox"
+                id={ `ingredient-${index}` }
+                onChange={ () => handleCheckBox(index) }
+                checked={ checked[index] }
+              />
               {ingrediente}
 
             </label>
