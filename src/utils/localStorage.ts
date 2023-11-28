@@ -1,9 +1,8 @@
+import { KeyLocalStorageType, RecipeType } from '../type';
 // a função putLocalStorage é responsável por adicionar um item ao localStorage
 // ela deverá receber chave e valor como parâmetros
 // a chave pode ser favoriteRecipes ou doneRecipes
 // o valor deve ser um objeto contendo as informações da receita
-
-import { KeyLocalStorageType, RecipeType } from '../type';
 
 // cada objeto deverá conter, caso favoriteRecipes:
 // id: id da receita

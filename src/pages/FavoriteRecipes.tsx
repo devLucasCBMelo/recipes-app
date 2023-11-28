@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
-import { getLocalStorage, putLocalStorage } from '../utils/helpers';
 // import { favoriteRecipes } from '../mocks/mockLocalStorage';
 import { RecipeType } from '../type';
 import CardFavorites from '../components/CardFavorites';
+import { getLocalStorage } from '../utils/localStorage';
 
 function FavoriteRecipes() {
   const [favorite, setFavorite] = useState<RecipeType[]>([]);
