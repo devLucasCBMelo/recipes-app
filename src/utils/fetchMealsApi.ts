@@ -27,3 +27,11 @@ export const fetchMealsfirstLetter = async (firstLetter: string) => {
     console.log('Erro busca por first letter', error);
   }
 };
+
+export const fetchMealsDetails = async (id: string) => {
+  const response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
+  );
+  const data = response.json();
+  return data;
+};
