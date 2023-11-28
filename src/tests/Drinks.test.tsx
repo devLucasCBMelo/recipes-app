@@ -1,6 +1,6 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { vi } from 'vitest';
-import { renderWithRouter } from '../utils/helpers';
+import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
 import mockDrinksData from '../helpers/mockDrinksData';
 
