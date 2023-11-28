@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { fetchdDrinksDetails } from '../utils/fetchDrinksApi';
 import { fetchMealsDetails } from '../utils/fetchMealsApi';
+import './RecipeInProgress.css';
 
 function RecipeInProgress() {
   const [data, setData] = useState<any>({});
@@ -95,13 +96,20 @@ function RecipeInProgress() {
         </h4>
 
         {ingredients.map((ingrediente: string, index: number) => (
-          <div key={ index }>
+          <div
+            key={ index }
+          >
 
             <label
+              // className="linha"
+              // style={ { textDecoration: 'line-through solid rgb(0, 0, 0)' } }
               data-testid={ `${index}-ingredient-step` }
               htmlFor={ `ingredient-${index}` }
             >
-              <input type="checkbox" id={ `ingredient-${index}` } />
+              <input
+                type="checkbox"
+                id={ `ingredient-${index}` }
+              />
               {ingrediente}
 
             </label>
