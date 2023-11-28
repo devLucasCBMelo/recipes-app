@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { renderWithRouter } from '../utils/helpers';
+import { renderWithRouter } from '../utils/renderWithRouter';
 import Login from '../pages/Login';
 
 describe('Testes Login', () => {

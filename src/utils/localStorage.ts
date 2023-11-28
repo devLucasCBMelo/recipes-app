@@ -1,20 +1,9 @@
-import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
-import { KeyLocalStorageType, RecipeType } from '../type';
-
-export const renderWithRouter = (ui: JSX.Element, { route = '/' } = {}) => {
-  window.history.pushState({}, '', route);
-  return {
-    user: userEvent.setup(),
-    ...render(ui, { wrapper: BrowserRouter }),
-  };
-};
-
 // a função putLocalStorage é responsável por adicionar um item ao localStorage
 // ela deverá receber chave e valor como parâmetros
 // a chave pode ser favoriteRecipes ou doneRecipes
 // o valor deve ser um objeto contendo as informações da receita
+
+import { KeyLocalStorageType, RecipeType } from '../type';
 
 // cada objeto deverá conter, caso favoriteRecipes:
 // id: id da receita

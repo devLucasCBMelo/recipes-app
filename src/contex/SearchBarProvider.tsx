@@ -24,16 +24,22 @@ function SearchBarProvider({ children }:SearchProviderProps) {
   const fetchData = async (funcFetch, value: string) => {
     const data = await funcFetch(value);
 
-    if (path === '/meals' && !data.meals) {
-      window.alert(alert);
+    if (path === '/meals') {
+      if (!data.meals) {
+        return window.alert(alert);
+      }
+      if (data.meals?.length === 1) {
+        return navigate(`${path}/${data.meals[0]?.idMeal}`);
+      }
     }
 
-    if (path === '/drinks' && !data.drinks) {
-      window.alert(alert);
-    }
-
-    if (data.meals?.length === 1 || data.drinks?.length === 1) {
-      navigate(`${path}/${data.meals[0]?.idMeal || data.drinks[0]?.idDrink}`);
+    if (path === '/drinks') {
+      if (!data.drinks) {
+        return window.alert(alert);
+      }
+      if (data.drinks?.length === 1) {
+        return navigate(`${path}/${data.drinks[0]?.idDrink}`);
+      }
     }
 
     setDataList(data);

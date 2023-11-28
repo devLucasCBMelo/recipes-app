@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { renderWithRouter } from '../utils/helpers';
+import { renderWithRouter } from '../utils/renderWithRouter';
 import Header from '../components/Header/Header';
 
 describe('Testes Header', () => {
@@ -11,7 +11,7 @@ describe('Testes Header', () => {
     expect(meals).toBeInTheDocument();
 
     const searchButton = screen.getByRole('img', {
-      name: /search/i,
+      name: /pesquisar/i,
     });
     expect(searchButton).toBeInTheDocument();
     await user.click(searchButton);
@@ -38,7 +38,7 @@ describe('Testes Header', () => {
     });
     expect(drinks).toBeInTheDocument();
     const searchButton = screen.getByRole('img', {
-      name: /search/i,
+      name: /pesquisar/i,
     });
     expect(searchButton).toBeInTheDocument();
     await user.click(searchButton);

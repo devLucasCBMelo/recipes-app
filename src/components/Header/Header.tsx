@@ -2,14 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styles from './header.module.css';
 import profile from '../../images/profileIcon.svg';
-import search from '../../images/searchIcon.svg';
+import pesquisar from '../../images/searchIcon.svg';
 import appName from '../../images/title.png';
 import logo from '../../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
-
-export type HeaderProps = {
-  namePage: string
-};
+import { HeaderProps } from '../../type';
 
 function Header({ namePage }: HeaderProps) {
   const [showSearch, setShowSearch] = useState(false);
@@ -33,7 +30,7 @@ function Header({ namePage }: HeaderProps) {
   <button
     onClick={ handleSearch }
   >
-    <img src={ search } alt="search" data-testid="search-top-btn" />
+    <img src={ pesquisar } alt="pesquisar" data-testid="search-top-btn" />
   </button>
 )}
           <button onClick={ () => navigate('/profile') }>
