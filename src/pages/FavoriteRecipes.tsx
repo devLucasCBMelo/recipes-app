@@ -30,7 +30,9 @@ function FavoriteRecipes() {
     return (
       <>
         <Header namePage="Favorite Recipes" />
-        <p>Nenhuma receita foi favoritada!</p>
+        <p>
+          No favorite recipes have been added!
+        </p>
         {/* <Footer /> */}
       </>
     );
