@@ -21,7 +21,7 @@ function FavoriteRecipes() {
     //   putLocalStorage('favoriteRecipes', recipe);
     //   setFavorite((prev) => [...prev, recipe]);
     // });
-    const { favoriteRecipes } = getLocalStorage();
+    const favoriteRecipes = getLocalStorage('favoriteRecipes');
     if (favoriteRecipes) setFavorite(favoriteRecipes);
   }, []);
   return (
@@ -50,7 +50,7 @@ function FavoriteRecipes() {
           </button>
         </div>
       }
-      <CardFavorites favorite={ favorite } />
+      {/* <CardFavorites favorite={ favorite } /> */}
       <Footer />
     </>
   );

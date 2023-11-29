@@ -41,10 +41,14 @@ export const putLocalStorage = (key: KeyLocalStorageType, value: RecipeType) => 
 // favoriteRecipes: array de objetos com as receitas favoritas
 // doneRecipes: array de objetos com as receitas feitas
 
-export const getLocalStorage = () => {
-  const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-  const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
-  return { favoriteRecipes, doneRecipes };
+export const getLocalStorage = (key: KeyLocalStorageType) => {
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error getting data from localStorage:', error);
+    return null;
+  }
 };
 
 // a função deleteLocalStorage é responsável por deletar um item do localStorage;
