@@ -4,12 +4,11 @@ import styles from './SearchBar.module.css';
 
 const INICIAL_VALUE = {
   infoInput: '',
-  radio: 'ingredient',
+  radio: '',
 };
 
 function SearchBar() {
   const { filterApi } = useContext(searchBarContext);
-
   const [searchInput, setSearchInput] = useState(INICIAL_VALUE);
 
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +17,6 @@ function SearchBar() {
   };
 
   const handleClick = () => {
-    // setBusca(inputSearch);
     filterApi(searchInput);
     setSearchInput(INICIAL_VALUE);
   };
