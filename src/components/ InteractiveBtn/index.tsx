@@ -38,9 +38,8 @@ export default function InteractiveBtn({
     // ou http://localhost:3000/meals/${id}/in-progress` caso a receita seja de comida
     // o texto do alert deve ser "Link copied!" caso a cópia da url seja realizada com sucesso
     // o alert deve ter no máximo 3 segundos de duração
-    const { hostname, port } = window.location;
     if (TYPE === 'meal') {
-      navigator.clipboard.writeText(`http://${hostname}:${port}/meals/${ID}/in-progress`);
+      navigator.clipboard.writeText(`http://localhost:3000/meals/${ID}`);
       setShowAlert(true);
       setTimeout(
         () => {
@@ -49,7 +48,7 @@ export default function InteractiveBtn({
         5000,
       );
     } else {
-      navigator.clipboard.writeText(`http://${hostname}:${port}/drinks/${ID}/in-progress`);
+      navigator.clipboard.writeText(`http://localhost:3000/drinks/${ID}`);
       setShowAlert(true);
       setTimeout(
         () => {
