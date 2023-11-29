@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import Header from '../components/Header/Header';
 // import { favoriteRecipes } from '../mocks/mockLocalStorage';
-import { RecipeType } from '../type';
 import CardFavorites from '../components/CardFavorites';
 import { getLocalStorage, putLocalStorage } from '../utils/localStorage';
 import FilterRecipes from '../components/FilterRecipes';
 import ShowShareAlert from '../components/ShowShareAlert';
+import searchBarContext from '../contex/SearchBarContex';
 
 function FavoriteRecipes() {
-  const [favorite, setFavorite] = useState<RecipeType[]>([]);
+  // const [favorite, setFavorite] = useState<RecipeType[]>([]);
+  const { favorites, setFavorites } = useContext(searchBarContext);
+  // preciso fazer o useEffect escutar as mudanças no localStorage
+  // para atualizar a página quando um item for deletado
   useEffect(() => {
     // favoriteRecipes.forEach((recipe) => {
     //   // caso já tenha o item no localStorage, não adiciona novamente
@@ -20,13 +23,13 @@ function FavoriteRecipes() {
     //   }
 
     //   putLocalStorage('favoriteRecipes', recipe);
-    //   setFavorite((prev) => [...prev, recipe]);
+    //   setFavorites((prev) => [...prev, recipe]);
     // });
     const { favoriteRecipes } = getLocalStorage();
-    if (favoriteRecipes) setFavorite(favoriteRecipes);
-  }, []);
+    if (favoriteRecipes) setFavorites(favoriteRecipes);
+  }, [setFavorites]);
 
-  if (favorite.length === 0) {
+  if (favorites.length === 0) {
     return (
       <>
         <Header namePage="Favorite Recipes" />
@@ -46,7 +49,7 @@ function FavoriteRecipes() {
         testIDDrink="filter-by-drink-btn"
       />
       <ShowShareAlert />
-      <CardFavorites favorite={ favorite } />
+      <CardFavorites favorite={ favorites } />
       {/* <Footer /> */}
     </>
   );

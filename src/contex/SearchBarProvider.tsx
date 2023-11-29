@@ -5,7 +5,7 @@ import { fetchMealsIngredient, fetchMealsfirstLetter,
   fetchMealsname } from '../utils/fetchMealsApi';
 import { fetchDrinksIngredient,
   fetchDrinksName, fetchDrinksFirstLetter } from '../utils/fetchDrinksApi';
-import { ValueBuscaType } from '../type';
+import { RecipeType, ValueBuscaType } from '../type';
 
 type SearchProviderProps = {
   children:React.ReactNode,
@@ -14,6 +14,7 @@ type SearchProviderProps = {
 function SearchBarProvider({ children }:SearchProviderProps) {
   const [dataList, setDataList] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
+  const [favorites, setFavorites] = useState<RecipeType[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -84,6 +85,8 @@ function SearchBarProvider({ children }:SearchProviderProps) {
     dataList,
     showAlert,
     setShowAlert,
+    favorites,
+    setFavorites,
   };
 
   return (

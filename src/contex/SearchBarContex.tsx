@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { DataType, ValueBuscaType } from '../type';
+import { DataType, RecipeType, ValueBuscaType } from '../type';
 
 type SearchBarContextType = {
   setBusca: (inputBusca:object)=> void,
@@ -8,6 +8,8 @@ type SearchBarContextType = {
   dataList: DataType,
   showAlert: boolean,
   setShowAlert: React.Dispatch<React.SetStateAction<boolean>>
+  favorites: RecipeType[],
+  setFavorites: React.Dispatch<React.SetStateAction<RecipeType[]>>,
 };
 
 const searchBarContext = createContext({} as SearchBarContextType);
