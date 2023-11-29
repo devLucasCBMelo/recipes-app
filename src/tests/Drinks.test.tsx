@@ -4,6 +4,7 @@ import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
 import mockDrinksData from '../helpers/mockDrinksData';
 import mockDrinksCategories from '../helpers/mockDrinksCategories';
+import SearchBarProvider from '../contex/SearchBarProvider';
 
 afterEach(() => {
   vi.clearAllMocks();
@@ -15,7 +16,7 @@ describe('Testes Meals', () => {
       json: () => mockDrinksData,
     });
 
-    renderWithRouter(<App />, { route: '/drinks' });
+    renderWithRouter(<SearchBarProvider><App /></SearchBarProvider>, { route: '/drinks' });
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
 
@@ -35,7 +36,7 @@ describe('Testes Meals', () => {
       json: () => mockDrinksCategories,
     });
 
-    renderWithRouter(<App />, { route: '/drinks' });
+    renderWithRouter(<SearchBarProvider><App /></SearchBarProvider>, { route: '/drinks' });
 
     const categoryButtons = await screen.findAllByTestId(/category-filter/i);
     expect(categoryButtons.length).toBe(5);

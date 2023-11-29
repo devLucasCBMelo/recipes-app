@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DrinkType, HeaderProps, MealType } from '../../type';
 import styles from './recipes.module.css';
 import FilterBar from '../FilterBar/FilterBar';
+import searchBarContext from '../../contex/SearchBarContex';
 
 function Recipes({ namePage }: HeaderProps) {
   const [loading, setLoading] = useState(false);
-  const [mealsData, setMealsData] = useState<any>(null);
-  const [drinkData, setDrinkData] = useState<any>(null);
+  const { drinkData, setDrinkData, mealsData,
+    setMealsData } = useContext(searchBarContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,7 +15,6 @@ function Recipes({ namePage }: HeaderProps) {
         setLoading(true);
         const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
         const data = await response.json();
-
         setMealsData(data);
         setLoading(false);
       } catch (error) {
@@ -31,7 +31,6 @@ function Recipes({ namePage }: HeaderProps) {
         setLoading(true);
         const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
         const data = await response.json();
-
         setDrinkData(data);
         setLoading(false);
       } catch (error) {
