@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
 // import { favoriteRecipes } from '../mocks/mockLocalStorage';
 import { RecipeType } from '../type';
 import CardFavorites from '../components/CardFavorites';
 import { getLocalStorage } from '../utils/localStorage';
+import FilterRecipes from '../components/FilterRecipes';
 
 function FavoriteRecipes() {
   const [favorite, setFavorite] = useState<RecipeType[]>([]);
@@ -24,34 +24,26 @@ function FavoriteRecipes() {
     const { favoriteRecipes } = getLocalStorage();
     if (favoriteRecipes) setFavorite(favoriteRecipes);
   }, []);
+
+  if (favorite.length === 0) {
+    return (
+      <>
+        <Header namePage="Favorite Recipes" />
+        <p>Nenhuma receita foi favoritada!</p>
+        {/* <Footer /> */}
+      </>
+    );
+  }
   return (
     <>
       <Header namePage="Favorite Recipes" />
-      {
-        // aqui deve ficar os botões de filtro
-        <div className="filters-favorites">
-          <button
-            type="button"
-            data-testid="filter-by-all-btn"
-          >
-            All
-          </button>
-          <button
-            type="button"
-            data-testid="filter-by-meal-btn"
-          >
-            Meals
-          </button>
-          <button
-            type="button"
-            data-testid="filter-by-drink-btn"
-          >
-            Drinks
-          </button>
-        </div>
-      }
+      <FilterRecipes
+        testIDAll="filter-by-all-btn"
+        testIDMeal="filter-by-meal-btn"
+        testIDDrink="filter-by-drink-btn"
+      />
       <CardFavorites favorite={ favorite } />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

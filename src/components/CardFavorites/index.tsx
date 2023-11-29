@@ -22,11 +22,18 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
           <div className="name-recipe">
             <h3 data-testid={ `${index}-horizontal-name` }>{ recipe.name }</h3>
           </div>
-          <div className="category-recipe">
-            <p data-testid={ `${index}-horizontal-top-text` }>
-              {recipe.category}
-            </p>
-
+          <div
+            data-testid={ `${index}-horizontal-top-text` }
+          >
+            {recipe.type === 'meal' ? (
+              <span>
+                {`${recipe.nationality} - ${recipe.category}`}
+              </span>
+            ) : (
+              <span>
+                {recipe.alcoholicOrNot}
+              </span>
+            )}
           </div>
           <InteractiveBtn
             srcShare={ share }
