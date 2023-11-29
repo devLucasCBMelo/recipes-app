@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import Header from '../components/Header/Header';
 // import { favoriteRecipes } from '../mocks/mockLocalStorage';
 import CardFavorites from '../components/CardFavorites';
-import { getLocalStorage, putLocalStorage } from '../utils/localStorage';
+import { getLocalStorage } from '../utils/localStorage';
 import FilterRecipes from '../components/FilterRecipes';
 import ShowShareAlert from '../components/ShowShareAlert';
 import searchBarContext from '../contex/SearchBarContex';
@@ -25,7 +25,7 @@ function FavoriteRecipes() {
     //   putLocalStorage('favoriteRecipes', recipe);
     //   setFavorites((prev) => [...prev, recipe]);
     // });
-    const { favoriteRecipes } = getLocalStorage();
+    const { favoriteRecipes } = getLocalStorage('favoriteRecipes');
     if (favoriteRecipes) setFavorites(favoriteRecipes);
   }, [setFavorites]);
 
