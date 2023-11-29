@@ -6,7 +6,8 @@ type SearchBarContextType = {
   filterApi: (value: ValueBuscaType)=>void,
   valueBusca: object,
   dataList: DataType,
-
+  showAlert: boolean,
+  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 const searchBarContext = createContext({} as SearchBarContextType);

@@ -41,6 +41,8 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
             dataShare={ `${index}-horizontal-share-btn` }
             dataFavorite={ `${index}-horizontal-favorite-btn` }
             favorite
+            id={ recipe.id }
+            type={ recipe.type }
           />
         </div>
       </div>

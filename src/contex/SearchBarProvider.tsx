@@ -13,9 +13,9 @@ type SearchProviderProps = {
 
 function SearchBarProvider({ children }:SearchProviderProps) {
   const [dataList, setDataList] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(dataList);
 
   const path = location.pathname.includes('/meals') ? '/meals' : '/drinks';
 
@@ -82,7 +82,8 @@ function SearchBarProvider({ children }:SearchProviderProps) {
 
     filterApi,
     dataList,
-
+    showAlert,
+    setShowAlert,
   };
 
   return (

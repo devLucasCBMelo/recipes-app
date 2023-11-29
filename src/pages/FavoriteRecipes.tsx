@@ -3,8 +3,9 @@ import Header from '../components/Header/Header';
 // import { favoriteRecipes } from '../mocks/mockLocalStorage';
 import { RecipeType } from '../type';
 import CardFavorites from '../components/CardFavorites';
-import { getLocalStorage } from '../utils/localStorage';
+import { getLocalStorage, putLocalStorage } from '../utils/localStorage';
 import FilterRecipes from '../components/FilterRecipes';
+import ShowShareAlert from '../components/ShowShareAlert';
 
 function FavoriteRecipes() {
   const [favorite, setFavorite] = useState<RecipeType[]>([]);
@@ -42,6 +43,7 @@ function FavoriteRecipes() {
         testIDMeal="filter-by-meal-btn"
         testIDDrink="filter-by-drink-btn"
       />
+      <ShowShareAlert />
       <CardFavorites favorite={ favorite } />
       {/* <Footer /> */}
     </>
