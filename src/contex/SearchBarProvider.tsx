@@ -5,7 +5,7 @@ import { fetchMealsIngredient, fetchMealsfirstLetter,
   fetchMealsname } from '../utils/fetchMealsApi';
 import { fetchDrinksIngredient,
   fetchDrinksName, fetchDrinksFirstLetter } from '../utils/fetchDrinksApi';
-import { RecipeType, ValueBuscaType } from '../type';
+import { RecipeType, ValueBuscaType, DataDrinkType, DataMealType } from '../type';
 
 type SearchProviderProps = {
   children:React.ReactNode,
@@ -17,6 +17,8 @@ function SearchBarProvider({ children }:SearchProviderProps) {
   const [favorites, setFavorites] = useState<RecipeType[]>([]);
   const [doneRecipes, setDoneRecipes] = useState<RecipeType[]>([]);
   const [filtersRecipes, setFiltersRecipes] = useState<RecipeType[]>([]);
+  const [mealsData, setMealsData] = useState<DataMealType>();
+  const [drinkData, setDrinkData] = useState<DataDrinkType>();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,7 +26,7 @@ function SearchBarProvider({ children }:SearchProviderProps) {
 
   const alert = "Sorry, we haven't found any recipes for these filters";
 
-  const fetchData = async (funcFetch, value: string) => {
+  const fetchData = async (funcFetch:any, value: string) => {
     const data = await funcFetch(value);
 
     if (path === '/meals') {
@@ -34,6 +36,7 @@ function SearchBarProvider({ children }:SearchProviderProps) {
       if (data.meals?.length === 1) {
         return navigate(`${path}/${data.meals[0]?.idMeal}`);
       }
+      setMealsData(data);
     }
 
     if (path === '/drinks') {
@@ -43,12 +46,10 @@ function SearchBarProvider({ children }:SearchProviderProps) {
       if (data.drinks?.length === 1) {
         return navigate(`${path}/${data.drinks[0]?.idDrink}`);
       }
+      setDrinkData(data);
     }
-
-    setDataList(data);
   };
 
-  // console.log(filterDetalhes());
   const filterApi = async (value: ValueBuscaType) => {
     if (location.pathname.includes('/meals')) {
       switch (value.radio) {
@@ -61,8 +62,10 @@ function SearchBarProvider({ children }:SearchProviderProps) {
             return window.alert('Your search must have only 1 (one) character');
           }
           return fetchData(fetchMealsfirstLetter, value.infoInput);
-        default:
+        case 'ingredient':
           return fetchData(fetchMealsIngredient, value.infoInput);
+        default:
+          return fetchData(fetchMealsname, '');
       }
     }
     if (location.pathname.includes('/drinks')) {
@@ -75,8 +78,10 @@ function SearchBarProvider({ children }:SearchProviderProps) {
             return window.alert('Your search must have only 1 (one) character');
           }
           return fetchData(fetchDrinksFirstLetter, value.infoInput);
-        default:
+        case 'ingredient':
           return fetchData(fetchDrinksIngredient, value.infoInput);
+        default:
+          return fetchData(fetchMealsname, '');
       }
     }
   };
@@ -84,7 +89,10 @@ function SearchBarProvider({ children }:SearchProviderProps) {
   const contex = {
 
     filterApi,
-    dataList,
+    mealsData,
+    setMealsData,
+    drinkData,
+    setDrinkData,
     showAlert,
     setShowAlert,
     favorites,
