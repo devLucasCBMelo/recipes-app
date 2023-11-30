@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import InteractiveBtn from '../ InteractiveBtn';
 import { RecipeType } from '../../type';
 import share from '../../images/shareIcon.svg';
@@ -12,16 +13,20 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
     favorite.length > 0 && favorite.map((recipe, index) => (
       <div className="card-recipe-favorite" key={ recipe.id }>
         <div className="img-recipe">
-          <img
-            src={ recipe.image }
-            alt={ recipe.name }
-            data-testid={ `${index}-horizontal-image` }
-          />
+          <Link to={ `/${recipe.type}s/${recipe.id}` }>
+            <img
+              src={ recipe.image }
+              alt={ recipe.name }
+              data-testid={ `${index}-horizontal-image` }
+            />
+          </Link>
         </div>
         <div className="info-recipe">
-          <div className="name-recipe">
-            <h3 data-testid={ `${index}-horizontal-name` }>{ recipe.name }</h3>
-          </div>
+          <Link to={ `/${recipe.type}s/${recipe.id}` }>
+            <div className="name-recipe">
+              <h3 data-testid={ `${index}-horizontal-name` }>{ recipe.name }</h3>
+            </div>
+          </Link>
           <div
             data-testid={ `${index}-horizontal-top-text` }
           >

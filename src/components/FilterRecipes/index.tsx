@@ -16,7 +16,7 @@ export default function FilterRecipes({ testIDAll,
   const { favorites, doneRecipes, setFiltersRecipes } = useContext(searchBarContext);
   // esse componente devera filtrar as receitas por meals, drinks e all
   // OBS: all dever ser o padrão, ou seja, quando a pagina for carregada
-  // todas as receitas devem ser mostradas resgatadas do localStorage
+  // todas as receitas devem ser mostradas do que foi resgatadas do localStorage
   // Esse filtro, ira filtrar de acordo com a pagina que estiver
   // podendo ser a com o caminho /favorite-recipes" ou "/done-recipes".
   // O filtro deve ser feito com base no estado global de acordo com o tipo
@@ -37,22 +37,23 @@ export default function FilterRecipes({ testIDAll,
         if (pathName === '/favorite-recipes') {
           const filterMeals = favorites.filter((item) => item.type === 'meal');
           setFiltersRecipes(filterMeals);
-        } else if (pathName === '/done-recipes') {
-          const filterMeals = doneRecipes.filter((item) => item.type === 'meal');
-          setFiltersRecipes(filterMeals);
         }
+        // else if (pathName === '/done-recipes') {
+        //   const filterMeals = doneRecipes.filter((item) => item.type === 'meal');
+        //   setFiltersRecipes(filterMeals);
+        // }
         break;
       case 'Drinks Filter Icon':
         if (pathName === '/favorite-recipes') {
           const filterDrinks = favorites.filter((item) => item.type === 'drink');
           setFiltersRecipes(filterDrinks);
-        } else if (pathName === '/done-recipes') {
-          const filterDrinks = doneRecipes.filter((item) => item.type === 'drink');
-          setFiltersRecipes(filterDrinks);
         }
+        // else if (pathName === '/done-recipes') {
+        //   const filterDrinks = doneRecipes.filter((item) => item.type === 'drink');
+        //   setFiltersRecipes(filterDrinks);
+        // }
         break;
       default:
-        console.log('default');
     }
   };
   return (
