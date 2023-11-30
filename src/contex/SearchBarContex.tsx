@@ -21,7 +21,6 @@ type SearchBarContextType = {
   noFilterDrinkData: DataDrinkType,
   setNoFilterDrinkData: (data: DataDrinkType) => void,
 
-
 };
 
 const searchBarContext = createContext({} as SearchBarContextType);
