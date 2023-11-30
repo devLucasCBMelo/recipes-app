@@ -1,76 +1,16 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { fetchdDrinksDetails } from '../utils/fetchDrinksApi';
-import { fetchMealsDetails } from '../utils/fetchMealsApi';
+import { useRecipeData } from '../utils/functionRecipeInProgress';
 
 function RecipeInProgress() {
-  const [data, setData] = useState<any>({});
-  const [ingredients, setIngredients] = useState<any>([]);
-  const [checked, setChecked] = useState<boolean[]>([]);
-  const [finished, setFinished] = useState(false);
-  const [qtyIngredients, setQtyIngredients] = useState(0);
+  const { data, ingredients, checked, finished,
+    chamarDadosApi, setFinished, setChecked, handleLocal } = useRecipeData();
 
-  const param = useParams();
+  const { id: idFinal } = useParams();
   const location = useLocation();
-
-  const idFinal = param.id;
-
   const typeRecipe = location.pathname;
-  const tipoLocation = typeRecipe.split('/');
-  const tipoFinal = tipoLocation[1];
-
-  // const calcularQuantidade = () => {
-
-  // };
-
-  const chamarDadosApi = async (idd: any, type: string) => {
-    if (type === 'drinks') {
-      const retorno = await fetchdDrinksDetails(idd);
-      setData(retorno);
-      // const termoIngrediente = 'strIngredient';
-      // console.log(retorno.includes(termoIngrediente));
-      // console.log('aaaaa');
-
-      const ingredientes = [];
-      for (let i = 1; i <= 20; i++) {
-        const ingrediente = retorno.drinks[0][`strIngredient${i}`];
-        const medida = retorno.drinks[0][`strMeasure${i}`];
-        if (ingrediente && ingrediente.trim() !== '') {
-          ingredientes.push(`${ingrediente} ${medida}`);
-          setChecked((previous) => [...previous, false]);
-        }
-      }
-      setIngredients(ingredientes);
-    } else if (type === 'meals') {
-      const retorno = await fetchMealsDetails(idd);
-      setData(retorno);
-      // const termoIngrediente = 'strIngredient';
-      // console.log(retorno.includes(termoIngrediente));
-
-      const ingredientes = [];
-      // const contadorIngredientes = 0;
-      // await console.log(data.meals.includes('strIngredient').length);
-
-      // for (const chave in retorno.meals[0]) {
-      //   if (chave.includes('strIngredient')) {
-      //     contadorIngredientes++;
-      //   }
-      // }
-      for (let i = 1; i <= 20; i++) {
-        const ingrediente = retorno.meals[0][`strIngredient${i}`];
-        const medida = retorno.meals[0][`strMeasure${i}`];
-        if (ingrediente && ingrediente.trim() !== '') {
-          ingredientes.push(`${ingrediente} ${medida}`);
-          setChecked((previous) => [...previous, false]);
-        }
-      }
-      setIngredients(ingredientes);
-    } else {
-      return (
-        <h1>Receipt not found</h1>
-      );
-    }
-  };
+  const tipoFinal = typeRecipe.split('/')[1];
+  const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
@@ -78,130 +18,65 @@ function RecipeInProgress() {
 
   useEffect(() => {
     setFinished(handleFinished());
+    handleLocal(localStor, tipoFinal, idFinal);
   }, [checked]);
 
+  useEffect(() => {
+    if (
+      localStor
+      && localStor.drinks
+      && localStor.drinks.id
+      && tipoFinal === 'drinks'
+      && localStor.drinks.id === idFinal
+    ) {
+      setChecked(localStor.drinks.ingredientsChecked);
+    } else if (
+      localStor
+      && localStor.meals !== null
+      && tipoFinal === 'meals'
+      && localStor.meals.id === idFinal
+    ) {
+      setChecked(localStor.meals.ingredientsChecked);
+    }
+  }, []);
+
   const handleCheckBox = (index: number) => {
-    setChecked((previous) => {
-      const updatedChecked = [...previous];
-      updatedChecked[index] = !updatedChecked[index];
-      return updatedChecked;
-    });
+    setChecked((previous) => [...previous.slice(0, index),
+      !previous[index], ...previous.slice(index + 1)]);
   };
 
-  const handleFinished = () => {
-    return checked.every((checkbox) => checkbox === true);
-  };
+  const handleFinished = () => checked.every((checkbox) => checkbox === true);
 
-  if (data.drinks) {
+  const renderRecipeDetails = () => {
+    const recipeData = data.meals ? data.meals : data.drinks;
+    const titleKey = tipoFinal === 'drinks' ? 'strDrink' : 'strMeal';
+
     return (
       <div>
-        <h1 data-testid="recipe-title">{data.drinks[0].strDrink}</h1>
+        <h1 data-testid="recipe-title">{recipeData[0][titleKey]}</h1>
         <img
           data-testid="recipe-photo"
-          src={ data.drinks[0].strDrinkThumb }
-          alt="drink"
+          src={ recipeData[0][`${titleKey}Thumb`] }
+          alt={ tipoFinal }
         />
-        <button
-          data-testid="share-btn"
-        >
-          Share
-
-        </button>
-        <button
-          data-testid="favorite-btn"
-        >
-          Favorite
-
-        </button>
-        <h3
-          data-testid="recipe-category"
-        >
+        <button data-testid="share-btn">Share</button>
+        <button data-testid="favorite-btn">Favorite</button>
+        <h3 data-testid="recipe-category">
           Category:
           {' '}
-          {data.drinks[0].strCategory}
+          {recipeData.strCategory}
         </h3>
-        <h4
-          data-testid="instructions"
-        >
+        <h4 data-testid="instructions">
           Instructions:
           {' '}
-          {data.drinks[0].strInstructions}
+          {recipeData.strInstructions}
         </h4>
 
-        {ingredients.map((ingrediente: string, index: number) => (
-          <div
-            key={ index }
-          >
-
-            <label
-              style={ { textDecoration:
-                checked[index] ? 'line-through solid rgb(0, 0, 0)' : '' } }
-              data-testid={ `${index}-ingredient-step` }
-              htmlFor={ `ingredient-${index}` }
-            >
-              <input
-                type="checkbox"
-                id={ `ingredient-${index}` }
-                onChange={ () => handleCheckBox(index) }
-                checked={ checked[index] }
-              />
-              {ingrediente}
-
-            </label>
-          </div>
-        ))}
-
-        <button
-          data-testid="finish-recipe-btn"
-          disabled={ !finished }
-        >
-          Finish
-
-        </button>
-      </div>
-    );
-  }
-  if (data.meals) {
-    return (
-      <div>
-        <h1 data-testid="recipe-title">{data.meals[0].strMeal}</h1>
-        <img
-          data-testid="recipe-photo"
-          src={ data.meals[0].strMealThumb }
-          alt="meal"
-        />
-        <button
-          data-testid="share-btn"
-        >
-          Share
-
-        </button>
-        <button
-          data-testid="favorite-btn"
-        >
-          Favorite
-
-        </button>
-        <h3
-          data-testid="recipe-category"
-        >
-          Category:
-          {' '}
-          {data.meals[0].strCategory}
-        </h3>
-        <h4
-          data-testid="instructions"
-        >
-          Instructions:
-          {' '}
-          {data.meals[0].strInstructions}
-        </h4>
         {ingredients.map((ingrediente: string, index: number) => (
           <div key={ index }>
-
             <label
-              style={ { textDecoration:
-              checked[index] ? 'line-through solid rgb(0, 0, 0)' : '' } }
+              style={ { textDecoration: checked[index]
+                ? 'line-through solid rgb(0, 0, 0)' : '' } }
               data-testid={ `${index}-ingredient-step` }
               htmlFor={ `ingredient-${index}` }
             >
@@ -212,23 +87,22 @@ function RecipeInProgress() {
                 checked={ checked[index] }
               />
               {ingrediente}
-
             </label>
           </div>
         ))}
+
         <button
           data-testid="finish-recipe-btn"
           disabled={ !finished }
+          onClick={ () => handleLocal(localStor, tipoFinal, idFinal) }
         >
           Finish
-
         </button>
       </div>
     );
-  }
-  return (
-    <h1>Loading...</h1>
-  );
+  };
+
+  return data[tipoFinal] ? renderRecipeDetails() : <h1>Loading...</h1>;
 }
 
 export default RecipeInProgress;
