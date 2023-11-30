@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { HeaderProps } from '../../type';
 import filterBarContext from '../../contex/FilterBarContext';
+import searchBarContext from '../../contex/SearchBarContex';
 
 function FilterBar({ namePage }: HeaderProps) {
   const [loading, setLoading] = useState(false);
@@ -8,6 +9,9 @@ function FilterBar({ namePage }: HeaderProps) {
   const [drinksCategory, setDrinksCategory] = useState([]);
 
   const { saveFilter } = useContext(filterBarContext);
+  const {
+    noFilterDrinkData,
+    noFilterMealsData, setDrinkData, setMealsData } = useContext(searchBarContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +52,13 @@ function FilterBar({ namePage }: HeaderProps) {
   }, []);
 
   const clearAllFilters = () => {
-    console.log('clicou');
+    if (namePage === 'meals') {
+      setMealsData(noFilterMealsData);
+    }
+
+    if (namePage === 'drinks') {
+      setDrinkData(noFilterDrinkData);
+    }
   };
 
   if (namePage === 'meals') {
@@ -60,7 +70,7 @@ function FilterBar({ namePage }: HeaderProps) {
             data-testid={ `${category}-category-filter` }
             key={ index }
             value={ category }
-            onClick={ (event: any) => saveFilter(event.target.value, namePage) }
+            onClick={ () => saveFilter(category, namePage) }
           >
             {category}
 
@@ -79,7 +89,7 @@ function FilterBar({ namePage }: HeaderProps) {
             data-testid={ `${category}-category-filter` }
             key={ index }
             value={ category }
-            onClick={ (event: any) => saveFilter(event.target.value, namePage) }
+            onClick={ () => saveFilter(category, namePage) }
           >
             {category}
 

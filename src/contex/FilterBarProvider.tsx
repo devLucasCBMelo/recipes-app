@@ -14,15 +14,17 @@ function FilterBarProvider({ children }: FilterBarProviderType) {
   const { setMealsData, setDrinkData } = useContext(searchBarContext);
 
   const saveFilter = async (filter: string, namePage: string) => {
+    console.log(filter);
+    console.log(namePage);
     setFilterSelected(filter);
     if (namePage === 'meals') {
       const filtredMealsArray = await fetchMealsByCategory(filter);
-      setMealsData(filtredMealsArray);
+      return setMealsData(filtredMealsArray);
     }
 
     if (namePage === 'drinks') {
       const filtredDrinksArray = await fetchDrinksByCategory(filter);
-      setDrinkData(filtredDrinksArray);
+      return setDrinkData(filtredDrinksArray);
     }
   };
 
