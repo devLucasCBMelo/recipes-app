@@ -19,6 +19,8 @@ function SearchBarProvider({ children }:SearchProviderProps) {
   const [filtersRecipes, setFiltersRecipes] = useState<RecipeType[]>([]);
   const [mealsData, setMealsData] = useState<DataMealType>();
   const [drinkData, setDrinkData] = useState<DataDrinkType>();
+  const [noFilterMealsData, setNoFilterMealsData] = useState<DataMealType>();
+  const [noFilterDrinkData, setNoFilterDrinkData] = useState<DataDrinkType>();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -101,6 +103,10 @@ function SearchBarProvider({ children }:SearchProviderProps) {
     setDoneRecipes,
     filtersRecipes,
     setFiltersRecipes,
+    noFilterDrinkData,
+    setNoFilterDrinkData,
+    noFilterMealsData,
+    setNoFilterMealsData,
   };
 
   return (

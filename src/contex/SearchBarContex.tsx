@@ -16,6 +16,11 @@ type SearchBarContextType = {
   setDoneRecipes: React.Dispatch<React.SetStateAction<RecipeType[]>>,
   filtersRecipes: RecipeType[],
   setFiltersRecipes: React.Dispatch<React.SetStateAction<RecipeType[]>>,
+  noFilterMealsData: DataMealType,
+  setNoFilterMealsData: (data: DataMealType) => void,
+  noFilterDrinkData: DataDrinkType,
+  setNoFilterDrinkData: (data: DataDrinkType) => void,
+
 
 };
 
