@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import { renderWithRouter } from '../utils/renderWithRouter';
 import SearchBar from '../components/SearchBar/SearchBar';
@@ -42,6 +42,7 @@ describe('Testes SearchBar', () => {
 
   it('Testa SearchBar page drinks', async () => {
     const { user } = renderWithRouter(<SearchBarProvider><SearchBar /></SearchBarProvider>, { route: 'drinks' });
+
     const input: HTMLInputElement = screen.getByRole('textbox');
     await user.type(input, 'Aquamarine');
     expect(input.value).toBe('Aquamarine');
@@ -53,6 +54,11 @@ describe('Testes SearchBar', () => {
     const search = screen.getByTestId(testIdSearch);
     expect(search).toBeInTheDocument();
     user.click(search);
+
+    // await waitFor(
+    //   () => expect(window.location).toBe('drinks/52771'),
+    //   { timeout: 3000 },
+    // );
 
     const MOCK_RECIPE = {
       meals: [
@@ -68,11 +74,6 @@ describe('Testes SearchBar', () => {
     } as Response;
 
     vi.spyOn(global, 'fetch').mockResolvedValueOnce(MOCK_RESPONSE);
-
-    // await waitFor(
-    //   () => expect(location.pathname('/drinks/178319')),
-    //   { timeout: 3000 },
-    // );
   });
 
   it('Testa SearchBar page drinks', async () => {
@@ -117,5 +118,6 @@ describe('Testes SearchBar', () => {
     // await waitFor(
     //   () => user.click(search),
     //   { timeout: 3000 },
+    // );
   });
 });

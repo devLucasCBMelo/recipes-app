@@ -22,7 +22,11 @@ function Header({ namePage }: HeaderProps) {
       <div className={ styles.container_header }>
         <div>
           <img src={ logo } alt="logo" />
-          <img src={ appName } alt="title" />
+          <img
+            className={ styles.appName }
+            src={ appName }
+            alt="title"
+          />
         </div>
         <div>
           {(namePage === 'Meals' || namePage === 'Drinks')
@@ -39,10 +43,12 @@ function Header({ namePage }: HeaderProps) {
         </div>
       </div>
       <div>
-        <h1 data-testid="page-title">{namePage}</h1>
-      </div>
-      { showSearch
+        <div className={ styles.container_searchBar }>
+          <h1 data-testid="page-title">{namePage}</h1>
+        </div>
+        { showSearch
       && <SearchBar />}
+      </div>
     </header>
   );
 }

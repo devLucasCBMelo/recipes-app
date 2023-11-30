@@ -49,25 +49,39 @@ function Recipes({ namePage }: HeaderProps) {
     const limitedMeals = mealsData && mealsData.meals.slice(0, 12);
 
     return (
-      <>
+      <div
+        className={ styles.container }
+      >
         <FilterBar namePage={ namePage } />
-        {limitedMeals.map((recipe: MealType, index: number) => (
-          <div
-            key={ recipe.idMeal }
-            data-testid={ `${index}-recipe-card` }
-            className={ styles.recipeCard }
-          >
-            <p data-testid={ `${index}-card-name` }>{recipe.strMeal}</p>
-            <img
-              src={ recipe.strMealThumb }
-              alt=""
-              className={ styles.recipeImg }
-              data-testid={ `${index}-card-img` }
-            />
-            <p>{recipe.idMeal}</p>
-          </div>
-        ))}
-      </>
+        <div
+          className={ styles.container_recipes }
+        >
+
+          {limitedMeals.map((recipe: MealType, index: number) => (
+            <div
+              key={ recipe.idMeal }
+              data-testid={ `${index}-recipe-card` }
+              className={ styles.recipeCard }
+            >
+
+              <img
+                src={ recipe.strMealThumb }
+                alt=""
+                className={ styles.recipeImg }
+                data-testid={ `${index}-card-img` }
+              />
+              <p
+                className={ styles.name_recipe }
+                data-testid={ `${index}-card-name` }
+              >
+                {recipe.strMeal}
+
+              </p>
+              {/* <p>{recipe.idMeal}</p> */}
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
@@ -76,21 +90,37 @@ function Recipes({ namePage }: HeaderProps) {
     console.log(limitedDrinks);
 
     return (
-      <>
+      <div
+        className={ styles.container }
+      >
         <FilterBar namePage={ namePage } />
-        {limitedDrinks.map((recipe: DrinkType, index: number) => (
-          <div key={ recipe.idDrink } data-testid={ `${index}-recipe-card` }>
-            <p data-testid={ `${index}-card-name` }>{recipe.strDrink}</p>
-            <img
-              src={ recipe.strDrinkThumb }
-              alt=""
-              className={ styles.recipeImg }
-              data-testid={ `${index}-card-img` }
-            />
-            <p>{recipe.idDrink}</p>
-          </div>
-        ))}
-      </>
+        <div
+          className={ styles.container_recipes }
+        >
+          {limitedDrinks.map((recipe: DrinkType, index: number) => (
+            <div
+              className={ styles.recipeCard }
+              key={ recipe.idDrink }
+              data-testid={ `${index}-recipe-card` }
+            >
+              <img
+                src={ recipe.strDrinkThumb }
+                alt=""
+                className={ styles.recipeImg }
+                data-testid={ `${index}-card-img` }
+              />
+              <p
+                className={ styles.name_recipe }
+                data-testid={ `${index}-card-name` }
+              >
+                {recipe.strDrink}
+
+              </p>
+              {/* <p>{recipe.idDrink}</p> */}
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 

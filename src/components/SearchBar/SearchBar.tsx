@@ -22,20 +22,19 @@ function SearchBar() {
   };
 
   return (
-
     <div className={ styles.container }>
-      <div>
-        <label>
-          <input
-            className={ styles.input_search }
-            onChange={ handleChange }
-            name="infoInput"
-            value={ searchInput.infoInput }
-            data-testid="search-input"
-            type="text"
-          />
-        </label>
-      </div>
+
+      <label>
+        <input
+          className={ styles.input_search }
+          onChange={ handleChange }
+          name="infoInput"
+          value={ searchInput.infoInput }
+          data-testid="search-input"
+          type="text"
+        />
+      </label>
+
       <div className={ styles.container_radio }>
         <div>
           <input
@@ -72,8 +71,8 @@ function SearchBar() {
 
         </button>
       </div>
-    </div>
 
+    </div>
   );
 }
 
