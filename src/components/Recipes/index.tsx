@@ -73,7 +73,6 @@ function Recipes({ namePage }: HeaderProps) {
 
   if (namePage === 'drinks' && drinkData) {
     const limitedDrinks = drinkData.drinks.slice(0, 12);
-    console.log(limitedDrinks);
 
     return (
       <>
