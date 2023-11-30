@@ -1,58 +1,16 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { fetchdDrinksDetails } from '../utils/fetchDrinksApi';
-import { fetchMealsDetails } from '../utils/fetchMealsApi';
+import { useRecipeData } from '../utils/functionRecipeInProgress';
 
 function RecipeInProgress() {
-  const [data, setData] = useState<any>({});
-  const [ingredients, setIngredients] = useState<any>([]);
-  const [checked, setChecked] = useState<boolean[]>([]);
-  const [finished, setFinished] = useState(false);
+  const { data, ingredients, checked, finished,
+    chamarDadosApi, setFinished, setChecked, handleLocal } = useRecipeData();
 
-  const param = useParams();
+  const { id: idFinal } = useParams();
   const location = useLocation();
-
-  const idFinal = param.id;
   const typeRecipe = location.pathname;
   const tipoFinal = typeRecipe.split('/')[1];
   const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
-
-  const chamarDadosApi = async (idd: any, type: string) => {
-    if (type === 'drinks') {
-      const retorno = await fetchdDrinksDetails(idd);
-      setData(retorno);
-
-      const ingredientes = [];
-      for (let i = 1; i <= 20; i++) {
-        const ingrediente = retorno.drinks[0][`strIngredient${i}`];
-        const medida = retorno.drinks[0][`strMeasure${i}`];
-        if (ingrediente && ingrediente.trim() !== '') {
-          ingredientes.push(`${ingrediente} ${medida}`);
-          setChecked((previous) => [...previous, false]);
-        }
-      }
-      setIngredients(ingredientes);
-    } else if (type === 'meals') {
-      const retorno = await fetchMealsDetails(idd);
-      setData(retorno);
-
-      const ingredientes = [];
-
-      for (let i = 1; i <= 20; i++) {
-        const ingrediente = retorno.meals[0][`strIngredient${i}`];
-        const medida = retorno.meals[0][`strMeasure${i}`];
-        if (ingrediente && ingrediente.trim() !== '') {
-          ingredientes.push(`${ingrediente} ${medida}`);
-          setChecked((previous) => [...previous, false]);
-        }
-      }
-      setIngredients(ingredientes);
-    } else {
-      return (
-        <h1>Receipt not found</h1>
-      );
-    }
-  };
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
@@ -60,16 +18,24 @@ function RecipeInProgress() {
 
   useEffect(() => {
     setFinished(handleFinished());
-    handleLocal();
+    handleLocal(localStor, tipoFinal, idFinal);
   }, [checked]);
 
   useEffect(() => {
-    if (localStor && localStor.drinks && localStor.drinks.id
-        && tipoFinal === 'drinks' && localStor.drinks.id === idFinal) {
+    if (
+      localStor
+      && localStor.drinks
+      && localStor.drinks.id
+      && tipoFinal === 'drinks'
+      && localStor.drinks.id === idFinal
+    ) {
       setChecked(localStor.drinks.ingredientsChecked);
-    } else if (localStor && localStor.meals !== null
-
-      && tipoFinal === 'meals' && localStor.meals.id === idFinal) {
+    } else if (
+      localStor
+      && localStor.meals !== null
+      && tipoFinal === 'meals'
+      && localStor.meals.id === idFinal
+    ) {
       setChecked(localStor.meals.ingredientsChecked);
     }
   }, []);
@@ -77,44 +43,6 @@ function RecipeInProgress() {
   const handleCheckBox = (index: number) => {
     setChecked((previous) => [...previous.slice(0, index),
       !previous[index], ...previous.slice(index + 1)]);
-  };
-
-  const handleLocal = () => {
-    if (localStor === null && tipoFinal === 'drinks') {
-      const inProgressDrink = {
-        drinks: {
-          id: idFinal,
-          ingredientsChecked: checked,
-        },
-      };
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressDrink));
-    } else if (tipoFinal === 'drinks'
-    && localStorage.getItem('inProgressRecipe') !== null) {
-      const inProgressDrink2 = {
-        drinks: {
-          id: idFinal,
-          ingredientsChecked: checked,
-        },
-      };
-
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressDrink2));
-    } else if (localStor === null && tipoFinal === 'meals') {
-      const inProgressRecipe = {
-        meals: {
-          id: idFinal,
-          ingredientsChecked: checked,
-        },
-      };
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressRecipe));
-    } else if (localStor !== null && tipoFinal === 'meals') {
-      const inProgressRecipe2 = {
-        meals: {
-          id: idFinal,
-          ingredientsChecked: checked,
-        },
-      };
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressRecipe2));
-    }
   };
 
   const handleFinished = () => checked.every((checkbox) => checkbox === true);
@@ -166,7 +94,7 @@ function RecipeInProgress() {
         <button
           data-testid="finish-recipe-btn"
           disabled={ !finished }
-          onClick={ handleLocal }
+          onClick={ () => handleLocal(localStor, tipoFinal, idFinal) }
         >
           Finish
         </button>
