@@ -1,0 +1,8 @@
+.container_recipes {
+  display: flex;
+  margin: auto;
+  max-width: 1200px;
+  min-width: 384px;
+  position: relative;
+  z-index: -1;
+}

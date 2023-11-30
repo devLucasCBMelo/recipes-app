@@ -1,17 +1,35 @@
 header {
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-bottom: 30px;
+
+  /* position: fixed; */
 }
+
+
+/* .container_searchBar {
+  padding: 30px;
+} */
 
 .container_header {
   background-color: #fcdc36;
   display: flex;
   height: 52px;
   justify-content: space-around;
+  padding-top: 6px;
+
+  /* position: fixed; */
+  top: 0;
+  width: 100%;
 }
 
 button {
   background-color: transparent;
   border: none;
+}
+
+.appName {
+  margin-left: 10px;
 }

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { DataDrinkType, ValueBuscaType, DataMealType } from '../type';
+import { DataDrinkType, ValueBuscaType, DataMealType, RecipeType } from '../type';
 
 type SearchBarContextType = {
 
@@ -8,6 +8,14 @@ type SearchBarContextType = {
   setDrinkData:React.Dispatch<React.SetStateAction<DataDrinkType>>
   mealsData: DataMealType,
   setMealsData:React.Dispatch<React.SetStateAction<DataMealType>>
+  showAlert: boolean,
+  setShowAlert: React.Dispatch<React.SetStateAction<boolean>>
+  favorites: RecipeType[],
+  setFavorites: React.Dispatch<React.SetStateAction<RecipeType[]>>,
+  doneRecipes: RecipeType[],
+  setDoneRecipes: React.Dispatch<React.SetStateAction<RecipeType[]>>,
+  filtersRecipes: RecipeType[],
+  setFiltersRecipes: React.Dispatch<React.SetStateAction<RecipeType[]>>,
   noFilterMealsData: DataMealType,
   setNoFilterMealsData: (data: DataMealType) => void,
   noFilterDrinkData: DataDrinkType,

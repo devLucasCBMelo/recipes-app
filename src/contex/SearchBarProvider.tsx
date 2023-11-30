@@ -5,13 +5,18 @@ import { fetchMealsIngredient, fetchMealsfirstLetter,
   fetchMealsname } from '../utils/fetchMealsApi';
 import { fetchDrinksIngredient,
   fetchDrinksName, fetchDrinksFirstLetter } from '../utils/fetchDrinksApi';
-import { ValueBuscaType, DataDrinkType, DataMealType } from '../type';
+import { RecipeType, ValueBuscaType, DataDrinkType, DataMealType } from '../type';
 
 type SearchProviderProps = {
   children:React.ReactNode,
 };
 
 function SearchBarProvider({ children }:SearchProviderProps) {
+  const [dataList, setDataList] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [favorites, setFavorites] = useState<RecipeType[]>([]);
+  const [doneRecipes, setDoneRecipes] = useState<RecipeType[]>([]);
+  const [filtersRecipes, setFiltersRecipes] = useState<RecipeType[]>([]);
   const [mealsData, setMealsData] = useState<DataMealType>();
   const [drinkData, setDrinkData] = useState<DataDrinkType>();
   const [noFilterMealsData, setNoFilterMealsData] = useState<DataMealType>();
@@ -90,6 +95,14 @@ function SearchBarProvider({ children }:SearchProviderProps) {
     setMealsData,
     drinkData,
     setDrinkData,
+    showAlert,
+    setShowAlert,
+    favorites,
+    setFavorites,
+    doneRecipes,
+    setDoneRecipes,
+    filtersRecipes,
+    setFiltersRecipes,
     noFilterDrinkData,
     setNoFilterDrinkData,
     noFilterMealsData,
