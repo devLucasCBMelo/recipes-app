@@ -6,7 +6,6 @@ function Meals() {
   return (
     <>
       <Header namePage="Meals" />
-      <h1>Você está na tela de receitas de comidas</h1>
       <Recipes namePage="meals" />
       <Footer />
     </>

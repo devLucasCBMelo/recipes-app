@@ -1,11 +1,17 @@
 import { createContext } from 'react';
-import { DataType, ValueBuscaType } from '../type';
+import { DataDrinkType, ValueBuscaType, DataMealType } from '../type';
 
 type SearchBarContextType = {
-  setBusca: (inputBusca:object)=> void,
-  filterApi: (value: ValueBuscaType)=>void,
-  valueBusca: object,
-  dataList: DataType,
+
+  filterApi: (value: ValueBuscaType)=>Promise<void>,
+  drinkData: DataDrinkType,
+  setDrinkData:React.Dispatch<React.SetStateAction<DataDrinkType>>
+  mealsData: DataMealType,
+  setMealsData:React.Dispatch<React.SetStateAction<DataMealType>>
+  noFilterMealsData: DataMealType,
+  setNoFilterMealsData: (data: DataMealType) => void,
+  noFilterDrinkData: DataDrinkType,
+  setNoFilterDrinkData: (data: DataDrinkType) => void,
 
 };
 

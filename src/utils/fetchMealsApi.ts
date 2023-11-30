@@ -32,6 +32,16 @@ export const fetchMealsDetails = async (id: string) => {
   const response = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
   );
-  const data = response.json();
+  const data = await response.json();
   return data;
+};
+
+export const fetchMealsByCategory = async (category: string) => {
+  try {
+    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('Deu erro na API de Meals por categoria', error);
+  }
 };

@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { HeaderProps } from '../../type';
+import filterBarContext from '../../contex/FilterBarContext';
+import searchBarContext from '../../contex/SearchBarContex';
 
 function FilterBar({ namePage }: HeaderProps) {
   const [loading, setLoading] = useState(false);
   const [mealsCategory, setMealsCategory] = useState([]);
   const [drinksCategory, setDrinksCategory] = useState([]);
+
+  const { saveFilter } = useContext(filterBarContext);
+  const {
+    noFilterDrinkData,
+    noFilterMealsData, setDrinkData, setMealsData } = useContext(searchBarContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,34 +51,51 @@ function FilterBar({ namePage }: HeaderProps) {
     fetchData();
   }, []);
 
-  console.log(mealsCategory);
-  console.log(drinksCategory);
+  const clearAllFilters = () => {
+    if (namePage === 'meals') {
+      setMealsData(noFilterMealsData);
+    }
+
+    if (namePage === 'drinks') {
+      setDrinkData(noFilterDrinkData);
+    }
+  };
 
   if (namePage === 'meals') {
     return (
-      mealsCategory.map((category, index) => (
-        <button
-          data-testid={ `${category}-category-filter` }
-          key={ index }
-        >
-          {category}
+      <>
+        <button data-testid="All-category-filter" onClick={ clearAllFilters }>All</button>
+        {mealsCategory.map((category, index) => (
+          <button
+            data-testid={ `${category}-category-filter` }
+            key={ index }
+            value={ category }
+            onClick={ () => saveFilter(category, namePage) }
+          >
+            {category}
 
-        </button>
-      ))
+          </button>
+        ))}
+      </>
     );
   }
 
   if (namePage === 'drinks') {
     return (
-      drinksCategory.map((category, index) => (
-        <button
-          data-testid={ `${category}-category-filter` }
-          key={ index }
-        >
-          {category}
+      <>
+        <button data-testid="All-category-filter" onClick={ clearAllFilters }>All</button>
+        {drinksCategory.map((category, index) => (
+          <button
+            data-testid={ `${category}-category-filter` }
+            key={ index }
+            value={ category }
+            onClick={ () => saveFilter(category, namePage) }
+          >
+            {category}
 
-        </button>
-      ))
+          </button>
+        ))}
+      </>
     );
   }
 
