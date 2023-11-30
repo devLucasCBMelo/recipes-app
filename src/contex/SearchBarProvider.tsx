@@ -14,6 +14,8 @@ type SearchProviderProps = {
 function SearchBarProvider({ children }:SearchProviderProps) {
   const [mealsData, setMealsData] = useState<DataMealType>();
   const [drinkData, setDrinkData] = useState<DataDrinkType>();
+  const [noFilterMealsData, setNoFilterMealsData] = useState<DataMealType>();
+  const [noFilterDrinkData, setNoFilterDrinkData] = useState<DataDrinkType>();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -88,6 +90,10 @@ function SearchBarProvider({ children }:SearchProviderProps) {
     setMealsData,
     drinkData,
     setDrinkData,
+    noFilterDrinkData,
+    setNoFilterDrinkData,
+    noFilterMealsData,
+    setNoFilterMealsData,
   };
 
   return (

@@ -8,6 +8,10 @@ type SearchBarContextType = {
   setDrinkData:React.Dispatch<React.SetStateAction<DataDrinkType>>
   mealsData: DataMealType,
   setMealsData:React.Dispatch<React.SetStateAction<DataMealType>>
+  noFilterMealsData: DataMealType,
+  setNoFilterMealsData: (data: DataMealType) => void,
+  noFilterDrinkData: DataDrinkType,
+  setNoFilterDrinkData: (data: DataDrinkType) => void,
 
 };
 

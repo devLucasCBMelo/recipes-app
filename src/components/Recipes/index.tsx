@@ -7,7 +7,8 @@ import searchBarContext from '../../contex/SearchBarContex';
 function Recipes({ namePage }: HeaderProps) {
   const [loading, setLoading] = useState(false);
   const { drinkData, setDrinkData, mealsData,
-    setMealsData } = useContext(searchBarContext);
+    setMealsData,
+    setNoFilterDrinkData, setNoFilterMealsData } = useContext(searchBarContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +17,7 @@ function Recipes({ namePage }: HeaderProps) {
         const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
         const data = await response.json();
         setMealsData(data);
+        setNoFilterMealsData(data);
         setLoading(false);
       } catch (error) {
         console.log('Deu erro', error);
@@ -32,6 +34,7 @@ function Recipes({ namePage }: HeaderProps) {
         const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
         const data = await response.json();
         setDrinkData(data);
+        setNoFilterDrinkData(data);
         setLoading(false);
       } catch (error) {
         console.log('Deu erro', error);
@@ -57,7 +60,11 @@ function Recipes({ namePage }: HeaderProps) {
             data-testid={ `${index}-recipe-card` }
             className={ styles.recipeCard }
           >
-            <p data-testid={ `${index}-card-name` }>{recipe.strMeal}</p>
+            <p data-testid={ `${index}-card-name` }>
+              {recipe.strMeal}
+              {' '}
+              comida
+            </p>
             <img
               src={ recipe.strMealThumb }
               alt=""
@@ -73,7 +80,6 @@ function Recipes({ namePage }: HeaderProps) {
 
   if (namePage === 'drinks' && drinkData) {
     const limitedDrinks = drinkData.drinks.slice(0, 12);
-    console.log(limitedDrinks);
 
     return (
       <>
