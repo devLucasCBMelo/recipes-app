@@ -9,13 +9,14 @@ import searchBarContext from '../contex/SearchBarContex';
 
 function FavoriteRecipes() {
   // const [favorite, setFavorite] = useState<RecipeType[]>([]);
-  const { favorites, setFavorites } = useContext(searchBarContext);
+  const { favorites, setFavorites, filtersRecipes } = useContext(searchBarContext);
+
   // preciso fazer o useEffect escutar as mudanças no localStorage
   // para atualizar a página quando um item for deletado
   useEffect(() => {
     // favoriteRecipes.forEach((recipe) => {
     //   // caso já tenha o item no localStorage, não adiciona novamente
-    //   const favLocalStorage = getLocalStorage().favoriteRecipes;
+    //   const favLocalStorage = getLocalStorage('favoriteRecipes');
     //   if (favLocalStorage) {
     //     const itemLocalStorage = favLocalStorage
     //       .find((item: RecipeType) => item.id === recipe.id);
@@ -25,9 +26,9 @@ function FavoriteRecipes() {
     //   putLocalStorage('favoriteRecipes', recipe);
     //   setFavorites((prev) => [...prev, recipe]);
     // });
-    const { favoriteRecipes } = getLocalStorage('favoriteRecipes');
+    const favoriteRecipes = getLocalStorage('favoriteRecipes');
     if (favoriteRecipes) setFavorites(favoriteRecipes);
-  }, [setFavorites]);
+  }, [setFavorites, filtersRecipes]);
 
   if (favorites.length === 0) {
     return (
@@ -49,7 +50,11 @@ function FavoriteRecipes() {
         testIDDrink="filter-by-drink-btn"
       />
       <ShowShareAlert />
-      <CardFavorites favorite={ favorites } />
+      {
+        filtersRecipes.length > 0
+          ? <CardFavorites favorite={ filtersRecipes } />
+          : <CardFavorites favorite={ favorites } />
+      }
       {/* <Footer /> */}
     </>
   );

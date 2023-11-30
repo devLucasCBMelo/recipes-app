@@ -10,6 +10,10 @@ type SearchBarContextType = {
   setShowAlert: React.Dispatch<React.SetStateAction<boolean>>
   favorites: RecipeType[],
   setFavorites: React.Dispatch<React.SetStateAction<RecipeType[]>>,
+  doneRecipes: RecipeType[],
+  setDoneRecipes: React.Dispatch<React.SetStateAction<RecipeType[]>>,
+  filtersRecipes: RecipeType[],
+  setFiltersRecipes: React.Dispatch<React.SetStateAction<RecipeType[]>>,
 };
 
 const searchBarContext = createContext({} as SearchBarContextType);
