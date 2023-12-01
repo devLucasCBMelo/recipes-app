@@ -39,8 +39,9 @@ function Login() {
         className={ styles.container_form }
         onSubmit={ (event) => handleSubmit(event) }
       >
-        <h1>Login</h1>
+        <h1 className={ styles.login_title }>Login</h1>
         <input
+          placeholder="Email"
           className={ styles.input_login }
           type="email"
           data-testid="email-input"
@@ -49,6 +50,7 @@ function Login() {
         />
         <input
           className={ styles.input_login }
+          placeholder="Password"
           type="password"
           data-testid="password-input"
           value={ userPassword }

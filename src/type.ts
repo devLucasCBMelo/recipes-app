@@ -4,7 +4,13 @@ export type ValueBuscaType = {
 };
 
 export type HeaderProps = {
-  namePage: string
+  namePage: string,
+  pageIcon: string,
+};
+
+export type PageProps = {
+  namePage: string,
+
 };
 
 export type DataType = {

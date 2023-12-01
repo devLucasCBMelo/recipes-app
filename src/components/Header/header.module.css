@@ -5,13 +5,17 @@ header {
   justify-content: space-around;
   margin-bottom: 30px;
 
-  /* position: fixed; */
+
 }
 
+.pageIcon {
+  margin-bottom: 15px;
+  margin-top: 33px;
+}
 
-/* .container_searchBar {
-  padding: 30px;
-} */
+.search_icon {
+  margin-right: 16px;
+}
 
 .container_header {
   background-color: #fcdc36;
@@ -19,8 +23,6 @@ header {
   height: 52px;
   justify-content: space-around;
   padding-top: 6px;
-
-  /* position: fixed; */
   top: 0;
   width: 100%;
 }
@@ -31,5 +33,18 @@ button {
 }
 
 .appName {
-  margin-left: 10px;
+  margin-left: 20px;
+}
+
+.container_namePage {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.titlePage {
+  font-family: Epilogue , sans-serif;
+  font-weight: 900;
+
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import drinkIcon from '../../images/drinkIcon.svg';
-import mealIcon from '../../images/mealIcon.svg';
+import drinkIcon from '../../images/drinkIcon.png';
+import mealIcon from '../../images/mealIcon.png';
 import styles from './Footer.module.css';
 
 function Footer() {

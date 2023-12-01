@@ -6,6 +6,7 @@ import { getLocalStorage } from '../utils/localStorage';
 import FilterRecipes from '../components/FilterRecipes';
 import ShowShareAlert from '../components/ShowShareAlert';
 import searchBarContext from '../contex/SearchBarContex';
+import favoriteIcon from '../images/favorite.png';
 
 function FavoriteRecipes() {
   // const [favorite, setFavorite] = useState<RecipeType[]>([]);
@@ -33,7 +34,7 @@ function FavoriteRecipes() {
   if (favorites.length === 0) {
     return (
       <>
-        <Header namePage="Favorite Recipes" />
+        <Header pageIcon={ favoriteIcon } namePage="Favorite Recipes" />
         <p>
           No favorite recipes have been added!
         </p>
@@ -43,7 +44,7 @@ function FavoriteRecipes() {
   }
   return (
     <>
-      <Header namePage="Favorite Recipes" />
+      <Header pageIcon={ favoriteIcon } namePage="Favorite Recipes" />
       <FilterRecipes
         testIDAll="filter-by-all-btn"
         testIDMeal="filter-by-meal-btn"

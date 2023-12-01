@@ -1,10 +1,11 @@
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
+import profileIcon from '../images/perfil.png';
 
 function Profile() {
   return (
     <>
-      <Header namePage="Profile" />
+      <Header pageIcon={ profileIcon } namePage="Profile" />
       <Footer />
     </>
   );

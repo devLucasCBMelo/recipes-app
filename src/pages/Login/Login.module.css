@@ -9,12 +9,17 @@
 .input_login {
   border: 0.5px solid #41197f;
   border-radius: 5px;
+  color: #41197f;
+  font-family: Epilogue , sans-serif;
+  font-weight: 400;
   height: 40px;
+  padding-left: 20px;
   width: 276px;
 }
 
 .input_login ::placeholder {
   color: #41197f;
+
 
 }
 
@@ -26,7 +31,7 @@
 
 }
 
-h1 {
+.login_title {
   font-size: 21px;
   font-style: italic;
   margin-top: 40px;
@@ -58,11 +63,6 @@ h1 {
   .container_img {
     height: 400px;
   }
-
-  h1 {
-    margin-top: 100px;
-  }
-
 }
 
 @media ( min-width : 501px ) {
