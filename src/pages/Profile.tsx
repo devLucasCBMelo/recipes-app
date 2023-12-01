@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
 import { getLocalStorage } from '../utils/localStorage';
@@ -9,6 +10,9 @@ import logout from '../images/logout.svg';
 
 function Profile() {
   const [email, setEmail] = useState('');
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const userLocalStorage: UserLocalStorage = getLocalStorage('user');
     if (userLocalStorage) {
@@ -30,6 +34,7 @@ function Profile() {
         <button
           type="button"
           data-testid="profile-done-btn"
+          onClick={ () => navigate('/done-recipes') }
         >
           <img src={ done } alt="Done Recipes button icon" />
           Done Recipes
@@ -39,6 +44,7 @@ function Profile() {
         <button
           type="button"
           data-testid="profile-favorite-btn"
+          onClick={ () => navigate('/favorite-recipes') }
         >
           <img src={ favorite } alt="Favorite Recipes button icon" />
           Favorite Recipes
@@ -48,6 +54,10 @@ function Profile() {
         <button
           type="button"
           data-testid="profile-logout-btn"
+          onClick={ () => {
+            localStorage.clear();
+            navigate('/');
+          } }
         >
           <img src={ logout } alt="Logout button icon" />
           Logout
