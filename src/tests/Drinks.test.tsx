@@ -9,6 +9,8 @@ import SearchBarProvider from '../contex/SearchBarProvider';
 import FilterBarProvider from '../contex/FilterBarProvider';
 import fetchMock from '../helpers/fetchMocks';
 
+const drinksDataAPI = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+
 afterEach(() => {
   vi.clearAllMocks();
 });
@@ -84,7 +86,7 @@ describe('Testes Meals', () => {
     );
 
     expect(global.fetch).toHaveBeenCalled();
-    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    expect(global.fetch).toHaveBeenCalledWith(drinksDataAPI);
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
 
@@ -106,6 +108,43 @@ describe('Testes Meals', () => {
     await userEvent.click(allFilterButton);
 
     expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+
+    const ggDrink2 = await screen.findByText(/GG/i);
+    expect(ggDrink2).toBeInTheDocument();
+  });
+
+  it('Testa se ao clicar no mesmo filtro uma segunda vez, ele retorna a lista principal sem filtros', async () => {
+    vi.spyOn(global, 'fetch').mockImplementation(fetchMock as any);
+
+    renderWithRouter(
+      <SearchBarProvider>
+        <FilterBarProvider>
+          <App />
+        </FilterBarProvider>
+      </SearchBarProvider>,
+      { route: '/drinks' },
+    );
+
+    expect(global.fetch).toHaveBeenCalled();
+    expect(global.fetch).toHaveBeenCalledWith(drinksDataAPI);
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+
+    const ggDrink = await screen.findByText(/GG/i);
+    expect(ggDrink).toBeInTheDocument();
+
+    const cocktailButton = await screen.findByTestId(/Cocktail-category-filter/i);
+    expect(cocktailButton).toBeInTheDocument();
+
+    await userEvent.click(cocktailButton);
+
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail');
+
+    expect(ggDrink).not.toBeInTheDocument();
+
+    await userEvent.click(cocktailButton);
+
+    expect(global.fetch).toHaveBeenCalledWith(drinksDataAPI);
 
     const ggDrink2 = await screen.findByText(/GG/i);
     expect(ggDrink2).toBeInTheDocument();

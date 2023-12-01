@@ -9,6 +9,7 @@ import SearchBarProvider from '../contex/SearchBarProvider';
 import FilterBarProvider from '../contex/FilterBarProvider';
 import fetchMock from '../helpers/fetchMocks';
 
+const mealsDataAPI = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 // teste
 
 afterEach(() => {
@@ -85,7 +86,7 @@ describe('Testes Meals', () => {
     );
 
     expect(global.fetch).toHaveBeenCalled();
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
 
@@ -106,7 +107,44 @@ describe('Testes Meals', () => {
 
     await userEvent.click(allFilterButton);
 
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
+
+    const corbaMeal2 = await screen.findByText(/corba/i);
+    expect(corbaMeal2).toBeInTheDocument();
+  });
+
+  it.only('Testa se ao clicar no mesmo filtro uma segunda vez, ele retorna a lista principal sem filtros', async () => {
+    vi.spyOn(global, 'fetch').mockImplementation(fetchMock as any);
+
+    renderWithRouter(
+      <SearchBarProvider>
+        <FilterBarProvider>
+          <App />
+        </FilterBarProvider>
+      </SearchBarProvider>,
+      { route: '/meals' },
+    );
+
+    expect(global.fetch).toHaveBeenCalled();
+    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+
+    const corbaMeal = await screen.findByText(/corba/i);
+    expect(corbaMeal).toBeInTheDocument();
+
+    const beefButton = await screen.findByTestId(/beef-category-filter/i);
+    expect(beefButton).toBeInTheDocument();
+
+    await userEvent.click(beefButton);
+
+    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef');
+
+    expect(corbaMeal).not.toBeInTheDocument();
+
+    await userEvent.click(beefButton);
+
+    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
 
     const corbaMeal2 = await screen.findByText(/corba/i);
     expect(corbaMeal2).toBeInTheDocument();
