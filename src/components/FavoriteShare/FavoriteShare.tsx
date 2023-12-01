@@ -4,13 +4,12 @@ import { Recipe } from '../../type';
 interface FavoriteShareProps {
   recipe: Recipe;
   type: 'drink' | 'meal';
-  id: string | undefined;
   dataTestIdShare: string;
   dataTestIdLike: string;
 }
 
 function FavoriteShare({ recipe, type,
-  id, dataTestIdShare, dataTestIdLike }: FavoriteShareProps) {
+  dataTestIdShare, dataTestIdLike }: FavoriteShareProps) {
   const [copiedLink, setCopiedLink] = useState(false);
   const keyType: 'Meal' | 'Drink' = (
     type.charAt(0).toUpperCase() + type.slice(1)) as 'Meal' | 'Drink';
