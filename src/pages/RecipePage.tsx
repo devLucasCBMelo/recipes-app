@@ -1,4 +1,4 @@
-import RecipeDetails from './RecipeDetails';
+import RecipeDetails from '../components/RecipeDetails/RecipeDetails';
 import { Recipe } from '../type';
 
 interface RecipePageProps {

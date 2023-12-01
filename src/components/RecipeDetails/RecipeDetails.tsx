@@ -1,5 +1,8 @@
-import Recommendations from '../components/Recommendations/Recommendations';
-import { Recipe } from '../type';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { Recipe, RecipeType } from '../../type';
+import Recommendations from '../Recommendations/Recommendations';
+import './RecipeDetails.css';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
@@ -7,6 +10,12 @@ interface RecipeDetailsProps {
 }
 
 function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
+
+  const [recipeIsDone, setRecipeIsDone] = useState<boolean>(false);
+  const [recipeInProgress, setRecipeInProgress] = useState<boolean>(false);
   const combineIngredientsAndMeasures = () => {
     return recipe.ingredients?.map((ingredient, index) => {
       const measure = (recipe as any)[`strMeasure${index + 1}`];
@@ -14,6 +23,35 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
     });
   };
 
+  const verifyRecipeDone = () => {
+    const doneRecipies = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
+    const recipeIsCompleted = doneRecipies
+      .filter(({ id: recipeId }: RecipeType) => recipeId === id);
+    setRecipeIsDone(recipeIsCompleted.length !== 0);
+  };
+
+  const verifyRecipeInProg = () => {
+    const recipeProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
+    || 'null');
+    const type = recommendationType === 'Drink' ? 'meals' : 'drinks';
+    if (recipeProgress && typeof (id) === 'string') {
+      console.log(Object.keys(recipeProgress[type]));
+      const inProgressRecipes = Object.keys(recipeProgress[type]);
+      const recipeIsInProgress = inProgressRecipes.includes(id);
+      setRecipeInProgress(recipeIsInProgress);
+    }
+  };
+
+  useEffect(() => {
+    verifyRecipeDone();
+    verifyRecipeInProg();
+  });
+
+  const handleStartBtn = () => {
+    navigate(`${location.pathname}/in-progress`);
+  };
+
+  const btnText = recipeInProgress === true ? 'Continue Recipe' : 'Start Recipe';
   return (
     <div>
       <h1 data-testid="recipe-title">{recipe.strMeal || recipe.strDrink}</h1>
@@ -61,12 +99,20 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
             height="315"
             src={ recipe.strYoutube.replace('watch?v=', 'embed/') }
             data-testid="video"
-            frameBorder="0"
             allowFullScreen
           />
         </div>
       )}
       <Recommendations recommendationType={ recommendationType } />
+      {!recipeIsDone && (
+        <button
+          className="start__recipe__btn"
+          type="button"
+          data-testid="start-recipe-btn"
+          onClick={ handleStartBtn }
+        >
+          {btnText}
+        </button>)}
     </div>
   );
 }

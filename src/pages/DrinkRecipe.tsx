@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import RecipeDetails from './RecipeDetails';
+import RecipeDetails from '../components/RecipeDetails/RecipeDetails';
 import { fetchdDrinksDetails } from '../utils/fetchDrinksApi';
 
 function DrinkRecipe() {

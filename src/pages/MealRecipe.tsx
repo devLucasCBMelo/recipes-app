@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMealsDetails } from '../utils/fetchMealsApi';
-import RecipeDetails from './RecipeDetails';
+import RecipeDetails from '../components/RecipeDetails/RecipeDetails';
 import { fetchDrinksName } from '../utils/fetchDrinksApi';
 
 function MealRecipe() {

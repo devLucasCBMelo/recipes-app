@@ -6,11 +6,11 @@
 
 .carousel__item {
   flex: 0 0 auto;
-  width: 150px; /* Ajuste conforme necessário */
-  margin-right: 10px; /* Espaçamento entre os itens */
+  margin-right: 10px;
+  width: 150px;
 }
 
 .img__carrousel {
-  width: 100px;
   aspect-ratio: 1;
+  width: 100px;
 }
