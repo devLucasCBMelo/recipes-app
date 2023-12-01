@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import App from '../App';
-import { renderWithRouter } from '../utils/helpers';
+import { renderWithRouter } from '../utils/renderWithRouter';
 
 it('Renderiza página inicial', () => {
   renderWithRouter(<App />);
-  const linkElement = screen.getByText(/você está na tela de login/i);
+  const linkElement = screen.getByText(/login/i);
   expect(linkElement).toBeInTheDocument();
 });

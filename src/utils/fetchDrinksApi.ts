@@ -1,9 +1,13 @@
 export const fetchDrinksIngredient = async (ingredient: string) => {
-  const response = await fetch(
-    `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`,
-  );
-  const data = response.json();
-  return data;
+  try {
+    const response = await fetch(
+      `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`,
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('Erro busca por ingredient', error);
+  }
 };
 
 export const fetchDrinksRecommendation = async () => {
@@ -15,19 +19,27 @@ export const fetchDrinksRecommendation = async () => {
 };
 
 export const fetchDrinksName = async (name: string) => {
-  const response = await fetch(
-    `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`,
-  );
-  const data = response.json();
-  return data;
+  try {
+    const response = await fetch(
+      `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`,
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('Erro busca por name', error);
+  }
 };
 
 export const fetchDrinksFirstLetter = async (firstLetter: string) => {
-  const response = await fetch(
-    `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${firstLetter}`,
-  );
-  const data = response.json();
-  return data;
+  try {
+    const response = await fetch(
+      `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${firstLetter}`,
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('Erro busca por first letter', error);
+  }
 };
 
 const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1/';
@@ -62,5 +74,15 @@ export const fetchdDrinksDetails = async (id: string) => {
   } catch (error) {
     console.error('Error fetching drink details:', error);
     return {};
+  }
+};
+
+export const fetchDrinksByCategory = async (category: string) => {
+  try {
+    const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('Deu erro na API de Drinks por categoria', error);
   }
 };

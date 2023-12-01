@@ -1,0 +1,20 @@
+.image_favorite {
+  border-radius: 5px 0 0 5px;
+  height: 134px;
+  width: 166px;
+
+}
+
+
+.card-recipe-favorite {
+  background: white;
+  border: 0.518px solid #b1b1b1;
+  border-radius: 5px;
+  display: flex;
+  height: 135px;
+  width: 318px;
+}
+
+.title_recipe {
+  font-style: none;
+}

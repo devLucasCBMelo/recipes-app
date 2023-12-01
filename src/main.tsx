@@ -4,6 +4,7 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import SearchBarProvider from './contex/SearchBarProvider';
+import FilterBarProvider from './contex/FilterBarProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root') as HTMLElement)
@@ -11,7 +12,9 @@ ReactDOM
 
     <BrowserRouter>
       <SearchBarProvider>
-        <App />
+        <FilterBarProvider>
+          <App />
+        </FilterBarProvider>
       </SearchBarProvider>
     </BrowserRouter>,
 
