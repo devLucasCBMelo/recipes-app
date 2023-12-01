@@ -43,7 +43,11 @@ export type RecipeType = {
   tags?: string[];
 };
 
-export type KeyLocalStorageType = 'favoriteRecipes' | 'doneRecipes';
+export type KeyLocalStorageType = 'favoriteRecipes' | 'doneRecipes' | 'user';
+
+export type UserLocalStorage = {
+  email: string;
+};
 
 export type DoneRecipesLocalStorage = {
   id: string;

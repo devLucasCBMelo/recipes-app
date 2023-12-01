@@ -7,6 +7,7 @@ import appName from '../../images/title.png';
 import logo from '../../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import { HeaderProps } from '../../type';
+import ProfilePage from '../../images/profilePage.svg';
 
 function Header({ namePage }: HeaderProps) {
   const [showSearch, setShowSearch] = useState(false);
@@ -43,6 +44,12 @@ function Header({ namePage }: HeaderProps) {
         </div>
       </div>
       <div>
+        { namePage === 'Profile'
+        && (
+          <div>
+            <img src={ ProfilePage } alt="Profile Ico Page" />
+          </div>
+        )}
         <div className={ styles.container_searchBar }>
           <h1 data-testid="page-title">{namePage}</h1>
         </div>
