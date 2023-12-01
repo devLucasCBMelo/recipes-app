@@ -9,7 +9,7 @@ function DrinkRecipe() {
 
   useEffect(() => {
     const fetchDrinkDetails = async () => {
-      const data = await fetchdDrinksDetails(id ?? '');
+      const { drinks: [data] } = await fetchdDrinksDetails(id ?? '');
       setDrinkData(data);
     };
 
@@ -18,9 +18,8 @@ function DrinkRecipe() {
     }
   }, [id]);
 
-  if (drinkData.drinks) {
-    const drink = drinkData.drinks[0];
-    return <RecipeDetails recipe={ drink } />;
+  if (drinkData !== 0) {
+    return <RecipeDetails recipe={ drinkData } recommendationType="Meal" />;
   }
 
   return <h1>Carregando...</h1>;

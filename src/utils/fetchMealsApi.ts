@@ -4,6 +4,12 @@ export const fetchMealsIngredient = async (ingredient: string) => {
   return data;
 };
 
+export const fetchMealsRecommendation = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+  const data = response.json();
+  return data;
+};
+
 export const fetchMealsname = async (name: string) => {
   const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
   const data = response.json();

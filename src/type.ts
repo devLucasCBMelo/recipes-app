@@ -4,12 +4,14 @@ export type ValueBuscaType = {
 };
 
 export interface Recipe {
+  idMeal?: string;
   strMeal?: string;
   strMealThumb?: string;
   strCategory?: string;
   strInstructions?: string;
   ingredients?: string[];
   strYoutube?: string;
+  idDrink?: string;
   strDrink?: string;
   strDrinkThumb?: string;
   strAlcoholic?: string;

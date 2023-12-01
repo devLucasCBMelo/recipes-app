@@ -11,11 +11,12 @@ function MealRecipe() {
 
   useEffect(() => {
     const fetchMealDetails = async () => {
-      const data = await fetchMealsDetails(id ?? '');
+      const { meals: [data] } = await fetchMealsDetails(id ?? '');
+      console.log(data);
       setMealData(data);
 
-      if (data.meals && data.meals.length > 0) {
-        const mealName = data.meals[0].strMeal;
+      if (data && data.length > 0) {
+        const mealName = data.strMeal;
 
         if (mealName) {
           // Certifique-se de chamar a API de bebidas correta
@@ -30,13 +31,10 @@ function MealRecipe() {
     }
   }, [id]);
 
-  if (mealData.meals) {
-    const meal = mealData.meals[0];
+  if (mealData.lenght !== 0) {
     return (
       <div>
-        <RecipeDetails recipe={ meal } />
-
-        {/* Exibe a recomendação de bebida aqui */}
+        <RecipeDetails recipe={ mealData } recommendationType="Drink" />
       </div>
     );
   }

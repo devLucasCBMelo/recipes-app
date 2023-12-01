@@ -1,12 +1,12 @@
+import Recommendations from '../components/Recommendations/Recommendations';
 import { Recipe } from '../type';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
+  recommendationType: 'Drink' | 'Meal'
 }
 
-function RecipeDetails({ recipe }: RecipeDetailsProps) {
-  console.log('RecipeDetails - recipe:', recipe);
-
+function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   const combineIngredientsAndMeasures = () => {
     return recipe.ingredients?.map((ingredient, index) => {
       const measure = (recipe as any)[`strMeasure${index + 1}`];
@@ -36,7 +36,10 @@ function RecipeDetails({ recipe }: RecipeDetailsProps) {
         <h4>Ingredientes:</h4>
         <ul>
           {combineIngredientsAndMeasures()?.map((ingredient, index) => (
-            <li data-testid={ `${index}-ingredient-name-and-measure` } key={ index }>
+            <li
+              data-testid={ `${index}-ingredient-name-and-measure` }
+              key={ index }
+            >
               {ingredient}
             </li>
           ))}
@@ -63,6 +66,7 @@ function RecipeDetails({ recipe }: RecipeDetailsProps) {
           />
         </div>
       )}
+      <Recommendations recommendationType={ recommendationType } />
     </div>
   );
 }
