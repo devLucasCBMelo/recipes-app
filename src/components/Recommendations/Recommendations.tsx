@@ -27,7 +27,7 @@ function Recommendations({ recommendationType }: RecommendationsProps) {
     };
     getRecommendations();
     setLoading(false);
-  }, []);
+  }, [recommendationType]);
 
   return (
     <div className="carrousel">

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Recipe, RecipeType } from '../../type';
 import Recommendations from '../Recommendations/Recommendations';
-import './RecipeDetails.css';
+import './recipeDetails.css';
+import FavoriteShare from '../FavoriteShare/FavoriteShare';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
@@ -89,7 +90,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
           {recipe.containsAlcoholic ? 'Alcoholic' : 'Não contém álcool'}
         </h3>
       )}
-
+      <FavoriteShare recipe={ recipe } type={ recommendationType } />
       {recipe.strYoutube && (
         <div>
           <h4>Vídeo:</h4>

@@ -10,6 +10,7 @@ export interface Recipe {
   strCategory?: string;
   strInstructions?: string;
   ingredients?: string[];
+  strArea?: string;
   strYoutube?: string;
   idDrink?: string;
   strDrink?: string;
