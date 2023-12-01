@@ -1,22 +1,24 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { Recipe } from '../../type';
 
 interface FavoriteShareProps {
   recipe: Recipe;
+  type: 'drink' | 'meal';
+  id: string | undefined;
+  dataTestIdShare: string;
+  dataTestIdLike: string;
 }
 
-function FavoriteShare({ recipe }: FavoriteShareProps) {
-  const location = useLocation();
+function FavoriteShare({ recipe, type,
+  id, dataTestIdShare, dataTestIdLike }: FavoriteShareProps) {
+  const [copiedLink, setCopiedLink] = useState(false);
+  const keyType: 'Meal' | 'Drink' = (
+    type.charAt(0).toUpperCase() + type.slice(1)) as 'Meal' | 'Drink';
+
   const handleLikeBtn = () => {
-    const recipeType = location.pathname.includes('drinks') ? 'drink' : 'meal';
-
-    const keyType: 'Meal' | 'Drink' = (
-      recipeType.charAt(0).toUpperCase() + recipeType.slice(1)) as 'Meal' | 'Drink';
-
     const dataToSave = {
       id: recipe[`id${keyType}`],
-      type: recipeType,
+      type,
       nationality: recipe.strArea || '',
       category: recipe.strCategory || '',
       alcoholicOrNot: recipe.strAlcoholic || '',
@@ -31,16 +33,33 @@ function FavoriteShare({ recipe }: FavoriteShareProps) {
     );
   };
 
+  const handleCopyUrl = () => {
+    const url = `http://localhost:3000/${type}s/${recipe[`id${keyType}`]}`;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        setCopiedLink(true);
+        setTimeout(() => {
+          setCopiedLink(false);
+        }, 3000);
+      },
+    );
+  };
+
   return (
     <div>
+      {copiedLink && <p>Link copied!</p>}
       <button
         onClick={ handleLikeBtn }
         type="button"
-        data-testid="favorite-btn"
+        data-testid={ dataTestIdLike }
       >
         like
       </button>
-      <button type="button" data-testid="share-btn">
+      <button
+        onClick={ handleCopyUrl }
+        type="button"
+        data-testid={ dataTestIdShare }
+      >
         share
       </button>
     </div>

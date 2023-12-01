@@ -14,6 +14,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
+  const type = recommendationType === 'Drink' ? 'meal' : 'drink';
 
   const [recipeIsDone, setRecipeIsDone] = useState<boolean>(false);
   const [recipeInProgress, setRecipeInProgress] = useState<boolean>(false);
@@ -34,10 +35,8 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   const verifyRecipeInProg = () => {
     const recipeProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
     || 'null');
-    const type = recommendationType === 'Drink' ? 'meals' : 'drinks';
     if (recipeProgress && typeof (id) === 'string') {
-      console.log(Object.keys(recipeProgress[type]));
-      const inProgressRecipes = Object.keys(recipeProgress[type]);
+      const inProgressRecipes = Object.keys(recipeProgress[`${type}s`]);
       const recipeIsInProgress = inProgressRecipes.includes(id);
       setRecipeInProgress(recipeIsInProgress);
     }
@@ -90,7 +89,12 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
           {recipe.containsAlcoholic ? 'Alcoholic' : 'Não contém álcool'}
         </h3>
       )}
-      <FavoriteShare recipe={ recipe } type={ recommendationType } />
+      <FavoriteShare
+        recipe={ recipe }
+        type={ type }
+        dataTestIdShare="share-btn"
+        dataTestIdLike="favorite-btn"
+      />
       {recipe.strYoutube && (
         <div>
           <h4>Vídeo:</h4>
