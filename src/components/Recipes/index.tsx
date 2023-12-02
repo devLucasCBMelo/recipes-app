@@ -80,7 +80,7 @@ function Recipes({ namePage }: HeaderProps) {
                 {recipe.strMeal}
 
               </p>
-              {/* <p>{recipe.idMeal}</p> */}
+              <p>{recipe.idMeal}</p>
             </div>
           ))}
         </div>
@@ -118,7 +118,7 @@ function Recipes({ namePage }: HeaderProps) {
                 {recipe.strDrink}
 
               </p>
-              {/* <p>{recipe.idDrink}</p> */}
+              <p>{recipe.idDrink}</p>
             </div>
           ))}
         </div>
