@@ -61,7 +61,6 @@ function Header({ namePage, pageIcon }: HeaderProps) {
             data-testid="page-title"
           >
             {namePage}
-
           </h1>
         </div>
         { showSearch
