@@ -56,15 +56,17 @@ export const getLocalStorage = (key: KeyLocalStorageType) => {
 // a chave pode ser favoriteRecipes ou doneRecipes
 // o id é o id da receita
 
-export const deleteLocalStorage = (key: KeyLocalStorageType, id: string) => {
+export const deleteLocalStorage = (key: KeyLocalStorageType, id?: string) => {
   if (key === 'favoriteRecipes') {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
     const newFavoriteRecipes = favoriteRecipes
       .filter((recipe: RecipeType) => recipe.id !== id);
     localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
-  } else {
+  } else if (key === 'doneRecipes') {
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
     const newDoneRecipes = doneRecipes.filter((recipe: RecipeType) => recipe.id !== id);
     localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipes));
+  } else {
+    localStorage.clear();
   }
 };

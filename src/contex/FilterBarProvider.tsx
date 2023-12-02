@@ -11,12 +11,28 @@ type FilterBarProviderType = {
 function FilterBarProvider({ children }: FilterBarProviderType) {
   const [filterSelected, setFilterSelected] = useState('');
 
-  const { setMealsData, setDrinkData } = useContext(searchBarContext);
+  const {
+    setMealsData,
+    setDrinkData,
+    noFilterMealsData,
+    noFilterDrinkData,
+  } = useContext(searchBarContext);
 
   const saveFilter = async (filter: string, namePage: string) => {
-    console.log(filter);
-    console.log(namePage);
     setFilterSelected(filter);
+
+    // checa se é o mesmo filtro, se for, traz o array sem filtros
+    if (filter === filterSelected && namePage === 'meals') {
+      console.log(filter);
+
+      return setMealsData(noFilterMealsData);
+    }
+
+    if (filter === filterSelected && namePage === 'drinks') {
+      return setDrinkData(noFilterDrinkData);
+    }
+
+    // caso não seja o mesmo filtro, filtra o array
     if (namePage === 'meals') {
       const filtredMealsArray = await fetchMealsByCategory(filter);
       return setMealsData(filtredMealsArray);
