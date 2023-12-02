@@ -56,7 +56,6 @@ function SearchBarProvider({ children }:SearchProviderProps) {
     if (location.pathname.includes('/meals')) {
       switch (value.radio) {
         case 'name':
-          console.log(fetchData(fetchMealsname, value.infoInput));
           return fetchData(fetchMealsname, value.infoInput);
 
         case 'first-letter':

@@ -4,7 +4,7 @@ import styles from './SearchBar.module.css';
 
 const INICIAL_VALUE = {
   infoInput: '',
-  radio: '',
+  radio: 'ingredient',
 };
 
 function SearchBar() {
@@ -20,7 +20,9 @@ function SearchBar() {
     filterApi(searchInput);
     setSearchInput(INICIAL_VALUE);
   };
-
+  // colocando valores iniciais para o radio
+  // colocando na chave radio o valor 'ingredient';
+  // assim quando o componente iniciar 'ingredient' vai estar selecionado.
   return (
     <div className={ styles.container }>
 
@@ -42,6 +44,7 @@ function SearchBar() {
             type="radio"
             name="radio"
             value="ingredient"
+            checked={ searchInput.radio === 'ingredient' }
             data-testid="ingredient-search-radio"
           />
           Ingredient
@@ -50,6 +53,7 @@ function SearchBar() {
             name="radio"
             value="name"
             type="radio"
+            checked={ searchInput.radio === 'name' }
             data-testid="name-search-radio"
           />
           Name
@@ -58,6 +62,7 @@ function SearchBar() {
             name="radio"
             value="first-letter"
             type="radio"
+            checked={ searchInput.radio === 'first-letter' }
             data-testid="first-letter-search-radio"
           />
           First Letter
