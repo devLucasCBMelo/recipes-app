@@ -1,0 +1,16 @@
+.carrousel {
+  display: flex;
+  overflow-x: scroll;
+  width: 150px;
+}
+
+.carousel__item {
+  flex: 0 0 auto;
+  margin-right: 10px;
+  width: 150px;
+}
+
+.img__carrousel {
+  aspect-ratio: 1;
+  width: 100px;
+}
