@@ -7,7 +7,7 @@ import mealsIcon from '../images/mealIcon.png';
 function Meals() {
   return (
     <>
-     <Header pageIcon={ mealsIcon } namePage="Meals" />
+      <Header pageIcon={ mealsIcon } namePage="Meals" />
       <Recipes namePage="meals" />
       <Footer />
     </>
