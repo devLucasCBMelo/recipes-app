@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DrinkType, HeaderProps, MealType } from '../../type';
+import { DrinkType, HeaderProps, MealType, PageProps } from '../../type';
 import styles from './recipes.module.css';
 import FilterBar from '../FilterBar/FilterBar';
 import searchBarContext from '../../contex/SearchBarContex';
 
-function Recipes({ namePage }: HeaderProps) {
+function Recipes({ namePage }: PageProps) {
   const [loading, setLoading] = useState(false);
   const { drinkData, setDrinkData, mealsData,
     setMealsData,

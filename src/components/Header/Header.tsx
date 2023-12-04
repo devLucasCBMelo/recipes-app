@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styles from './header.module.css';
-import profile from '../../images/profileIcon.svg';
-import pesquisar from '../../images/searchIcon.svg';
-import appName from '../../images/title.png';
+import profile from '../../images/profileIcon.png';
+import search from '../../images/searchIcon.png';
+import appName from '../../images/title_small.png';
 import logo from '../../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import { HeaderProps } from '../../type';
 import ProfilePage from '../../images/profilePage.svg';
 
-function Header({ namePage }: HeaderProps) {
+function Header({ namePage, pageIcon }: HeaderProps) {
   const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
 
@@ -35,7 +35,12 @@ function Header({ namePage }: HeaderProps) {
   <button
     onClick={ handleSearch }
   >
-    <img src={ pesquisar } alt="pesquisar" data-testid="search-top-btn" />
+    <img
+      className={ styles.search_icon }
+      src={ search }
+      alt="pesquisar"
+      data-testid="search-top-btn"
+    />
   </button>
 )}
           <button onClick={ () => navigate('/profile') }>
@@ -44,14 +49,20 @@ function Header({ namePage }: HeaderProps) {
         </div>
       </div>
       <div>
-        { namePage === 'Profile'
-        && (
+        <div className={ styles.container_namePage }>
           <div>
-            <img src={ ProfilePage } alt="Profile Ico Page" />
+            <img
+              className={ styles.pageIcon }
+              src={ pageIcon }
+              alt={ namePage }
+            />
           </div>
-        )}
-        <div className={ styles.container_searchBar }>
-          <h1 data-testid="page-title">{namePage}</h1>
+          <h1
+            className={ styles.titlePage }
+            data-testid="page-title"
+          >
+            {namePage}
+          </h1>
         </div>
         { showSearch
       && <SearchBar />}

@@ -1,0 +1,27 @@
+.container_filters {
+  align-items: flex-start;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+
+@media ( max-width : 500px ) {
+
+  .container_filters {
+    gap: 8px;
+  }
+
+}
+
+@media ( min-width : 501px ) {
+
+  .container_filters {
+    gap: 16px;
+  }
+
+  .icons {
+    height: 100px;
+    width: 100px;
+  }
+}
