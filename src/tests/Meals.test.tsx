@@ -113,7 +113,7 @@ describe('Testes Meals', () => {
     expect(corbaMeal2).toBeInTheDocument();
   });
 
-  it.only('Testa se ao clicar no mesmo filtro uma segunda vez, ele retorna a lista principal sem filtros', async () => {
+  it('Testa se ao clicar no mesmo filtro uma segunda vez, ele retorna a lista principal sem filtros', async () => {
     vi.spyOn(global, 'fetch').mockImplementation(fetchMock as any);
 
     renderWithRouter(
