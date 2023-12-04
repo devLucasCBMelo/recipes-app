@@ -23,7 +23,6 @@ function Profile() {
   return (
     <>
       <Header pageIcon={ profileIcon } namePage="Profile" />
-      <Header namePage="Profile" />
       <div className="login-email">
         <h4
           data-testid="profile-email"
