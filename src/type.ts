@@ -3,6 +3,22 @@ export type ValueBuscaType = {
   radio: string,
 };
 
+export interface Recipe {
+  idMeal?: string;
+  strMeal?: string;
+  strMealThumb?: string;
+  strCategory?: string;
+  strInstructions?: string;
+  ingredients?: string[];
+  strArea?: string;
+  strYoutube?: string;
+  idDrink?: string;
+  strDrink?: string;
+  strDrinkThumb?: string;
+  strAlcoholic?: string;
+  containsAlcoholic?: boolean;
+}
+
 export type HeaderProps = {
   namePage: string,
   pageIcon: string,
