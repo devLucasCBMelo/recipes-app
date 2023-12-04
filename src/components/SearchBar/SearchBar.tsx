@@ -28,6 +28,7 @@ function SearchBar() {
 
       <label>
         <input
+          placeholder="Search"
           className={ styles.input_search }
           onChange={ handleChange }
           name="infoInput"

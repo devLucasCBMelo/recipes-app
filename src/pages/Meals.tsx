@@ -1,16 +1,14 @@
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
-import Recipes from '../components/Recipes';
+import Recipes from '../components/Recipes/index';
+import mealsIcon from '../images/mealIcon.png';
 // import styles from './Meals/Meals.module.css';
-
+// correcao
 function Meals() {
   return (
     <>
-      <Header namePage="Meals" />
-      <h1>Você está na tela de receitas de comidas</h1>
-      <div>
-        <Recipes namePage="meals" />
-      </div>
+      <Header pageIcon={ mealsIcon } namePage="Meals" />
+      <Recipes namePage="meals" />
       <Footer />
     </>
   );

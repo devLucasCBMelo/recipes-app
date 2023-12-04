@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
+import profileIcon from '../images/perfil.png';
 import { getLocalStorage } from '../utils/localStorage';
 import { UserLocalStorage } from '../type';
 import done from '../images/doneProfile.svg';
@@ -21,7 +22,7 @@ function Profile() {
   }, []);
   return (
     <>
-      <Header namePage="Profile" />
+      <Header pageIcon={ profileIcon } namePage="Profile" />
       <div className="login-email">
         <h4
           data-testid="profile-email"

@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { DrinkType, HeaderProps, MealType } from '../../type';
+import { Link } from 'react-router-dom';
+import { DrinkType, HeaderProps, MealType, PageProps } from '../../type';
 import styles from './recipes.module.css';
 import FilterBar from '../FilterBar/FilterBar';
 import searchBarContext from '../../contex/SearchBarContex';
 
-function Recipes({ namePage }: HeaderProps) {
+function Recipes({ namePage }: PageProps) {
   const [loading, setLoading] = useState(false);
   const { drinkData, setDrinkData, mealsData,
     setMealsData,
@@ -15,12 +16,17 @@ function Recipes({ namePage }: HeaderProps) {
       try {
         setLoading(true);
         const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+        console.log(response);
         const data = await response.json();
+
+        console.log(data);
         setMealsData(data);
         setNoFilterMealsData(data);
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.log('Deu erro', error);
+        console.log(mealsData);
       }
     };
 
@@ -48,6 +54,8 @@ function Recipes({ namePage }: HeaderProps) {
     return <h1>Loading...</h1>;
   }
 
+  // teste
+
   if (namePage === 'meals' && mealsData) {
     const limitedMeals = mealsData && mealsData.meals.slice(0, 12);
 
@@ -61,7 +69,8 @@ function Recipes({ namePage }: HeaderProps) {
         >
 
           {limitedMeals.map((recipe: MealType, index: number) => (
-            <div
+            <Link
+              to={ `/${namePage}/${recipe.idMeal}` }
               key={ recipe.idMeal }
               data-testid={ `${index}-recipe-card` }
               className={ styles.recipeCard }
@@ -81,7 +90,7 @@ function Recipes({ namePage }: HeaderProps) {
 
               </p>
               <p>{recipe.idMeal}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -100,7 +109,8 @@ function Recipes({ namePage }: HeaderProps) {
           className={ styles.container_recipes }
         >
           {limitedDrinks.map((recipe: DrinkType, index: number) => (
-            <div
+            <Link
+              to={ `/${namePage}/${recipe.idDrink}` }
               className={ styles.recipeCard }
               key={ recipe.idDrink }
               data-testid={ `${index}-recipe-card` }
@@ -119,7 +129,7 @@ function Recipes({ namePage }: HeaderProps) {
 
               </p>
               <p>{recipe.idDrink}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

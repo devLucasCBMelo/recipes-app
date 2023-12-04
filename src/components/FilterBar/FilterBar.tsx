@@ -1,9 +1,25 @@
 import { useContext, useEffect, useState } from 'react';
-import { HeaderProps } from '../../type';
+import { PageProps } from '../../type';
 import filterBarContext from '../../contex/FilterBarContext';
 import searchBarContext from '../../contex/SearchBarContex';
+import allMeals from '../../images/filtros/AllMeals.svg';
+import allDrinks from '../../images/filtros/AllDriks.svg';
+import beef from '../../images/filtros/beef.svg';
+import chicken from '../../images/filtros/chicken.svg';
+import brackfast from '../../images/filtros/breakfast.svg';
+import dessert from '../../images/filtros/dessert.svg';
+import goat from '../../images/filtros/goat.svg';
+import cocktail from '../../images/filtros/cocktail.svg';
+import cocoa from '../../images/filtros/cocoa.svg';
+import shake from '../../images/filtros/shake.svg';
+import ordinaryDrink from '../../images/filtros/drink.svg';
+import other from '../../images/filtros/other.svg';
+import styles from './FilterBar.module.css';
 
-function FilterBar({ namePage }: HeaderProps) {
+const iconsMeals = [beef, brackfast, chicken, dessert, goat];
+const iconsDrinks = [ordinaryDrink, cocktail, shake, other, cocoa];
+
+function FilterBar({ namePage }: PageProps) {
   const [loading, setLoading] = useState(false);
   const [mealsCategory, setMealsCategory] = useState([]);
   const [drinksCategory, setDrinksCategory] = useState([]);
@@ -63,8 +79,14 @@ function FilterBar({ namePage }: HeaderProps) {
 
   if (namePage === 'meals') {
     return (
-      <>
-        <button data-testid="All-category-filter" onClick={ clearAllFilters }>All</button>
+      <div className={ styles.container_filters }>
+        <button data-testid="All-category-filter" onClick={ clearAllFilters }>
+          <img
+            className={ styles.icons }
+            src={ allMeals }
+            alt="All"
+          />
+        </button>
         {mealsCategory.map((category, index) => (
           <button
             data-testid={ `${category}-category-filter` }
@@ -72,18 +94,27 @@ function FilterBar({ namePage }: HeaderProps) {
             value={ category }
             onClick={ () => saveFilter(category, namePage) }
           >
-            {category}
-
+            <img
+              className={ styles.icons }
+              src={ iconsMeals[index] }
+              alt={ category }
+            />
           </button>
         ))}
-      </>
+      </div>
     );
   }
 
   if (namePage === 'drinks') {
     return (
-      <>
-        <button data-testid="All-category-filter" onClick={ clearAllFilters }>All</button>
+      <div className={ styles.container_filters }>
+        <button data-testid="All-category-filter" onClick={ clearAllFilters }>
+          <img
+            className={ styles.icons }
+            src={ allDrinks }
+            alt="All"
+          />
+        </button>
         {drinksCategory.map((category, index) => (
           <button
             data-testid={ `${category}-category-filter` }
@@ -91,11 +122,14 @@ function FilterBar({ namePage }: HeaderProps) {
             value={ category }
             onClick={ () => saveFilter(category, namePage) }
           >
-            {category}
-
+            <img
+              className={ styles.icons }
+              src={ iconsDrinks[index] }
+              alt={ category }
+            />
           </button>
         ))}
-      </>
+      </div>
     );
   }
 

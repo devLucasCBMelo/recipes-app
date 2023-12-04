@@ -4,6 +4,7 @@ import Header from '../components/Header/Header';
 import { DoneRecipesLocalStorage } from '../type';
 import { getLocalStorage } from '../utils/localStorage';
 import shareIcon from '../images/shareIcon.svg';
+import doneIcon from '../images/done.png';
 
 function DoneRecipes() {
   const [copiedLink, setCopiedLink] = useState(false);
@@ -45,7 +46,7 @@ function DoneRecipes() {
 
   return (
     <>
-      <Header namePage="Done Recipes" />
+      <Header pageIcon={ doneIcon } namePage="Done Recipes" />
       <div>
         <button
           data-testid="filter-by-all-btn"
