@@ -113,7 +113,7 @@ describe('Testes Meals', () => {
     expect(corbaMeal2).toBeInTheDocument();
   });
 
-  it.only('Testa se ao clicar no mesmo filtro uma segunda vez, ele retorna a lista principal sem filtros', async () => {
+  it('Testa se ao clicar no mesmo filtro uma segunda vez, ele retorna a lista principal sem filtros', async () => {
     vi.spyOn(global, 'fetch').mockImplementation(fetchMock as any);
 
     renderWithRouter(
@@ -148,5 +148,56 @@ describe('Testes Meals', () => {
 
     const corbaMeal2 = await screen.findByText(/corba/i);
     expect(corbaMeal2).toBeInTheDocument();
+  });
+
+  it('Testa se ao clicar em um card, leva para a página do card', async () => {
+    vi.spyOn(global, 'fetch').mockImplementation(fetchMock as any);
+
+    renderWithRouter(
+      <SearchBarProvider>
+        <FilterBarProvider>
+          <App />
+        </FilterBarProvider>
+      </SearchBarProvider>,
+      { route: '/meals' },
+    );
+
+    expect(global.fetch).toHaveBeenCalled();
+    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+
+    const corbaMeal = await screen.findByText(/corba/i);
+    expect(corbaMeal).toBeInTheDocument();
+
+    const sushiCard = await screen.findByText(/sushi/i);
+    expect(sushiCard).toBeInTheDocument();
+
+    await userEvent.click(corbaMeal);
+
+    const text = await screen.findByText(/id da receita de comida/i);
+    expect(text).toBeInTheDocument();
+
+    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
+
+    expect(sushiCard).not.toBeInTheDocument();
+  });
+
+  it('Teste se a API retorna erro', async () => {
+    vi.spyOn(global, 'fetch').mockImplementation(() => Promise.reject());
+
+    renderWithRouter(
+      <SearchBarProvider>
+        <FilterBarProvider>
+          <App />
+        </FilterBarProvider>
+      </SearchBarProvider>,
+      { route: '/meals' },
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+
+    const corbaMeal = await screen.queryByText(/corba/i);
+    expect(corbaMeal).not.toBeInTheDocument();
   });
 });
