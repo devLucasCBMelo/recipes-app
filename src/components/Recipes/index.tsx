@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DrinkType, HeaderProps, MealType, PageProps } from '../../type';
+import { DrinkType, MealType, PageProps } from '../../type';
 import styles from './recipes.module.css';
 import FilterBar from '../FilterBar/FilterBar';
 import searchBarContext from '../../contex/SearchBarContex';
@@ -16,17 +16,13 @@ function Recipes({ namePage }: PageProps) {
       try {
         setLoading(true);
         const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-        console.log(response);
         const data = await response.json();
-
-        console.log(data);
         setMealsData(data);
         setNoFilterMealsData(data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
         console.log('Deu erro', error);
-        console.log(mealsData);
       }
     };
 
@@ -43,6 +39,7 @@ function Recipes({ namePage }: PageProps) {
         setNoFilterDrinkData(data);
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.log('Deu erro', error);
       }
     };

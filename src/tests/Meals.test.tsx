@@ -8,9 +8,10 @@ import mockMealsCategories from '../helpers/mockMealsCategories';
 import SearchBarProvider from '../contex/SearchBarProvider';
 import FilterBarProvider from '../contex/FilterBarProvider';
 import fetchMock from '../helpers/fetchMocks';
+import FilterBar from '../components/FilterBar/FilterBar';
 
 const mealsDataAPI = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-// teste
+const beefCategory = 'Beef-category-filter';
 
 afterEach(() => {
   vi.clearAllMocks();
@@ -24,7 +25,10 @@ describe('Testes Meals', () => {
 
     renderWithRouter(<SearchBarProvider><App /></SearchBarProvider>, { route: '/meals' });
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+    const loading = screen.getByText(/Loading/i);
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(loading);
 
     const promises = mockMealsData.meals.map(async (meal, index) => {
       const element = await screen.findByTestId(`${index}-recipe-card`);
@@ -50,14 +54,17 @@ describe('Testes Meals', () => {
       { route: '/meals' },
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+    const loading = screen.getByText(/Loading/i);
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(loading);
 
     waitFor(() => {
       const categoryButtons = screen.getAllByTestId(/-category-filter/i);
       expect(categoryButtons.length).toBe(5);
     }, { timeout: 3000 });
 
-    const beefButton = await screen.findByTestId('Beef-category-filter');
+    const beefButton = await screen.findByTestId(beefCategory);
     expect(beefButton).toBeInTheDocument();
 
     const breakFastButton = await screen.findByTestId(/breakfast-category-filter/i);
@@ -88,7 +95,10 @@ describe('Testes Meals', () => {
     expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+    const loading = screen.getByText(/Loading/i);
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(loading);
 
     const corbaMeal = await screen.findByText(/corba/i);
     expect(corbaMeal).toBeInTheDocument();
@@ -175,9 +185,6 @@ describe('Testes Meals', () => {
 
     await userEvent.click(corbaMeal);
 
-    // const text = await screen.findByText(/id da receita de comida/i);
-    // expect(text).toBeInTheDocument();
-
     expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
 
     expect(sushiCard).not.toBeInTheDocument();
@@ -195,9 +202,41 @@ describe('Testes Meals', () => {
       { route: '/meals' },
     );
 
+    const loading = screen.getByText(/Loading/i);
+    expect(loading).toBeInTheDocument();
+
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
 
     const corbaMeal = await screen.queryByText(/corba/i);
     expect(corbaMeal).not.toBeInTheDocument();
+
+    const beefButton = await screen.queryByTestId(beefCategory);
+    expect(beefButton).not.toBeInTheDocument();
+
+    expect(loading).not.toBeInTheDocument();
+  });
+
+  it('Teste se a API filterBar', async () => {
+    vi.spyOn(global, 'fetch').mockImplementation(() => Promise.reject());
+
+    renderWithRouter(
+      <SearchBarProvider>
+        <FilterBarProvider>
+          <FilterBar namePage="meals" />
+        </FilterBarProvider>
+      </SearchBarProvider>,
+      { route: '/meals' },
+    );
+
+    const loading = screen.getByText(/Loading/i);
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+
+    const allButton = await screen.findByTestId(/All-category-filter/i);
+    expect(allButton).toBeInTheDocument();
+
+    const beefButton = screen.queryByTestId(beefCategory);
+    expect(beefButton).not.toBeInTheDocument();
   });
 });

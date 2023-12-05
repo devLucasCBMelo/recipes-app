@@ -8,6 +8,7 @@ import mockDrinksCategories from '../helpers/mockDrinksCategories';
 import SearchBarProvider from '../contex/SearchBarProvider';
 import FilterBarProvider from '../contex/FilterBarProvider';
 import fetchMock from '../helpers/fetchMocks';
+import FilterBar from '../components/FilterBar/FilterBar';
 
 const drinksDataAPI = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
@@ -148,5 +149,50 @@ describe('Testes Meals', () => {
 
     const ggDrink2 = await screen.findByText(/GG/i);
     expect(ggDrink2).toBeInTheDocument();
+  });
+
+  it('Teste se a API retorna erro', async () => {
+    vi.spyOn(global, 'fetch').mockImplementation(() => Promise.reject());
+
+    renderWithRouter(
+      <SearchBarProvider>
+        <FilterBarProvider>
+          <App />
+        </FilterBarProvider>
+      </SearchBarProvider>,
+      { route: '/drinks' },
+    );
+
+    const loading = screen.getByText(/Loading/i);
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+
+    const a1Card = await screen.queryByText(/A1/i);
+    expect(a1Card).not.toBeInTheDocument();
+  });
+
+  it('Teste se a API filterBar', async () => {
+    vi.spyOn(global, 'fetch').mockImplementation(() => Promise.reject());
+
+    renderWithRouter(
+      <SearchBarProvider>
+        <FilterBarProvider>
+          <FilterBar namePage="drinks" />
+        </FilterBarProvider>
+      </SearchBarProvider>,
+      { route: '/meals' },
+    );
+
+    const loading = screen.getByText(/Loading/i);
+    expect(loading).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+
+    const allButton = await screen.findByTestId(/All-category-filter/i);
+    expect(allButton).toBeInTheDocument();
+
+    const cocktailButton = screen.queryByTestId('Cocktail-category-filter');
+    expect(cocktailButton).not.toBeInTheDocument();
   });
 });
