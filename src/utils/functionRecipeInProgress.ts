@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchdDrinksDetails } from './fetchDrinksApi';
 import { fetchMealsDetails } from './fetchMealsApi';
+import { getLocalStorage } from './localStorage';
 
 export const useRecipeData = () => {
   const [data, setData] = useState<any>({});
@@ -11,6 +12,7 @@ export const useRecipeData = () => {
   const [favorite, setFavorite] = useState(false);
 
   const { id: idFinal } = useParams();
+  const navigate = useNavigate();
 
   const chamarDadosApi = async (idd: any, type: string) => {
     try {
@@ -146,6 +148,60 @@ export const useRecipeData = () => {
     }
   };
 
+  const handleNewDone = (infoReceita: any) => {
+    // const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+    if (infoReceita.meals) {
+      // console.log(infoReceita.meals);
+      const addDone = {
+        id: idFinal,
+        type: 'meal',
+        nationality: infoReceita.meals[0].strArea,
+        category: infoReceita.meals[0].strCategory,
+        name: infoReceita.meals[0].strMeal,
+        image: infoReceita.meals[0].strMealThumb,
+        alcoholicOrNot: '',
+      };
+
+      return addDone;
+    } if (infoReceita.drinks) {
+      const addDone = {
+        id: idFinal,
+        type: 'drink',
+        nationality: '',
+        category: infoReceita.drinks[0].strCategory,
+        alcoholicOrNot: infoReceita.drinks[0].strAlcoholic,
+        name: infoReceita.drinks[0].strDrink,
+        image: infoReceita.drinks[0].strDrinkThumb,
+      };
+
+      return addDone;
+    }
+  };
+
+  const handleFinish = () => {
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
+    // console.log(favorite);
+
+    if (doneRecipes.length === 0) {
+      localStorage.setItem('doneRecipes', JSON.stringify([]));
+      const newDone = [...doneRecipes, handleNewDone(data)];
+      localStorage.setItem('doneRecipes', JSON.stringify(newDone));
+      // const localStorageDoneRecipes = getLocalStorage(
+      //   'doneRecipes',
+      // );
+      // console.log(localStorageDoneRecipes);
+      navigate('/done-recipes');
+    } else if (doneRecipes.some((item: any) => item.id !== idFinal)) {
+      const newDone = [...doneRecipes, handleNewDone(data)];
+      localStorage.setItem('doneRecipes', JSON.stringify(newDone));
+      // const localStorageDoneRecipes = getLocalStorage(
+      //   'doneRecipes',
+      // );
+      // console.log(localStorageDoneRecipes);
+      navigate('/done-recipes');
+    }
+  };
+
   return { data,
     ingredients,
     checked,
@@ -156,5 +212,6 @@ export const useRecipeData = () => {
     handleLocal,
     handleFavorite,
     checkFavorites,
-    favorite };
+    favorite,
+    handleFinish };
 };

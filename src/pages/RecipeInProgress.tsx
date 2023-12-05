@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useRecipeData } from '../utils/functionRecipeInProgress';
 import { getLocalStorage } from '../utils/localStorage';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -8,7 +8,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 function RecipeInProgress() {
   const { data, ingredients, checked, finished, favorite,
     chamarDadosApi, setFinished, setChecked, handleLocal, handleFavorite,
-    checkFavorites } = useRecipeData();
+    checkFavorites, handleFinish } = useRecipeData();
   const [copiedLink, setCopiedLink] = useState(false);
 
   const { id: idFinal } = useParams();
@@ -17,8 +17,7 @@ function RecipeInProgress() {
   const tipoFinal = typeRecipe.split('/')[1];
   const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
 
-  const imgFav = '../../src/images/blackHeartIcon.svg';
-  const imgNotFav = '../../src/images/whiteHeartIcon.svg';
+  const navigate = useNavigate();
 
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
@@ -33,7 +32,8 @@ function RecipeInProgress() {
   useEffect(() => {
     if (
       localStor
-      && localStor.drinks
+      && localStor.drinks !== undefined
+      && localStor.drinks !== null && localStor.drinks
       && localStor.drinks.id
       && tipoFinal === 'drinks'
       && localStor.drinks.id === idFinal
@@ -41,7 +41,8 @@ function RecipeInProgress() {
       setChecked(localStor.drinks.ingredientsChecked);
     } else if (
       localStor
-      && localStor.meals !== null
+      && localStor.meals !== undefined
+      && localStor.meals !== null && localStor.meals !== null
       && tipoFinal === 'meals'
       && localStor.meals.id === idFinal
     ) {
@@ -133,7 +134,7 @@ function RecipeInProgress() {
         <button
           data-testid="finish-recipe-btn"
           disabled={ !finished }
-          onClick={ () => handleLocal(localStor, tipoFinal) }
+          onClick={ () => handleFinish() }
         >
           Finish
         </button>

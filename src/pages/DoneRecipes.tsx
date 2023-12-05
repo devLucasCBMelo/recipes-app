@@ -11,6 +11,7 @@ function DoneRecipes() {
   const localStorageDoneRecipes = getLocalStorage(
     'doneRecipes',
   ) as DoneRecipesLocalStorage[];
+  console.log(localStorageDoneRecipes);
 
   const [recipesDone, setRecipesDone] = useState<DoneRecipesLocalStorage[]>(
     localStorageDoneRecipes || [],
