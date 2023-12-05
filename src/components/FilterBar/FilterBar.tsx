@@ -41,6 +41,7 @@ function FilterBar({ namePage }: PageProps) {
         setMealsCategory(newData);
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.log('Deu erro na API de categorias de comidas', error);
       }
     };
@@ -60,6 +61,7 @@ function FilterBar({ namePage }: PageProps) {
         setDrinksCategory(newData);
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.log('Deu erro na API de categorias de bebidas', error);
       }
     };
@@ -76,6 +78,10 @@ function FilterBar({ namePage }: PageProps) {
       setDrinkData(noFilterDrinkData);
     }
   };
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
   if (namePage === 'meals') {
     return (
@@ -131,10 +137,6 @@ function FilterBar({ namePage }: PageProps) {
         ))}
       </div>
     );
-  }
-
-  if (loading) {
-    return <h1>Loading...</h1>;
   }
 }
 
