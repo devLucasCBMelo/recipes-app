@@ -13,18 +13,22 @@
 .recipeCard {
   border: 0.518px solid #b1b1b1;
   border-radius: 5px;
+  color: #1a1b1c;
   display: flex;
   flex-direction: column;
   font-family: Epilogue , sans-serif;
+  font-size: 12px;
   font-weight: 400;
   height: auto;
-  margin: 10px;
+  margin: 8px;
+  text-decoration: none;
 
 }
 
 .name_recipe {
+  font-size: 14px;
   margin-left: 16px;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 @media ( min-width : 501px ) {

@@ -86,7 +86,6 @@ function Recipes({ namePage }: PageProps) {
                 {recipe.strMeal}
 
               </p>
-              <p>{recipe.idMeal}</p>
             </Link>
           ))}
         </div>
@@ -123,9 +122,7 @@ function Recipes({ namePage }: PageProps) {
                 data-testid={ `${index}-card-name` }
               >
                 {recipe.strDrink}
-
               </p>
-              <p>{recipe.idDrink}</p>
             </Link>
           ))}
         </div>

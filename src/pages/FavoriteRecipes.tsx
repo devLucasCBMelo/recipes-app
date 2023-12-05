@@ -7,6 +7,7 @@ import FilterRecipes from '../components/FilterRecipes';
 import ShowShareAlert from '../components/ShowShareAlert';
 import searchBarContext from '../contex/SearchBarContex';
 import favoriteIcon from '../images/favorite.png';
+import styles from './FavoriteRecipes/FavoriteRecipes.module.css';
 
 function FavoriteRecipes() {
   // const [favorite, setFavorite] = useState<RecipeType[]>([]);
@@ -35,10 +36,9 @@ function FavoriteRecipes() {
     return (
       <>
         <Header pageIcon={ favoriteIcon } namePage="Favorite Recipes" />
-        <p>
+        <p className={ styles.no_favorite }>
           No favorite recipes have been added!
         </p>
-        {/* <Footer /> */}
       </>
     );
   }
@@ -53,10 +53,13 @@ function FavoriteRecipes() {
       <ShowShareAlert />
       {
         filtersRecipes.length > 0
-          ? <CardFavorites favorite={ filtersRecipes } />
-          : <CardFavorites favorite={ favorites } />
+          ? (
+            <div className={ styles.container }>
+              <CardFavorites favorite={ filtersRecipes } />
+            </div>
+          )
+          : (<div><CardFavorites favorite={ favorites } /></div>)
       }
-      {/* <Footer /> */}
     </>
   );
 }
