@@ -12,7 +12,7 @@ type CardFavoritesProps = {
 export default function CardFavorites({ favorite }: CardFavoritesProps) {
   return (
     favorite.length > 0 && favorite.map((recipe, index) => (
-      <div className="card-recipe-favorite" key={ recipe.id }>
+      <div className={ styles.card_recipe_favorite } key={ recipe.id }>
         <div className="img-recipe">
           <Link to={ `/${recipe.type}s/${recipe.id}` }>
             <img
@@ -23,8 +23,12 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
             />
           </Link>
         </div>
-        <div className="info-recipe">
-          <Link to={ `/${recipe.type}s/${recipe.id}` }>
+        <div className={ styles.info_recipe }>
+
+          <Link
+            className={ styles.link }
+            to={ `/${recipe.type}s/${recipe.id}` }
+          >
             <div className={ styles.name_recipe }>
               <h3
                 className={ styles.title_recipe }
@@ -36,6 +40,7 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
             </div>
           </Link>
           <div
+            className={ styles.subtitle }
             data-testid={ `${index}-horizontal-top-text` }
           >
             {recipe.type === 'meal' ? (

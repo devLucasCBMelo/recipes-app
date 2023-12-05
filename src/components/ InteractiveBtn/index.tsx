@@ -10,6 +10,7 @@ import heartBlack from '../../images/blackHeartIcon.svg';
 import heartWhite from '../../images/whiteHeartIcon.svg';
 import share from '../../images/shareIcon.svg';
 import { deleteLocalStorage, putLocalStorage } from '../../utils/localStorage';
+import styles from './InteractiveBtn.module.css';
 
 type InteractiveBtnProps = {
   srcShare?: typeof heartBlack | typeof heartWhite;
@@ -87,7 +88,7 @@ export default function InteractiveBtn({
   };
 
   return (
-    <>
+    <div className={ styles.container_buttons }>
       { srcShare && (
 
         <button
@@ -115,6 +116,6 @@ export default function InteractiveBtn({
           />
         </button>
       )}
-    </>
+    </div>
   );
 }

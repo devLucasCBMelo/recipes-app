@@ -4,6 +4,7 @@ import ALLRecipes from '../../images/filtros/AllRecipes.svg';
 import Foots from '../../images/filtros/foods.svg';
 import Drinks from '../../images/filtros/drinks.svg';
 import searchBarContext from '../../contex/SearchBarContex';
+import styles from './filterRecipes.module.css';
 
 type FilterRecipesProps = {
   testIDAll: string;
@@ -57,7 +58,7 @@ export default function FilterRecipes({ testIDAll,
     }
   };
   return (
-    <div className="filters-Recipes">
+    <div className={ styles.filters_Recipes }>
       <button
         type="button"
         data-testid={ testIDAll }

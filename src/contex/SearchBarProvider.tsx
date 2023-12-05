@@ -12,7 +12,6 @@ type SearchProviderProps = {
 };
 
 function SearchBarProvider({ children }:SearchProviderProps) {
-  const [dataList, setDataList] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [favorites, setFavorites] = useState<RecipeType[]>([]);
   const [doneRecipes, setDoneRecipes] = useState<RecipeType[]>([]);
