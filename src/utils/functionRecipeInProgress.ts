@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { fetchdDrinksDetails } from './fetchDrinksApi';
 import { fetchMealsDetails } from './fetchMealsApi';
 
@@ -7,6 +8,9 @@ export const useRecipeData = () => {
   const [ingredients, setIngredients] = useState<any>([]);
   const [checked, setChecked] = useState<boolean[]>([]);
   const [finished, setFinished] = useState(false);
+  const [favorite, setFavorite] = useState(false);
+
+  const { id: idFinal } = useParams();
 
   const chamarDadosApi = async (idd: any, type: string) => {
     try {
@@ -44,7 +48,7 @@ export const useRecipeData = () => {
     }
   };
 
-  const handleLocal = (localStor: any, tipoFinal: string, idFinal: any) => {
+  const handleLocal = (localStor: any, tipoFinal: string) => {
     if (localStor === null && tipoFinal === 'drinks') {
       const inProgressDrink = {
         drinks: {
@@ -81,6 +85,67 @@ export const useRecipeData = () => {
     }
   };
 
+  const checkFavorites = () => {
+    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+    if (favorites.length === 0) {
+      setFavorite(false);
+    } else if (favorites.some((item: any) => item.id === idFinal)) {
+      setFavorite(true);
+    }
+    console.log(favorites);
+  };
+
+  const handleFavorite = () => {
+    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+    // console.log(favorite);
+
+    if (favorites.length === 0) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+      const newFavorites = [...favorites, handleNewFavorite(data)];
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setFavorite(true);
+    } else if (favorites.some((item: any) => item.id === idFinal)) {
+      const newFavorites = favorites.filter((item: any) => item.id !== idFinal);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setFavorite(false);
+    } else if (favorites.some((item: any) => item.id !== idFinal)) {
+      const newFavorites = [...favorites, handleNewFavorite(data)];
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setFavorite(true);
+    }
+  };
+
+  const handleNewFavorite = (infoReceita: any) => {
+    // const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+    if (infoReceita.meals) {
+      // console.log(infoReceita.meals);
+      const addFav = {
+        id: idFinal,
+        type: 'meal',
+        nationality: infoReceita.meals[0].strArea,
+        category: infoReceita.meals[0].strCategory,
+        name: infoReceita.meals[0].strMeal,
+        image: infoReceita.meals[0].strMealThumb,
+        alcoholicOrNot: '',
+      };
+
+      setFavorite(true);
+      return addFav;
+    } if (infoReceita.drinks) {
+      const addFav = {
+        id: idFinal,
+        type: 'drink',
+        nationality: '',
+        category: infoReceita.drinks[0].strCategory,
+        alcoholicOrNot: infoReceita.drinks[0].strAlcoholic,
+        name: infoReceita.drinks[0].strDrink,
+        image: infoReceita.drinks[0].strDrinkThumb,
+      };
+      setFavorite(true);
+      return addFav;
+    }
+  };
+
   return { data,
     ingredients,
     checked,
@@ -88,5 +153,8 @@ export const useRecipeData = () => {
     setChecked,
     setFinished,
     chamarDadosApi,
-    handleLocal };
+    handleLocal,
+    handleFavorite,
+    checkFavorites,
+    favorite };
 };

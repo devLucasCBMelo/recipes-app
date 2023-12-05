@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useRecipeData } from '../utils/functionRecipeInProgress';
+import { getLocalStorage } from '../utils/localStorage';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeInProgress() {
-  const { data, ingredients, checked, finished,
-    chamarDadosApi, setFinished, setChecked, handleLocal } = useRecipeData();
+  const { data, ingredients, checked, finished, favorite,
+    chamarDadosApi, setFinished, setChecked, handleLocal, handleFavorite,
+    checkFavorites } = useRecipeData();
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const { id: idFinal } = useParams();
   const location = useLocation();
@@ -12,13 +17,17 @@ function RecipeInProgress() {
   const tipoFinal = typeRecipe.split('/')[1];
   const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
 
+  const imgFav = '../../src/images/blackHeartIcon.svg';
+  const imgNotFav = '../../src/images/whiteHeartIcon.svg';
+
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
   }, [idFinal, tipoFinal]);
 
   useEffect(() => {
     setFinished(handleFinished());
-    handleLocal(localStor, tipoFinal, idFinal);
+    handleLocal(localStor, tipoFinal);
+    // console.log(data);
   }, [checked]);
 
   useEffect(() => {
@@ -38,6 +47,7 @@ function RecipeInProgress() {
     ) {
       setChecked(localStor.meals.ingredientsChecked);
     }
+    checkFavorites();
   }, []);
 
   const handleCheckBox = (index: number) => {
@@ -46,6 +56,18 @@ function RecipeInProgress() {
   };
 
   const handleFinished = () => checked.every((checkbox) => checkbox === true);
+
+  const handleCopyUrl = () => {
+    const url = `http://localhost:3000${location.pathname.replace('/in-progress', '')}`;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        setCopiedLink(true);
+        setTimeout(() => {
+          setCopiedLink(false);
+        }, 3000);
+      },
+    );
+  };
 
   const renderRecipeDetails = () => {
     const recipeData = data.meals ? data.meals : data.drinks;
@@ -59,8 +81,25 @@ function RecipeInProgress() {
           src={ recipeData[0][`${titleKey}Thumb`] }
           alt={ tipoFinal }
         />
-        <button data-testid="share-btn">Share</button>
-        <button data-testid="favorite-btn">Favorite</button>
+        <button
+          data-testid="share-btn"
+          onClick={ () => handleCopyUrl() }
+        >
+          Share
+
+        </button>
+        {copiedLink && <p>Link copied!</p>}
+        <button
+          onClick={ handleFavorite }
+        >
+          <img
+            data-testid="favorite-btn"
+            src={ favorite ? blackHeartIcon : whiteHeartIcon }
+            alt="Favorite Recipe"
+
+          />
+          Favorite
+        </button>
         <h3 data-testid="recipe-category">
           Category:
           {' '}
@@ -94,7 +133,7 @@ function RecipeInProgress() {
         <button
           data-testid="finish-recipe-btn"
           disabled={ !finished }
-          onClick={ () => handleLocal(localStor, tipoFinal, idFinal) }
+          onClick={ () => handleLocal(localStor, tipoFinal) }
         >
           Finish
         </button>
