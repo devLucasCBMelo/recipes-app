@@ -89,7 +89,7 @@ function Recipes({ namePage }: PageProps) {
                 {recipe.strMeal}
 
               </p>
-              {/* <p>{recipe.idMeal}</p> */}
+              <p>{recipe.idMeal}</p>
             </Link>
           ))}
         </div>
@@ -128,7 +128,7 @@ function Recipes({ namePage }: PageProps) {
                 {recipe.strDrink}
 
               </p>
-              {/* <p>{recipe.idDrink}</p> */}
+              <p>{recipe.idDrink}</p>
             </Link>
           ))}
         </div>
