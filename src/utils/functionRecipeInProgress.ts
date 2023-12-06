@@ -10,6 +10,7 @@ export const useRecipeData = () => {
   const [checked, setChecked] = useState<boolean[]>([]);
   const [finished, setFinished] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const [erro, setErro] = useState(false);
 
   const { id: idFinal } = useParams();
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ export const useRecipeData = () => {
         throw new Error('No data available');
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error, setErro(true));
     }
   };
 
@@ -94,7 +95,7 @@ export const useRecipeData = () => {
     } else if (favorites.some((item: any) => item.id === idFinal)) {
       setFavorite(true);
     }
-    console.log(favorites);
+    // console.log(favorites);
   };
 
   const handleFavorite = () => {
@@ -149,9 +150,13 @@ export const useRecipeData = () => {
   };
 
   const handleNewDone = (infoReceita: any) => {
+    const dataEHora = new Date();
+    const dataFormatada = dataEHora.toISOString();
     // const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
     if (infoReceita.meals) {
       // console.log(infoReceita.meals);
+      const tagsArray = infoReceita.meals[0].strTags
+        ? infoReceita.meals[0].strTags.split(',') : [];
       const addDone = {
         id: idFinal,
         type: 'meal',
@@ -160,10 +165,14 @@ export const useRecipeData = () => {
         name: infoReceita.meals[0].strMeal,
         image: infoReceita.meals[0].strMealThumb,
         alcoholicOrNot: '',
+        tags: tagsArray,
+        doneDate: dataFormatada,
       };
 
       return addDone;
     } if (infoReceita.drinks) {
+      const tagsArray = infoReceita.drinks[0].strTags
+        ? infoReceita.drinks[0].strTags.split(',') : [];
       const addDone = {
         id: idFinal,
         type: 'drink',
@@ -172,6 +181,8 @@ export const useRecipeData = () => {
         alcoholicOrNot: infoReceita.drinks[0].strAlcoholic,
         name: infoReceita.drinks[0].strDrink,
         image: infoReceita.drinks[0].strDrinkThumb,
+        tags: tagsArray,
+        doneDate: dataFormatada,
       };
 
       return addDone;
@@ -182,6 +193,8 @@ export const useRecipeData = () => {
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
     // console.log(favorite);
 
+    const linkDone = '/done-recipes';
+
     if (doneRecipes.length === 0) {
       localStorage.setItem('doneRecipes', JSON.stringify([]));
       const newDone = [...doneRecipes, handleNewDone(data)];
@@ -190,7 +203,7 @@ export const useRecipeData = () => {
       //   'doneRecipes',
       // );
       // console.log(localStorageDoneRecipes);
-      navigate('/done-recipes');
+      navigate(linkDone);
     } else if (doneRecipes.some((item: any) => item.id !== idFinal)) {
       const newDone = [...doneRecipes, handleNewDone(data)];
       localStorage.setItem('doneRecipes', JSON.stringify(newDone));
@@ -198,7 +211,9 @@ export const useRecipeData = () => {
       //   'doneRecipes',
       // );
       // console.log(localStorageDoneRecipes);
-      navigate('/done-recipes');
+      navigate(linkDone);
+    } else {
+      navigate(linkDone);
     }
   };
 
@@ -207,6 +222,7 @@ export const useRecipeData = () => {
     checked,
     finished,
     setChecked,
+    erro,
     setFinished,
     chamarDadosApi,
     handleLocal,

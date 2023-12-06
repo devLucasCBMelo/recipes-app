@@ -69,6 +69,8 @@ function DoneRecipes() {
       </div>
       {recipesDone.map((recipe, index) => {
         const { id, type } = recipe;
+        recipe.tags = recipe.tags === null ? [] : recipe.tags;
+        console.log(recipe.tags);
         return (
           <div key={ index }>
             <Link to={ `/${type}s/${id}` }>
