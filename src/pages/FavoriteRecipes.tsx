@@ -50,7 +50,7 @@ function FavoriteRecipes() {
         testIDMeal="filter-by-meal-btn"
         testIDDrink="filter-by-drink-btn"
       />
-      <ShowShareAlert />
+      {/* <ShowShareAlert /> */}
       {
         filtersRecipes.length > 0
           ? (
