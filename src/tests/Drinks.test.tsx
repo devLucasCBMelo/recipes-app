@@ -53,9 +53,9 @@ describe('Testes Meals', () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
 
-    waitFor(() => {
+    await waitFor(() => {
       const categoryButtons = screen.getAllByTestId(/-category-filter/i);
-      expect(categoryButtons.length).toBe(5);
+      expect(categoryButtons.length).toBe(6);
     }, { timeout: 3000 });
 
     const ordinaryButton = await screen.findByTestId('Ordinary Drink-category-filter');
