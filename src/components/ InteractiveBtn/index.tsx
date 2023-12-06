@@ -20,6 +20,7 @@ type InteractiveBtnProps = {
   id?: string;
   type?: string;
   recipe?: RecipeType;
+  handleIdLink?: (idLink: string, typeLink: string) => void;
 };
 
 export default function InteractiveBtn({
@@ -30,6 +31,7 @@ export default function InteractiveBtn({
   id,
   type,
   recipe,
+  handleIdLink,
 }: InteractiveBtnProps = {}) {
   const { setShowAlert, setFavorites } = useContext(searchBarContext);
 
@@ -47,20 +49,22 @@ export default function InteractiveBtn({
     if (TYPE === 'meal') {
       navigator.clipboard.writeText(`http://localhost:3000/meals/${ID}`);
       setShowAlert(true);
+      if (handleIdLink) handleIdLink(ID, TYPE);
       setTimeout(
         () => {
           setShowAlert(false);
         },
-        5000,
+        3000,
       );
     } else {
       navigator.clipboard.writeText(`http://localhost:3000/drinks/${ID}`);
       setShowAlert(true);
+      if (handleIdLink) handleIdLink(ID, TYPE);
       setTimeout(
         () => {
           setShowAlert(false);
         },
-        5000,
+        3000,
       );
     }
   };
