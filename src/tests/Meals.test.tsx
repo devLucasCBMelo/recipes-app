@@ -59,9 +59,10 @@ describe('Testes Meals', () => {
 
     await waitForElementToBeRemoved(loading);
 
-    waitFor(() => {
+    await waitFor(() => {
       const categoryButtons = screen.getAllByTestId(/-category-filter/i);
-      expect(categoryButtons.length).toBe(5);
+      expect(categoryButtons).toHaveLength(6);
+      screen.debug();
     }, { timeout: 3000 });
 
     const beefButton = await screen.findByTestId(beefCategory);
