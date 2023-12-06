@@ -9,13 +9,21 @@ function DrinkRecipe() {
 
   useEffect(() => {
     const fetchDrinkDetails = async () => {
-      const { drinks: [data] } = await fetchdDrinksDetails(id ?? '');
-      setDrinkData(data);
+      try {
+        const result = await fetchdDrinksDetails(id ?? '');
+
+        if (result && result.drinks && result.drinks.length > 0) {
+          const [data] = result.drinks;
+          setDrinkData(data);
+        } else {
+          console.error('Nenhum dado de bebida encontrado');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar detalhes da bebida:', error);
+      }
     };
 
-    if (id) {
-      fetchDrinkDetails();
-    }
+    fetchDrinkDetails();
   }, [id]);
 
   if (drinkData !== 0) {

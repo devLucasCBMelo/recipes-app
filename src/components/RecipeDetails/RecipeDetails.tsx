@@ -8,7 +8,6 @@ import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import { fetchdDrinksDetails } from '../../utils/fetchDrinksApi';
 import { fetchMealsDetails } from '../../utils/fetchMealsApi';
-// import { favoriteRecipes } from '../../mocks/mockLocalStorage';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
@@ -21,14 +20,12 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   const { id } = useParams();
   const type = recommendationType === 'Drink' ? 'meal' : 'drink';
 
-  // console.log(id);
-  // console.log(type);
-
   const [recipeIsDone, setRecipeIsDone] = useState<boolean>(false);
   const [recipeInProgress, setRecipeInProgress] = useState<boolean>(false);
   const [recipeFavorite, setRecipeFavorite] = useState(false);
   const [data, setData] = useState<any>([]);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const combineIngredientsAndMeasures = () => {
     return recipe.ingredients?.map((ingredient, index) => {
@@ -83,10 +80,15 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
 
   const checkFavorite = () => {
     const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-    if (favorites.length === 0 && favorites.some((item: any) => item.id !== id)) {
+
+    if (id && favorites.length > 0) {
+      if (favorites.some((item: any) => item.id === id)) {
+        setRecipeFavorite(true);
+      } else {
+        setRecipeFavorite(false);
+      }
+    } else {
       setRecipeFavorite(false);
-    } else if (favorites.some((item: any) => item.id === id)) {
-      setRecipeFavorite(true);
     }
   };
 
@@ -109,9 +111,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   };
 
   const handleNewFavorite = (infoReceita: any) => {
-    // const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
     if (infoReceita.meals) {
-      // console.log(infoReceita.meals);
       const addFav = {
         id,
         type: 'meal',
@@ -144,97 +144,106 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
     verifyRecipeInProg();
     checkFavorite();
     chamarDadosApi(id, type);
+    setLoading(false);
   });
+  useEffect(() => {
+    if (data) {
+      setLoading(false);
+    }
+  }, [data]);
 
   const handleStartBtn = () => {
-    navigate(`${location.pathname}in-progress`);
+    if (type === 'drink') {
+      navigate(`/drinks/${id}/in-progress`);
+    } else { navigate(`/meals/${id}/in-progress`); }
   };
-
   const btnText = recipeInProgress === true ? 'Continue Recipe' : 'Start Recipe';
+
   return (
     <div>
-      <h1 data-testid="recipe-title">{recipe.strMeal || recipe.strDrink}</h1>
-      <img
-        src={ recipe.strMealThumb || recipe.strDrinkThumb }
-        alt={ recipe.strMeal || recipe.strDrink }
-        data-testid="recipe-photo"
-      />
-      <div>
-        <h3 data-testid="recipe-category">
-          Categoria:
-          {' '}
-          {`${recipe.strCategory} - ${recipe.strAlcoholic || ''}`}
-        </h3>
-        <h4 data-testid="instructions">
-          Instruções:
-          {' '}
-          {recipe.strInstructions}
-        </h4>
-        <h4>Ingredientes:</h4>
-        <ul>
-          {combineIngredientsAndMeasures()?.map((ingredient, index) => (
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-              key={ index }
-            >
-              {ingredient}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {recipe.containsAlcoholic !== undefined && (
-        <h3 data-testid="contains-alcoholic">
-          {recipe.containsAlcoholic ? 'Alcoholic' : 'Não contém álcool'}
-        </h3>
-      )}
-      {/* <FavoriteShare
-        recipe={ recipe }
-        type={ type }
-        dataTestIdShare="share-btn"
-        dataTestIdLike="favorite-btn"
-      /> */}
-      <button
-        data-testid="share-btn"
-        onClick={ () => handleCopyUrl() }
-      >
-        Share
-
-      </button>
-      {copiedLink && <p>Link copied!</p>}
-      <button
-        onClick={ handleFavorite }
-      >
-        <img
-          data-testid="favorite-btn"
-          src={ recipeFavorite ? blackHeartIcon : whiteHeartIcon }
-          alt="Favorite Recipe"
-        />
-        Favorite
-      </button>
-      {recipe.strYoutube && (
-        <div>
-          <h4>Vídeo:</h4>
-          <iframe
-            title="Recipe Video"
-            width="560"
-            height="315"
-            src={ recipe.strYoutube.replace('watch?v=', 'embed/') }
-            data-testid="video"
-            allowFullScreen
+      {loading ? (
+        <h1>Carregando...</h1>
+      ) : (
+        <>
+          <h1 data-testid="recipe-title">{recipe.strMeal || recipe.strDrink}</h1>
+          <img
+            src={ recipe.strMealThumb || recipe.strDrinkThumb }
+            alt={ recipe.strMeal || recipe.strDrink }
+            data-testid="recipe-photo"
           />
-        </div>
+          <div>
+            <h3 data-testid="recipe-category">
+              Categoria:
+              {' '}
+              {`${recipe.strCategory} - ${recipe.strAlcoholic || ''}`}
+            </h3>
+            <h4 data-testid="instructions">
+              Instruções:
+              {' '}
+              {recipe.strInstructions}
+            </h4>
+            <h4>Ingredientes:</h4>
+            <ul>
+              {combineIngredientsAndMeasures()?.map((ingredient, index) => (
+                <li
+                  data-testid={ `${index}-ingredient-name-and-measure` }
+                  key={ index }
+                >
+                  {ingredient}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {recipe.containsAlcoholic !== undefined && (
+            <h3 data-testid="contains-alcoholic">
+              {recipe.containsAlcoholic ? 'Alcoholic' : 'Não contém álcool'}
+            </h3>
+          )}
+
+          <button
+            data-testid="share-btn"
+            onClick={ () => handleCopyUrl() }
+          >
+            Share
+
+          </button>
+          {copiedLink && <p>Link copied!</p>}
+          <button
+            onClick={ handleFavorite }
+          >
+            <img
+              data-testid="favorite-btn"
+              src={ recipeFavorite ? blackHeartIcon : whiteHeartIcon }
+              alt="Favorite Recipe"
+            />
+            Favorite
+          </button>
+          {recipe.strYoutube && (
+            <div>
+              <h4>Vídeo:</h4>
+              <iframe
+                title="Recipe Video"
+                width="560"
+                height="315"
+                src={ recipe.strYoutube.replace('watch?v=', 'embed/') }
+                data-testid="video"
+                allowFullScreen
+              />
+            </div>
+          )}
+          <Recommendations recommendationType={ recommendationType } />
+          {!recipeIsDone && (
+            <button
+              className="start__recipe__btn"
+              type="button"
+              data-testid="start-recipe-btn"
+              onClick={ handleStartBtn }
+            >
+              {btnText}
+            </button>)}
+        </>
       )}
-      <Recommendations recommendationType={ recommendationType } />
-      {!recipeIsDone && (
-        <button
-          className="start__recipe__btn"
-          type="button"
-          data-testid="start-recipe-btn"
-          onClick={ handleStartBtn }
-        >
-          {btnText}
-        </button>)}
     </div>
   );
 }
