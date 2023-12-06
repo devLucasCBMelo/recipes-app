@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useRecipeData } from '../utils/functionRecipeInProgress';
+import { getLocalStorage } from '../utils/localStorage';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeInProgress() {
-  const { data, ingredients, checked, finished,
-    chamarDadosApi, setFinished, setChecked, handleLocal } = useRecipeData();
+  const { data, ingredients, checked, finished, favorite,
+    chamarDadosApi, setFinished, setChecked, handleLocal, handleFavorite,
+    checkFavorites, handleFinish } = useRecipeData();
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const { id: idFinal } = useParams();
   const location = useLocation();
@@ -12,19 +17,23 @@ function RecipeInProgress() {
   const tipoFinal = typeRecipe.split('/')[1];
   const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     chamarDadosApi(idFinal, tipoFinal);
   }, [idFinal, tipoFinal]);
 
   useEffect(() => {
     setFinished(handleFinished());
-    handleLocal(localStor, tipoFinal, idFinal);
+    handleLocal(localStor, tipoFinal);
+    // console.log(data);
   }, [checked]);
 
   useEffect(() => {
     if (
       localStor
-      && localStor.drinks
+      && localStor.drinks !== undefined
+      && localStor.drinks !== null && localStor.drinks
       && localStor.drinks.id
       && tipoFinal === 'drinks'
       && localStor.drinks.id === idFinal
@@ -32,12 +41,14 @@ function RecipeInProgress() {
       setChecked(localStor.drinks.ingredientsChecked);
     } else if (
       localStor
-      && localStor.meals !== null
+      && localStor.meals !== undefined
+      && localStor.meals !== null && localStor.meals !== null
       && tipoFinal === 'meals'
       && localStor.meals.id === idFinal
     ) {
       setChecked(localStor.meals.ingredientsChecked);
     }
+    checkFavorites();
   }, []);
 
   const handleCheckBox = (index: number) => {
@@ -46,6 +57,18 @@ function RecipeInProgress() {
   };
 
   const handleFinished = () => checked.every((checkbox) => checkbox === true);
+
+  const handleCopyUrl = () => {
+    const url = `http://localhost:3000${location.pathname.replace('/in-progress', '')}`;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        setCopiedLink(true);
+        setTimeout(() => {
+          setCopiedLink(false);
+        }, 3000);
+      },
+    );
+  };
 
   const renderRecipeDetails = () => {
     const recipeData = data.meals ? data.meals : data.drinks;
@@ -59,8 +82,25 @@ function RecipeInProgress() {
           src={ recipeData[0][`${titleKey}Thumb`] }
           alt={ tipoFinal }
         />
-        <button data-testid="share-btn">Share</button>
-        <button data-testid="favorite-btn">Favorite</button>
+        <button
+          data-testid="share-btn"
+          onClick={ () => handleCopyUrl() }
+        >
+          Share
+
+        </button>
+        {copiedLink && <p>Link copied!</p>}
+        <button
+          onClick={ handleFavorite }
+        >
+          <img
+            data-testid="favorite-btn"
+            src={ favorite ? blackHeartIcon : whiteHeartIcon }
+            alt="Favorite Recipe"
+
+          />
+          Favorite
+        </button>
         <h3 data-testid="recipe-category">
           Category:
           {' '}
@@ -94,7 +134,7 @@ function RecipeInProgress() {
         <button
           data-testid="finish-recipe-btn"
           disabled={ !finished }
-          onClick={ () => handleLocal(localStor, tipoFinal, idFinal) }
+          onClick={ () => handleFinish() }
         >
           Finish
         </button>

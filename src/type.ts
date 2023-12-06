@@ -56,7 +56,7 @@ export type DataDrinkType = {
 export type RecipeType = {
   id: string;
   type: string;
-  nationality: string;
+  nationality?: string;
   category: string;
   alcoholicOrNot: string;
   name: string;
