@@ -147,7 +147,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   });
 
   const handleStartBtn = () => {
-    navigate(`${location.pathname}/in-progress`);
+    navigate(`${location.pathname}in-progress`);
   };
 
   const btnText = recipeInProgress === true ? 'Continue Recipe' : 'Start Recipe';
