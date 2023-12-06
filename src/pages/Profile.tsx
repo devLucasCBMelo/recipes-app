@@ -8,6 +8,7 @@ import { UserLocalStorage } from '../type';
 import done from '../images/doneProfile.svg';
 import favorite from '../images/favoriteProfile.svg';
 import logout from '../images/logout.svg';
+import styles from './Profile/Profile.module.css';
 
 function Profile() {
   const [email, setEmail] = useState('');
@@ -23,7 +24,7 @@ function Profile() {
   return (
     <>
       <Header pageIcon={ profileIcon } namePage="Profile" />
-      <div className="login-email">
+      <div className={ styles.login_email }>
         <h4
           data-testid="profile-email"
         >
@@ -31,38 +32,55 @@ function Profile() {
 
         </h4>
       </div>
-      <div className="done-btn">
-        <button
-          type="button"
-          data-testid="profile-done-btn"
-          onClick={ () => navigate('/done-recipes') }
-        >
-          <img src={ done } alt="Done Recipes button icon" />
-          Done Recipes
-        </button>
-      </div>
-      <div className="favorite-btn">
-        <button
-          type="button"
-          data-testid="profile-favorite-btn"
-          onClick={ () => navigate('/favorite-recipes') }
-        >
-          <img src={ favorite } alt="Favorite Recipes button icon" />
-          Favorite Recipes
-        </button>
-      </div>
-      <div className="logout-btn">
-        <button
-          type="button"
-          data-testid="profile-logout-btn"
-          onClick={ () => {
-            localStorage.clear();
-            navigate('/');
-          } }
-        >
-          <img src={ logout } alt="Logout button icon" />
-          Logout
-        </button>
+      <div className={ styles.container }>
+        <div className={ styles.done_btn }>
+          <img
+            className={ styles.icon }
+            src={ done }
+            alt="Done Recipes button icon"
+          />
+          <button
+            className={ styles.button }
+            type="button"
+            data-testid="profile-done-btn"
+            onClick={ () => navigate('/done-recipes') }
+          >
+            Done Recipes
+          </button>
+        </div>
+        <div className={ styles.favorite_btn }>
+          <img
+            className={ styles.icon }
+            src={ favorite }
+            alt="Favorite Recipes button icon"
+          />
+          <button
+            className={ styles.button }
+            type="button"
+            data-testid="profile-favorite-btn"
+            onClick={ () => navigate('/favorite-recipes') }
+          >
+            Favorite Recipes
+          </button>
+        </div>
+        <div className={ styles.logout_btn }>
+          <img
+            className={ styles.icon }
+            src={ logout }
+            alt="Logout button icon"
+          />
+          <button
+            className={ styles.button }
+            type="button"
+            data-testid="profile-logout-btn"
+            onClick={ () => {
+              localStorage.clear();
+              navigate('/');
+            } }
+          >
+            Logout
+          </button>
+        </div>
       </div>
       <Footer />
     </>

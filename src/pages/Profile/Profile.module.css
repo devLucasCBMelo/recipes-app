@@ -1,0 +1,44 @@
+.login_email {
+  color: #1a1b1c;
+  font-size: 16px;
+  text-align: center;
+}
+
+.button {
+  color: #797d86;
+  font-size: 16px;
+  gap: 10px;
+}
+
+.done_btn, .favorite_btn {
+  border-bottom: solid 0.3px #b1b1b1;
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 25px;
+  padding-left: 20px;
+  padding-top: 20px;
+  width: 290px;
+}
+
+.logout_btn {
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 25px;
+  padding-left: 20px;
+  padding-top: 20px;
+  width: 290px;
+
+
+}
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+
+}
+
+.icon {
+  margin-right: 22px;
+}
