@@ -8,7 +8,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 function RecipeInProgress() {
   const { data, ingredients, checked, finished, favorite,
     chamarDadosApi, setFinished, setChecked, handleLocal, handleFavorite,
-    checkFavorites, handleFinish } = useRecipeData();
+    checkFavorites, handleFinish, erro } = useRecipeData();
   const [copiedLink, setCopiedLink] = useState(false);
 
   const { id: idFinal } = useParams();
@@ -49,6 +49,7 @@ function RecipeInProgress() {
       setChecked(localStor.meals.ingredientsChecked);
     }
     checkFavorites();
+    console.log(localStorage.getItem('inProgressRecipe')!.length);
   }, []);
 
   const handleCheckBox = (index: number) => {
@@ -142,7 +143,13 @@ function RecipeInProgress() {
     );
   };
 
-  return data[tipoFinal] ? renderRecipeDetails() : <h1>Loading...</h1>;
+  if (erro) {
+    return <h1>Erro</h1>;
+  }
+  if (data[tipoFinal]) {
+    return renderRecipeDetails();
+  }
+  return <h1>Loading...</h1>;
 }
 
 export default RecipeInProgress;
