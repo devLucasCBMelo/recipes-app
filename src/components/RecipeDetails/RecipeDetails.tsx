@@ -4,6 +4,11 @@ import { Recipe, RecipeType } from '../../type';
 import Recommendations from '../Recommendations/Recommendations';
 import './recipeDetails.css';
 import FavoriteShare from '../FavoriteShare/FavoriteShare';
+import blackHeartIcon from '../../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
+import { fetchdDrinksDetails } from '../../utils/fetchDrinksApi';
+import { fetchMealsDetails } from '../../utils/fetchMealsApi';
+// import { favoriteRecipes } from '../../mocks/mockLocalStorage';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
@@ -16,13 +21,47 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   const { id } = useParams();
   const type = recommendationType === 'Drink' ? 'meal' : 'drink';
 
+  // console.log(id);
+  // console.log(type);
+
   const [recipeIsDone, setRecipeIsDone] = useState<boolean>(false);
   const [recipeInProgress, setRecipeInProgress] = useState<boolean>(false);
+  const [recipeFavorite, setRecipeFavorite] = useState(false);
+  const [data, setData] = useState<any>([]);
+  const [copiedLink, setCopiedLink] = useState(false);
+
   const combineIngredientsAndMeasures = () => {
     return recipe.ingredients?.map((ingredient, index) => {
       const measure = (recipe as any)[`strMeasure${index + 1}`];
       return `${ingredient} - ${measure}`;
     });
+  };
+
+  const chamarDadosApi = async (idd: any, tipo: string) => {
+    let retorno;
+
+    if (tipo === 'drink') {
+      retorno = await fetchdDrinksDetails(idd);
+    } else if (tipo === 'meal') {
+      retorno = await fetchMealsDetails(idd);
+    } else {
+      throw new Error('Invalid type');
+    }
+
+    setData(retorno);
+  };
+
+  const handleCopyUrl = () => {
+    console.log(location.pathname);
+    const url = `http://localhost:3000${location.pathname}`;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        setCopiedLink(true);
+        setTimeout(() => {
+          setCopiedLink(false);
+        }, 3000);
+      },
+    );
   };
 
   const verifyRecipeDone = () => {
@@ -42,9 +81,69 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
     }
   };
 
+  const checkFavorite = () => {
+    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+    if (favorites.length === 0 && favorites.some((item: any) => item.id !== id)) {
+      setRecipeFavorite(false);
+    } else if (favorites.some((item: any) => item.id === id)) {
+      setRecipeFavorite(true);
+    }
+  };
+
+  const handleFavorite = () => {
+    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+    if (favorites.length === 0) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+      const newFavorites = [...favorites, handleNewFavorite(data)];
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setRecipeFavorite(true);
+    } else if (favorites.some((item: any) => item.id === id)) {
+      const newFavorites = favorites.filter((item: any) => item.id !== id);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setRecipeFavorite(false);
+    } else if (favorites.some((item: any) => item.id !== id)) {
+      const newFavorites = [...favorites, handleNewFavorite(data)];
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setRecipeFavorite(true);
+    }
+  };
+
+  const handleNewFavorite = (infoReceita: any) => {
+    // const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
+    if (infoReceita.meals) {
+      // console.log(infoReceita.meals);
+      const addFav = {
+        id,
+        type: 'meal',
+        nationality: infoReceita.meals[0].strArea,
+        category: infoReceita.meals[0].strCategory,
+        name: infoReceita.meals[0].strMeal,
+        image: infoReceita.meals[0].strMealThumb,
+        alcoholicOrNot: '',
+      };
+
+      setRecipeFavorite(true);
+      return addFav;
+    } if (infoReceita.drinks) {
+      const addFav = {
+        id,
+        type: 'drink',
+        nationality: '',
+        category: infoReceita.drinks[0].strCategory,
+        alcoholicOrNot: infoReceita.drinks[0].strAlcoholic,
+        name: infoReceita.drinks[0].strDrink,
+        image: infoReceita.drinks[0].strDrinkThumb,
+      };
+      setRecipeFavorite(true);
+      return addFav;
+    }
+  };
+
   useEffect(() => {
     verifyRecipeDone();
     verifyRecipeInProg();
+    checkFavorite();
+    chamarDadosApi(id, type);
   });
 
   const handleStartBtn = () => {
@@ -89,12 +188,30 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
           {recipe.containsAlcoholic ? 'Alcoholic' : 'Não contém álcool'}
         </h3>
       )}
-      <FavoriteShare
+      {/* <FavoriteShare
         recipe={ recipe }
         type={ type }
         dataTestIdShare="share-btn"
         dataTestIdLike="favorite-btn"
-      />
+      /> */}
+      <button
+        data-testid="share-btn"
+        onClick={ () => handleCopyUrl() }
+      >
+        Share
+
+      </button>
+      {copiedLink && <p>Link copied!</p>}
+      <button
+        onClick={ handleFavorite }
+      >
+        <img
+          data-testid="favorite-btn"
+          src={ recipeFavorite ? blackHeartIcon : whiteHeartIcon }
+          alt="Favorite Recipe"
+        />
+        Favorite
+      </button>
       {recipe.strYoutube && (
         <div>
           <h4>Vídeo:</h4>
@@ -121,5 +238,4 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
     </div>
   );
 }
-
 export default RecipeDetails;
