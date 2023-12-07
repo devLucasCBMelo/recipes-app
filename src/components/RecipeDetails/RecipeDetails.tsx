@@ -60,14 +60,12 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
       },
     );
   };
-
   const verifyRecipeDone = () => {
     const doneRecipies = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
     const recipeIsCompleted = doneRecipies
       .filter(({ id: recipeId }: RecipeType) => recipeId === id);
     setRecipeIsDone(recipeIsCompleted.length !== 0);
   };
-
   const verifyRecipeInProg = () => {
     const recipeProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
     || 'null');
@@ -77,12 +75,11 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
       setRecipeInProgress(recipeIsInProgress);
     }
   };
-
   const checkFavorite = () => {
     const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
 
-    if (id && favorites.length > 0) {
-      if (favorites.some((item: any) => item.id === id)) {
+    if (id && favorites && favorites.length > 0) {
+      if (favorites.some((item: any) => item && item.id === id)) {
         setRecipeFavorite(true);
       } else {
         setRecipeFavorite(false);
@@ -91,25 +88,28 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
       setRecipeFavorite(false);
     }
   };
-
   const handleFavorite = () => {
-    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-    if (favorites.length === 0) {
-      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
-      const newFavorites = [...favorites, handleNewFavorite(data)];
-      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
-      setRecipeFavorite(true);
-    } else if (favorites.some((item: any) => item.id === id)) {
-      const newFavorites = favorites.filter((item: any) => item.id !== id);
-      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
-      setRecipeFavorite(false);
-    } else if (favorites.some((item: any) => item.id !== id)) {
-      const newFavorites = [...favorites, handleNewFavorite(data)];
-      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
-      setRecipeFavorite(true);
+    const favorites = JSON.parse(localStorage
+      .getItem('favoriteRecipes') || '[]') as any[];
+    const newFavorite = handleNewFavorite(data);
+
+    if (newFavorite) {
+      const favoriteIndex = favorites.findIndex((item) => item.id === id);
+
+      if (favorites.length === 0 || favoriteIndex === -1) {
+        // Adicionar novo item aos favoritos
+        const newFavorites = [...favorites, newFavorite];
+        localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+        setRecipeFavorite(true);
+      } else {
+        // Remover item dos favoritos
+        const newFavorites = [...favorites
+          .slice(0, favoriteIndex), ...favorites.slice(favoriteIndex + 1)];
+        localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+        setRecipeFavorite(false);
+      }
     }
   };
-
   const handleNewFavorite = (infoReceita: any) => {
     if (infoReceita.meals) {
       const addFav = {
