@@ -23,8 +23,6 @@ export const useRecipeData = () => {
         retorno = await fetchdDrinksDetails(idd);
       } else if (type === 'meals') {
         retorno = await fetchMealsDetails(idd);
-      } else {
-        throw new Error('Invalid type');
       }
 
       setData(retorno);
