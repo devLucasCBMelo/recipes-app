@@ -6,23 +6,26 @@ import { BrowserRouter } from 'react-router-dom';
 import RecipeDetails from '../components/RecipeDetails/RecipeDetails';
 import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
-import mealsMock from '../mocks/mealsMock';
 import drinksMock from '../mocks/drinksMock';
+import drinkDetailsMock from '../mocks/drinkDetailsMock';
+import mealDetailsMock from '../mocks/mealDetails.Mock';
 
 const whiteHeart = '/src/images/whiteHeartIcon.svg';
 const blackHeart = '/src/images/blackHeartIcon.svg';
 
 describe('Testes RecipeDetails Drinks', () => {
-  const mockk2 = () => { global.fetch = vi.fn(() => Promise.resolve({ status: 200, ok: true, json: () => Promise.resolve(drinksMock) }) as any); };
+  const mock2 = () => { global.fetch = vi.fn(() => Promise.resolve({ status: 200, ok: true, json: () => Promise.resolve(drinksMock) }) as any); };
 
-  beforeEach(mockk2);
+  beforeEach(() => {
+    mock2();
+  });
 
   afterEach(() => {
     localStorage.clear();
   });
 
   it('Renderiza drink 13501', async () => {
-    renderWithRouter(<App />, { route: '/drinks/13501/' });
+    const { user } = renderWithRouter(<App />, { route: '/drinks/13501/' });
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /start recipe/i })).toBeInTheDocument();
     }, { timeout: 5000 });
@@ -36,8 +39,10 @@ describe('Testes RecipeDetails Drinks', () => {
     expect(heartFav).toHaveAttribute('src', whiteHeart);
     expect(heartFav).toBeInTheDocument();
     act(() => {
-      fireEvent.click(heartFav);
+      user.click(heartFav);
     });
+
+    await waitFor(() => { expect(heartFav).toHaveAttribute('src', blackHeart); }, { timeout: 5000 });
 
     expect(localStorage.getItem('favoriteRecipes')).toBeDefined();
 
@@ -120,6 +125,81 @@ describe('Testar somente a questao de favoritar', () => {
     expect(screen.getByRole('heading', { name: /ingredientes:/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /share/i })).toBeInTheDocument();
     expect(localStorage.getItem('favoriteRecipes')).toBeDefined();
-    console.log(localStorage.getItem('favoriteRecipes'));
+  });
+});
+
+describe('Testa se a pagina de detalhes de bebidas', () => {
+  const drinkStorage = {
+    id: '17222',
+    type: 'drink',
+    nationality: '',
+    category: 'Cocktail',
+    name: 'A1',
+    image: 'https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg',
+    alcoholicOrNot: 'Alcoholic',
+  };
+  beforeEach(() => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify([drinkStorage]));
+  });
+
+  it('Verifica se quando a pagina é carregada, se a bebida já está favoritada', async () => {
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => drinkDetailsMock,
+    } as Response);
+
+    renderWithRouter(<App />, { route: '/drinks/17222/' });
+
+    const titleDrink = await waitFor(() => screen.getByTestId('recipe-title'));
+    expect(titleDrink).toBeInTheDocument();
+
+    expect(localStorage.getItem('favoriteRecipes')).toBeDefined();
+    expect(localStorage.getItem('favoriteRecipes')).toContain('17222');
+
+    const btnFav = screen.getByRole('img', {
+      name: /favorite recipe/i,
+    });
+    expect(btnFav).toBeInTheDocument();
+    expect(btnFav).toHaveAttribute('src', blackHeart);
+  });
+});
+
+describe('Verifica botão de "Continuar Receita" em comida', () => {
+  beforeEach(() => {
+    const inProgressRecipes = {
+      meals: {
+        52771: [],
+      },
+    };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => mealDetailsMock,
+    } as Response);
+  });
+  it('Verifica se o botão de "Continuar Receita" aparece quando uma receita de comida já foi iniciada', async () => {
+    renderWithRouter(<App />, { route: '/meals/52771/' });
+    const btnContinue = await waitFor(() => screen.getByRole('button', { name: /continue recipe/i }));
+    expect(btnContinue).toBeInTheDocument();
+  });
+});
+
+describe('Verifica botão de "Continuar Receita" em bebidas', () => {
+  beforeEach(() => {
+    const inProgressRecipes = {
+      drinks: {
+        178319: [],
+      },
+    };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => drinkDetailsMock,
+    } as Response);
+  });
+  it('Verifica se o botão de "Continuar Receita" aparece quando uma receita de comida já foi iniciada', async () => {
+    renderWithRouter(<App />, { route: '/drinks/178319/' });
+    const btnContinue = await waitFor(() => screen.getByRole('button', { name: /continue recipe/i }));
+    expect(btnContinue).toBeInTheDocument();
   });
 });

@@ -40,17 +40,18 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
 
     if (tipo === 'drink') {
       retorno = await fetchdDrinksDetails(idd);
+
       settipoA('drink');
     } else if (tipo === 'meal') {
       retorno = await fetchMealsDetails(idd);
       settipoA('meal');
     }
+    console.log(retorno);
 
     setData(retorno);
   };
 
   const handleCopyUrl = () => {
-    console.log(location.pathname);
     const url = `http://localhost:3000${location.pathname}`;
 
     navigator.clipboard.writeText(url).then(
@@ -93,7 +94,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   const handleFavorite = () => {
     const favorites = JSON.parse(localStorage
       .getItem('favoriteRecipes') || '[]') as any[];
-    const newFavorite = (data.drinks) ? handleNewFavorite(data) : handleNewFavorite(data);
+    const newFavorite = handleNewFavorite(data[`${type}s`]);
 
     if (newFavorite) {
       const favoriteIndex = favorites.findIndex((item) => item.id === id);
@@ -115,12 +116,13 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
       const addFav = {
         id,
         type: tipoA,
-        nationality: infoReceita.strArea || '',
-        category: infoReceita.strCategory,
-        name: infoReceita.strMeal || infoReceita.strDrink,
-        image: infoReceita.strMealThumb || infoReceita.strDrinkThumb,
-        alcoholicOrNot: infoReceita.strAlcoholic || '',
+        nationality: infoReceita[0].strArea || '',
+        category: infoReceita[0].strCategory,
+        name: infoReceita[0].strMeal || infoReceita[0].strDrink,
+        image: infoReceita[0].strMealThumb || infoReceita[0].strDrinkThumb,
+        alcoholicOrNot: infoReceita[0].strAlcoholic || '',
       };
+      console.log(addFav);
 
       setRecipeFavorite(true);
       return addFav;

@@ -33,7 +33,7 @@ export default function InteractiveBtn({
   recipe,
   handleIdLink,
 }: InteractiveBtnProps = {}) {
-  const { setShowAlert, setFavorites } = useContext(searchBarContext);
+  const { setShowAlert, setFavorites, setFiltersRecipes } = useContext(searchBarContext);
 
   // if (showAlert) {
   //   window.alert('Link copied!');
@@ -85,9 +85,11 @@ export default function InteractiveBtn({
     if (srcFavorite === heartBlack) {
       deleteLocalStorage('favoriteRecipes', ID);
       setFavorites((prev) => prev.filter((item) => item.id !== ID));
+      setFiltersRecipes((prev) => prev.filter((item) => item.id !== ID));
     } else {
       putLocalStorage('favoriteRecipes', RECIPE);
       setFavorites((prev) => [...prev, RECIPE]);
+      setFiltersRecipes((prev) => prev.filter((item) => item.id !== ID));
     }
   };
 

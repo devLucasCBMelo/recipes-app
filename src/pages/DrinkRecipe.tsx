@@ -14,6 +14,7 @@ function DrinkRecipe() {
 
         if (result && result.drinks && result.drinks.length > 0) {
           const [data] = result.drinks;
+
           setDrinkData(data);
         } else {
           console.error('Nenhum dado de bebida encontrado');
