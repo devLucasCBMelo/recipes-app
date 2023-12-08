@@ -49,7 +49,7 @@ function RecipeInProgress() {
       setChecked(localStor.meals.ingredientsChecked);
     }
     checkFavorites();
-    console.log(localStorage.getItem('inProgressRecipe')!.length);
+    // console.log(localStorage.getItem('inProgressRecipe')!.length);
   }, []);
 
   const handleCheckBox = (index: number) => {

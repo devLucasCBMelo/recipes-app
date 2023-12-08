@@ -29,6 +29,7 @@ function FavoriteShare({ recipe, type,
     localStorage.setItem(
       'favoriteRecipes',
       JSON.stringify([...favoritedRecipes, dataToSave]),
+
     );
   };
 

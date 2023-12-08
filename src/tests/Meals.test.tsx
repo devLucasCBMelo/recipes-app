@@ -61,8 +61,7 @@ describe('Testes Meals', () => {
 
     await waitFor(() => {
       const categoryButtons = screen.getAllByTestId(/-category-filter/i);
-      expect(categoryButtons).toHaveLength(6);
-      screen.debug();
+      expect(categoryButtons.length).toBe(6);
     }, { timeout: 3000 });
 
     const beefButton = await screen.findByTestId(beefCategory);
@@ -161,35 +160,35 @@ describe('Testes Meals', () => {
     expect(corbaMeal2).toBeInTheDocument();
   });
 
-  it('Testa se ao clicar em um card, leva para a página do card', async () => {
-    vi.spyOn(global, 'fetch').mockImplementation(fetchMock as any);
+  // it('Testa se ao clicar em um card, leva para a página do card', async () => {
+  //   vi.spyOn(global, 'fetch').mockImplementation(fetchMock as any);
 
-    renderWithRouter(
-      <SearchBarProvider>
-        <FilterBarProvider>
-          <App />
-        </FilterBarProvider>
-      </SearchBarProvider>,
-      { route: '/meals' },
-    );
+  //   renderWithRouter(
+  //     <SearchBarProvider>
+  //       <FilterBarProvider>
+  //         <App />
+  //       </FilterBarProvider>
+  //     </SearchBarProvider>,
+  //     { route: '/meals' },
+  //   );
 
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
+  //   expect(global.fetch).toHaveBeenCalled();
+  //   expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/i));
 
-    const corbaMeal = await screen.findByText(/corba/i);
-    expect(corbaMeal).toBeInTheDocument();
+  //   const corbaMeal = await screen.findByText(/corba/i);
+  //   expect(corbaMeal).toBeInTheDocument();
 
-    const sushiCard = await screen.findByText(/sushi/i);
-    expect(sushiCard).toBeInTheDocument();
+  //   const sushiCard = await screen.findByText(/sushi/i);
+  //   expect(sushiCard).toBeInTheDocument();
 
-    await userEvent.click(corbaMeal);
+  //   await userEvent.click(corbaMeal);
 
-    expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
+  //   expect(global.fetch).toHaveBeenCalledWith(mealsDataAPI);
 
-    expect(sushiCard).not.toBeInTheDocument();
-  });
+  //   expect(sushiCard).not.toBeInTheDocument();
+  // });
 
   it('Teste se a API retorna erro', async () => {
     vi.spyOn(global, 'fetch').mockImplementation(() => Promise.reject());

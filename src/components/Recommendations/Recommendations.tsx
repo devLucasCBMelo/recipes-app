@@ -15,13 +15,18 @@ function Recommendations({ recommendationType }: RecommendationsProps) {
 
   useEffect(() => {
     const getRecommendations = async () => {
+      let recommendations;
+
       if (recommendationType === 'Drink') {
-        const { drinks } = await fetchDrinksRecommendation();
-        const shortRecommendations = drinks.slice(0, 6);
-        setRecommendation(shortRecommendations);
+        const result = await fetchDrinksRecommendation();
+        recommendations = result.drinks;
       } else {
-        const { meals } = await fetchMealsRecommendation();
-        const shortRecommendations = meals.slice(0, 6);
+        const result = await fetchMealsRecommendation();
+        recommendations = result.meals;
+      }
+
+      if (recommendations) {
+        const shortRecommendations = recommendations.slice(0, 6);
         setRecommendation(shortRecommendations);
       }
     };

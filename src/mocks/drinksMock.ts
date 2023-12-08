@@ -1,4 +1,4 @@
-const drinks = {
+const drinksMock = {
   drinks: [
     {
       idDrink: '15997',
@@ -221,4 +221,4 @@ const drinks = {
       dateModified: '2017-09-02 17:38:14',
     }] };
 
-export default drinks;
+export default drinksMock;
