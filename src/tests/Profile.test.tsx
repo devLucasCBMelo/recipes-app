@@ -26,7 +26,7 @@ describe('Testes Profile', () => {
   });
   it('Verifica se ao clicar no botão Done Recipes, a rota muda para /done-recipes', async () => {
     const { user } = renderWithRouter(<App />, { route: '/profile' });
-    const button = screen.getByRole('button', { name: /done recipes button icon done recipes/i });
+    const button = screen.getByRole('button', { name: /done recipes/i });
     expect(button).toBeInTheDocument();
     await user.click(button);
 
@@ -42,7 +42,7 @@ describe('Testes Profile', () => {
       </SearchBarProvider>,
       { route: '/profile' },
     );
-    const button = screen.getByRole('button', { name: /favorite recipes button icon favorite recipes/i });
+    const button = screen.getByRole('button', { name: /favorite recipes/i });
     expect(button).toBeInTheDocument();
     await user.click(button);
 
@@ -52,7 +52,7 @@ describe('Testes Profile', () => {
   });
   it('Verifica se ao clicar no botão Logout, a rota muda para /', async () => {
     const { user } = renderWithRouter(<App />, { route: '/profile' });
-    const button = screen.getByRole('button', { name: /logout button icon logout/i });
+    const button = screen.getByRole('button', { name: /logout/i });
     expect(button).toBeInTheDocument();
     await user.click(button);
 
