@@ -36,7 +36,6 @@ function RecipeInProgress() {
       && localStor.drinks !== null && localStor.drinks
       && localStor.drinks[idFinal as string]
       && tipoFinal === 'drinks'
-      && Object.keys(localStor.drinks).includes(idFinal as string)
     ) {
       setChecked(localStor.drinks[idFinal as string]);
     } else if (
@@ -44,10 +43,7 @@ function RecipeInProgress() {
       && localStor.meals !== undefined
       && localStor.meals !== null && localStor.meals !== null
       && tipoFinal === 'meals'
-      && Object.keys(localStor.meals).includes(idFinal as string)
     ) {
-      // console.log('entrou');
-
       setChecked(localStor.meals[idFinal as string]);
     }
     checkFavorites();

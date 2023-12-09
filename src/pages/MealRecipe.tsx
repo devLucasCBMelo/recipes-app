@@ -18,7 +18,7 @@ function MealRecipe() {
     }
   }, [id]);
 
-  if (mealData.lenght !== 0) {
+  if (mealData.length !== 0) {
     return (
       <div>
         <RecipeDetails recipe={ mealData } recommendationType="Drink" />
