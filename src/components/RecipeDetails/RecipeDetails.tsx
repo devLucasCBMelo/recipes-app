@@ -46,8 +46,6 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
       retorno = await fetchMealsDetails(idd);
       settipoA('meal');
     }
-    console.log(retorno);
-
     setData(retorno);
   };
 
@@ -122,7 +120,6 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
         image: infoReceita[0].strMealThumb || infoReceita[0].strDrinkThumb,
         alcoholicOrNot: infoReceita[0].strAlcoholic || '',
       };
-      console.log(addFav);
 
       setRecipeFavorite(true);
       return addFav;

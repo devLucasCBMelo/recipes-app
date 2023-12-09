@@ -53,36 +53,32 @@ export const useRecipeData = () => {
     if (localStor === null && tipoFinal === 'drinks') {
       const inProgressDrink = {
         drinks: {
-          id: idFinal,
-          ingredientsChecked: checked,
+          [idFinal as string]: checked,
         },
       };
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressDrink));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressDrink));
     } else if (tipoFinal === 'drinks'
-    && localStorage.getItem('inProgressRecipe') !== null) {
+    && localStorage.getItem('inProgressRecipes') !== null) {
       const inProgressDrink2 = {
         drinks: {
-          id: idFinal,
-          ingredientsChecked: checked,
+          [idFinal as string]: checked,
         },
       };
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressDrink2));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressDrink2));
     } else if (localStor === null && tipoFinal === 'meals') {
       const inProgressRecipe = {
         meals: {
-          id: idFinal,
-          ingredientsChecked: checked,
+          [idFinal as string]: checked,
         },
       };
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressRecipe));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipe));
     } else if (localStor !== null && tipoFinal === 'meals') {
       const inProgressRecipe2 = {
         meals: {
-          id: idFinal,
-          ingredientsChecked: checked,
+          [idFinal as string]: checked,
         },
       };
-      localStorage.setItem('inProgressRecipe', JSON.stringify(inProgressRecipe2));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipe2));
     }
   };
 
