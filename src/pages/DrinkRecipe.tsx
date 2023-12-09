@@ -9,18 +9,12 @@ function DrinkRecipe() {
 
   useEffect(() => {
     const fetchDrinkDetails = async () => {
-      try {
-        const result = await fetchdDrinksDetails(id ?? '');
+      const result = await fetchdDrinksDetails(id as string);
 
-        if (result && result.drinks && result.drinks.length > 0) {
-          const [data] = result.drinks;
+      if (result && result.drinks && result.drinks.length > 0) {
+        const [data] = result.drinks;
 
-          setDrinkData(data);
-        } else {
-          console.error('Nenhum dado de bebida encontrado');
-        }
-      } catch (error) {
-        console.error('Erro ao buscar detalhes da bebida:', error);
+        setDrinkData(data);
       }
     };
 
@@ -30,8 +24,6 @@ function DrinkRecipe() {
   if (drinkData !== 0) {
     return <RecipeDetails recipe={ drinkData } recommendationType="Meal" />;
   }
-
-  return <h1>Carregando...</h1>;
 }
 
 export default DrinkRecipe;

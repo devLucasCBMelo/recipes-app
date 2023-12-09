@@ -26,7 +26,6 @@ function RecipeInProgress() {
   useEffect(() => {
     setFinished(handleFinished());
     handleLocal(localStor, tipoFinal);
-    // console.log(data);
   }, [checked]);
 
   useEffect(() => {

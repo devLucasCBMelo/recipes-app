@@ -9,7 +9,7 @@ function MealRecipe() {
 
   useEffect(() => {
     const fetchMealDetails = async () => {
-      const { meals: [data] } = await fetchMealsDetails(id ?? '');
+      const { meals: [data] } = await fetchMealsDetails(id as string);
       setMealData(data);
     };
 
@@ -25,8 +25,6 @@ function MealRecipe() {
       </div>
     );
   }
-
-  return <h1>Carregando...</h1>;
 }
 
 export default MealRecipe;

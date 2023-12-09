@@ -1,4 +1,4 @@
-import { screen, waitFor, fireEvent, cleanup, act, render } from '@testing-library/react';
+import { screen, waitFor, fireEvent, cleanup, act, render, waitForElementToBeRemoved } from '@testing-library/react';
 import { vi } from 'vitest';
 import { createMemoryHistory } from 'history';
 import { BrowserRouter } from 'react-router-dom';
@@ -8,14 +8,18 @@ import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
 import mealsMock from '../mocks/mealsMock';
 import drinks from '../mocks/drinksMock';
+import MealRecipe from '../pages/MealRecipe';
 
 const whiteHeart = '/src/images/whiteHeartIcon.svg';
 const blackHeart = '/src/images/blackHeartIcon.svg';
+const LOADING_TEXT = 'Carregando...';
 
 describe('Testes RecipeDetails Meals', () => {
   const mockk = () => { global.fetch = vi.fn(() => Promise.resolve({ status: 200, ok: true, json: () => Promise.resolve(mealsMock) }) as any); };
 
-  beforeEach(mockk);
+  beforeEach(() => {
+    mockk();
+  });
   // afterEach(cleanup);
   // afterEach(() => {
   //   localStorage.clear();
@@ -23,6 +27,10 @@ describe('Testes RecipeDetails Meals', () => {
 
   it('Renderiza meal 52977', async () => {
     renderWithRouter(<App />, { route: '/meals/52977/' });
+
+    expect(global.fetch).toBeCalledTimes(3);
+    expect(global.fetch).toBeCalledWith('https://www.themealdb.com/api/json/v1/1/lookup.php?i=52977');
+
     await waitFor(() => { expect(screen.getByRole('heading', { name: /corba/i })).toBeInTheDocument(); }, { timeout: 5000 });
 
     expect(screen.getByRole('heading', { name: /ingredientes:/i })).toBeInTheDocument();
@@ -74,5 +82,23 @@ describe('Testes RecipeDetails Meals', () => {
       name: /start recipe/i,
     }));
     await waitFor(() => { expect(window.location.href).toBe('http://localhost:3000/meals/52977/in-progress'); }, { timeout: 500 });
+  });
+});
+
+describe('Testes RecipeDetails Meals', () => {
+  const mealsNull = { meals: null };
+  beforeEach(() => {
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => mealsNull,
+    } as Response);
+  });
+  it('Verifica se aparece loading', async () => {
+    renderWithRouter(<MealRecipe />);
+    vi.spyOn(global, 'fetch').mockResolvedValueOnce({
+      ok: true,
+      json: async () => mealsNull,
+    } as Response);
+    expect(global.fetch).toBeCalledTimes(0);
   });
 });
