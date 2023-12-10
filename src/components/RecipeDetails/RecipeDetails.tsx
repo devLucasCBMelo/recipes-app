@@ -46,8 +46,6 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
       retorno = await fetchMealsDetails(idd);
       settipoA('meal');
     }
-    console.log(retorno);
-
     setData(retorno);
   };
 
@@ -72,6 +70,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
   const verifyRecipeInProg = () => {
     const recipeProgress = JSON.parse(localStorage.getItem('inProgressRecipes')
     || 'null');
+
     if (recipeProgress && typeof (id) === 'string') {
       const inProgressRecipes = Object.keys(recipeProgress[`${type}s`]);
       const recipeIsInProgress = inProgressRecipes.includes(id);
@@ -122,7 +121,6 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
         image: infoReceita[0].strMealThumb || infoReceita[0].strDrinkThumb,
         alcoholicOrNot: infoReceita[0].strAlcoholic || '',
       };
-      console.log(addFav);
 
       setRecipeFavorite(true);
       return addFav;
@@ -155,7 +153,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
         <h1>Carregando...</h1>
       ) : (
         <>
-          <h1 data-testid="recipe-title">{recipe.strMeal || recipe.strDrink}</h1>
+          <h1 data-testid="recipe-title">{ recipe.strMeal || recipe.strDrink}</h1>
           <img
             src={ recipe.strMealThumb || recipe.strDrinkThumb }
             alt={ recipe.strMeal || recipe.strDrink }

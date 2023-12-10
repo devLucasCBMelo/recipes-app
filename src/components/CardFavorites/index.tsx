@@ -27,6 +27,8 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
   return (
     favorite.length > 0 && favorite.map((recipe, index) => (
       <div key={ recipe.id }>
+        {idLinkAlert.id === recipe.id && idLinkAlert.type === recipe.type
+        && <ShowShareAlert />}
         <div className={ styles.card_recipe_favorite }>
           <div className="img-recipe">
             <Link to={ `/${recipe.type}s/${recipe.id}` }>
@@ -77,8 +79,6 @@ export default function CardFavorites({ favorite }: CardFavoritesProps) {
             />
           </div>
         </div>
-        {idLinkAlert.id === recipe.id && idLinkAlert.type === recipe.type
-        && <ShowShareAlert />}
 
       </div>
 

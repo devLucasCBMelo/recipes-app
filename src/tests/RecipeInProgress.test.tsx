@@ -5,6 +5,7 @@ import { renderWithRouter } from '../utils/renderWithRouter';
 import App from '../App';
 import mealsMock from '../mocks/mealsMock';
 import drinks from '../mocks/drinksMock';
+import mealDetailsMock from '../mocks/mealDetails.Mock';
 
 describe('Testes RecipeInProgress', () => {
   it('Renderiza loading', async () => {
@@ -50,13 +51,13 @@ describe('Testando com o mock meals', () => {
     expect(favoriteimg).toHaveAttribute('src', blackHeart);
     const compartilharButton = screen.getByRole('button', { name: /share/i });
     fireEvent.click(compartilharButton);
-    expect(localStorage.getItem('inProgressRecipe')).toBeDefined();
-    const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
-    expect(localStor.meals.id).toBe('52977');
+    expect(localStorage.getItem('inProgressRecipes')).toBeDefined();
+    const localStor = JSON.parse(localStorage.getItem('inProgressRecipes')!);
+    expect(Object.keys(localStor.meals)[0]).toBe('52977');
     await waitFor(() => { expect(screen.getByText(/link copied!/i)).toBeInTheDocument(); }, { timeout: 1000 });
     // await waitFor(() => { expect(window.navigator.clipboard).toBe('http://localhost:3000/meals/52977'); }, { timeout: 5000 });
     expect(screen.getByRole('button', { name: /finish/i })).toBeDisabled();
-    expect(localStorage.getItem('inProgressRecipe')).toBeDefined();
+    expect(localStorage.getItem('inProgressRecipes')).toBeDefined();
     fireEvent.click(screen.getByRole('checkbox', { name: /lentils 1 cup/i }));
     fireEvent.click(screen.getByRole('checkbox', { name: /onion 1 large/i }));
     fireEvent.click(screen.getByRole('checkbox', { name: /carrots 1 large/i }));
@@ -98,8 +99,9 @@ describe('Testando com o mock drinks', () => {
     expect(favoriteimg).toHaveAttribute('src', whiteHeart);
     fireEvent.click(favoriteimg);
     expect(favoriteimg).toHaveAttribute('src', blackHeart);
-    const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
-    expect(localStor.drinks.id).toBe('15997');
+    const localStor = JSON.parse(localStorage.getItem('inProgressRecipes')!);
+
+    expect(Object.keys(localStor.drinks)[0]).toBe('15997');
 
     const compartilharButton = screen.getByRole('button', { name: /share/i });
     fireEvent.click(screen.getByText(/favorite/i));
@@ -117,9 +119,46 @@ describe('Testando com o mock drinks', () => {
     fireEvent.click(screen.getByRole('checkbox', { name: /ice null/i }));
     expect(screen.getByRole('button', { name: /finish/i })).not.toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: /finish/i }));
-    expect(localStorage.getItem('inProgressRecipe')).toBeDefined();
+    expect(localStorage.getItem('inProgressRecipes')).toBeDefined();
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: /done recipes/i })).toBeInTheDocument();
     }, { timeout: 5000 });
+  });
+});
+describe('Recupera a receita em progresso do localStorage assim que a pagina renderizar', () => {
+  beforeEach(() => {
+    const inProgressRecipes = {
+      52977: [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+      ],
+    };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => mealDetailsMock,
+    } as Response);
+  });
+  it('Testa na tela de comidas', async () => {
+    renderWithRouter(<App />, { route: '/meals/52977/in-progress' });
+
+    expect(localStorage.getItem('inProgressRecipes')).toBeDefined();
+    const localStor = JSON.parse(localStorage.getItem('inProgressRecipes')!);
+    expect(Object.keys(localStor.meals)[0]).toBe('52977');
+    const inputCheck = await screen.findByRole('checkbox', {
+      name: /tomato puree 1 tbs/i,
+    });
+    expect(inputCheck).toBeInTheDocument();
   });
 });

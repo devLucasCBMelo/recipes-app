@@ -15,7 +15,7 @@ function RecipeInProgress() {
   const location = useLocation();
   const typeRecipe = location.pathname;
   const tipoFinal = typeRecipe.split('/')[1];
-  const localStor = JSON.parse(localStorage.getItem('inProgressRecipe')!);
+  const localStor = JSON.parse(localStorage.getItem('inProgressRecipes')!);
 
   const navigate = useNavigate();
 
@@ -26,7 +26,6 @@ function RecipeInProgress() {
   useEffect(() => {
     setFinished(handleFinished());
     handleLocal(localStor, tipoFinal);
-    // console.log(data);
   }, [checked]);
 
   useEffect(() => {
@@ -34,19 +33,17 @@ function RecipeInProgress() {
       localStor
       && localStor.drinks !== undefined
       && localStor.drinks !== null && localStor.drinks
-      && localStor.drinks.id
+      && localStor.drinks[idFinal as string]
       && tipoFinal === 'drinks'
-      && localStor.drinks.id === idFinal
     ) {
-      setChecked(localStor.drinks.ingredientsChecked);
+      setChecked(localStor.drinks[idFinal as string]);
     } else if (
       localStor
       && localStor.meals !== undefined
       && localStor.meals !== null && localStor.meals !== null
       && tipoFinal === 'meals'
-      && localStor.meals.id === idFinal
     ) {
-      setChecked(localStor.meals.ingredientsChecked);
+      setChecked(localStor.meals[idFinal as string]);
     }
     checkFavorites();
     // console.log(localStorage.getItem('inProgressRecipe')!.length);
