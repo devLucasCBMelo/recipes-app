@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { renderWithRouter } from '../utils/renderWithRouter';
-import Login from '../pages/Login';
+import Login from '../pages/Login/Login';
 
 describe('Testes Login', () => {
   it('Renderiza page Login', async () => {

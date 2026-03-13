@@ -37,7 +37,7 @@ function Recommendations({ recommendationType }: RecommendationsProps) {
   return (
     <div className="carrousel">
       {loading && <h1>Carregando...</h1>}
-      {!loading && recommendation.map((recipe: Recipe, index: number) => {
+      {/* {!loading && recommendation.map((recipe: Recipe, index: number) => {
         return (
           <div
             className="carrousel__item"
@@ -57,7 +57,7 @@ function Recommendations({ recommendationType }: RecommendationsProps) {
             />
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 }

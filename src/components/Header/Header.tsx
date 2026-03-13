@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styles from './header.module.css';
 import profile from '../../images/profileIcon.png';
@@ -21,12 +21,14 @@ function Header({ namePage, pageIcon }: HeaderProps) {
     <header className={ styles.header }>
       <div className={ styles.container_header }>
         <div>
-          <img src={ logo } alt="logo" />
-          <img
-            className={ styles.appName }
-            src={ appName }
-            alt="title"
-          />
+          <Link to="/meals">
+            <img src={ logo } alt="logo" />
+            <img
+              className={ styles.appName }
+              src={ appName }
+              alt="title"
+            />
+          </Link>
         </div>
         <div>
           {(namePage === 'Meals' || namePage === 'Drinks')

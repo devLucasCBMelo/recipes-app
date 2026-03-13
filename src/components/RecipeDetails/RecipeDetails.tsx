@@ -3,7 +3,6 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Recipe, RecipeType } from '../../type';
 import Recommendations from '../Recommendations/Recommendations';
 import './recipeDetails.css';
-import FavoriteShare from '../FavoriteShare/FavoriteShare';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import { fetchdDrinksDetails } from '../../utils/fetchDrinksApi';
@@ -133,6 +132,7 @@ function RecipeDetails({ recipe, recommendationType }: RecipeDetailsProps) {
     checkFavorite();
     chamarDadosApi(id, type);
     setLoading(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (data) {

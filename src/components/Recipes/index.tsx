@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-curly-spacing */
+/* eslint-disable @typescript-eslint/comma-dangle */
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DrinkType, MealType, PageProps } from '../../type';
@@ -7,15 +9,22 @@ import searchBarContext from '../../contex/SearchBarContex';
 
 function Recipes({ namePage }: PageProps) {
   const [loading, setLoading] = useState(false);
-  const { drinkData, setDrinkData, mealsData,
+  const {
+    drinkData,
+    setDrinkData,
+    mealsData,
     setMealsData,
-    setNoFilterDrinkData, setNoFilterMealsData } = useContext(searchBarContext);
+    setNoFilterDrinkData,
+    setNoFilterMealsData,
+  } = useContext(searchBarContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+        const response = await fetch(
+          'https://www.themealdb.com/api/json/v1/1/search.php?s='
+        );
         const data = await response.json();
         setMealsData(data);
         setNoFilterMealsData(data);
@@ -33,7 +42,9 @@ function Recipes({ namePage }: PageProps) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+        const response = await fetch(
+          'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a'
+        );
         const data = await response.json();
         setDrinkData(data);
         setNoFilterDrinkData(data);
@@ -57,34 +68,27 @@ function Recipes({ namePage }: PageProps) {
     const limitedMeals = mealsData && mealsData.meals.slice(0, 12);
 
     return (
-      <div
-        className={ styles.container }
-      >
-        <FilterBar namePage={ namePage } />
-        <div
-          className={ styles.container_recipes }
-        >
-
+      <div className={styles.container}>
+        <FilterBar namePage={namePage} />
+        <div className={styles.container_recipes}>
           {limitedMeals.map((recipe: MealType, index: number) => (
             <Link
-              to={ `/${namePage}/${recipe.idMeal}` }
-              key={ recipe.idMeal }
-              data-testid={ `${index}-recipe-card` }
-              className={ styles.recipeCard }
+              to={`/${namePage}/${recipe.idMeal}`}
+              key={recipe.idMeal}
+              data-testid={`${index}-recipe-card`}
+              className={styles.recipeCard}
             >
-
               <img
-                src={ recipe.strMealThumb }
-                alt=""
-                className={ styles.recipeImg }
-                data-testid={ `${index}-card-img` }
+                src={recipe.strMealThumb}
+                alt='card'
+                className={styles.recipeImg}
+                data-testid={`${index}-card-img`}
               />
               <p
-                className={ styles.name_recipe }
-                data-testid={ `${index}-card-name` }
+                className={styles.name_recipe}
+                data-testid={`${index}-card-name`}
               >
                 {recipe.strMeal}
-
               </p>
             </Link>
           ))}
@@ -97,29 +101,25 @@ function Recipes({ namePage }: PageProps) {
     const limitedDrinks = drinkData.drinks.slice(0, 12);
 
     return (
-      <div
-        className={ styles.container }
-      >
-        <FilterBar namePage={ namePage } />
-        <div
-          className={ styles.container_recipes }
-        >
+      <div className={styles.container}>
+        <FilterBar namePage={namePage} />
+        <div className={styles.container_recipes}>
           {limitedDrinks.map((recipe: DrinkType, index: number) => (
             <Link
-              to={ `/${namePage}/${recipe.idDrink}` }
-              className={ styles.recipeCard }
-              key={ recipe.idDrink }
-              data-testid={ `${index}-recipe-card` }
+              to={`/${namePage}/${recipe.idDrink}`}
+              className={styles.recipeCard}
+              key={recipe.idDrink}
+              data-testid={`${index}-recipe-card`}
             >
               <img
-                src={ recipe.strDrinkThumb }
-                alt=""
-                className={ styles.recipeImg }
-                data-testid={ `${index}-card-img` }
+                src={recipe.strDrinkThumb}
+                alt=''
+                className={styles.recipeImg}
+                data-testid={`${index}-card-img`}
               />
               <p
-                className={ styles.name_recipe }
-                data-testid={ `${index}-card-name` }
+                className={styles.name_recipe}
+                data-testid={`${index}-card-name`}
               >
                 {recipe.strDrink}
               </p>

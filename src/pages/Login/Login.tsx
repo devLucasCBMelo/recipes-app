@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Login/Login.module.css';
-import logo from '../images/logo_login.png';
-import tomate from '../images/tomate.png';
+import styles from './Login.module.css';
+import logo from '../../images/logo_login.png';
+import tomate from '../../images/tomate.png';
 
 function Login() {
   const [userEmail, setUserEmail] = useState('');
