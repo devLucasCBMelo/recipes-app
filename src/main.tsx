@@ -9,7 +9,7 @@ import SearchBarProvider from './contex/SearchBarProvider';
 import FilterBarProvider from './contex/FilterBarProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <BrowserRouter basename='/recicpes-app'>
+  <BrowserRouter basename='/recipes-app'>
     <SearchBarProvider>
       <FilterBarProvider>
         <App />
